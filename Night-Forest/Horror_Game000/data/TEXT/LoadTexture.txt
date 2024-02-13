@@ -1,0 +1,42 @@
+//<======================================================
+//テクスチャの名前 = テクスチャパス
+//<======================================================
+TEX_NAME = data/TEXTURE/3D_EXIT.png
+
+TEX_NAME = data/TEXTURE/3D_GAMESTART.png
+
+TEX_NAME = data/TEXTURE/3D_OPTION.png
+
+TEX_NAME = data/TEXTURE/Blood-Pattarn000.png
+
+TEX_NAME = data/TEXTURE/Grass001.png
+
+TEX_NAME = data/TEXTURE/Wood-Door.png
+
+TEX_NAME = data/TEXTURE/Wood-Roof.png
+
+TEX_NAME = data/TEXTURE/wood-texture_00004.jpg
+
+TEX_NAME = data/TEXTURE/effect/effect000.jpg
+
+TEX_NAME = data/TEXTURE/effect/effect000.png
+
+TEX_NAME = data/TEXTURE/effect/effect001.png
+
+TEX_NAME = data/TEXTURE/effect/effect002.png
+
+TEX_NAME = data/TEXTURE/HORROR_TITLE.png
+
+TEX_NAME = data/TEXTURE/thishibuki114.png
+
+TEX_NAME = data/TEXTURE/SignBoard001.png
+
+TEX_NAME = data/TEXTURE/Wood-Door.png
+
+TEX_NAME = data/TEXTURE/Skin000.png
+
+TEX_NAME = data/TEXTURE/Teeth001.png
+
+TEX_NAME = data/TEXTURE/Teeth000.png
+
+EndFile
