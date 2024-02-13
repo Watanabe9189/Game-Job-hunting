@@ -1,8 +1,54 @@
-﻿  Camera.cpp
+﻿  2DChar.cpp
+  2DContinue.cpp
+  2DEffect.cpp
+  2DGauge.cpp
+  2DInfo.cpp
+  2DParticle.cpp
+  2DSelect.cpp
+  3DEffect.cpp
+  3DEnemy.cpp
+  3DParticle.cpp
+  3DPlayer.cpp
+  BilB.cpp
+  BillBIcon.cpp
+  Building.cpp
+  Camera.cpp
+  Cover.cpp
+  DebugProc.cpp
+  DestArrow.cpp
+  fade.cpp
+  Field.cpp
+  コンパイル中...
+  fog.cpp
+  Font.cpp
+  game.cpp
+  input.cpp
+  Item.cpp
+  LandMark.cpp
+  Light.cpp
+  main.cpp
+  manager.cpp
+  Number.cpp
+  object.cpp
+  object2D.cpp
+  Object3D.cpp
+  Option.cpp
+  Pause.cpp
+  Plant.cpp
+  renderer.cpp
+  Result.cpp
+  Sound.cpp
+  Stencil.cpp
+  コンパイル中...
+  Texture.cpp
+  Title.cpp
+  Tutorial.cpp
+  Useful.cpp
+  XObject.cpp
   コード生成しています。
-  4 of 965 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
+  961 of 965 functions (99.6%) were compiled, the rest were copied from previous compilation.
+    305 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
-  Horror_Game000.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\Horror_Game000\Horror_Game000.exe
-  Horror_Game000.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\Horror_Game000\Horror_Game000.pdb (Full PDB)
+  Horror_Game000.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\Game-Job-hunting\Horror_Game000\Horror_Game000.exe
+  Horror_Game000.vcxproj -> C:\Users\student\Documents\Visual Studio 2015\Projects\Game-Job-hunting\Horror_Game000\Horror_Game000.pdb (Full PDB)
