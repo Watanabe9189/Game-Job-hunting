@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\program files (x86)\microsoft directx sdk (june 2010)\include\</FILEPATH>
+      <FILENAME>dinput.h</FILENAME>
+      <LINE>4321</LINE>
+      <COLUMN>25</COLUMN>
+    </SFA>
+    <DEFECTCODE>28251</DEFECTCODE>
+    <DESCRIPTION>'joyConfigChanged' に対する整合性のない注釈: このインスタンスには 注釈なし が含まれます。c:\program files (x86)\windows kits\8.1\include\um\joystickapi.h(444) を参照してください。</DESCRIPTION>
+    <FUNCTION>joyConfigChanged</FUNCTION>
+    <DECORATED>joyConfigChanged@4</DECORATED>
+    <FUNCLINE>4321</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\student\documents\visual studio 2015\projects\horror_game000\</FILEPATH>
+      <FILENAME>result.cpp</FILENAME>
+      <LINE>85</LINE>
+      <COLUMN>12</COLUMN>
+    </SFA>
+    <DEFECTCODE>6246</DEFECTCODE>
+    <DESCRIPTION>'nCnt' のローカル宣言は、外部スコープの同じ名前の宣言を隠します。追加情報については、行 '71' ('c:\users\student\documents\visual studio 2015\projects\horror_game000\result.cpp') の以前の宣言を参照してください。</DESCRIPTION>
+    <FUNCTION>CResult::Init</FUNCTION>
+    <DECORATED>?Init@CResult@@UAEJXZ</DECORATED>
+    <FUNCLINE>68</FUNCLINE>
+    <PATH>
+      <SFA>
+        <FILEPATH>c:\users\student\documents\visual studio 2015\projects\horror_game000\</FILEPATH>
+        <FILENAME>result.cpp</FILENAME>
+        <LINE>71</LINE>
+        <COLUMN>18</COLUMN>
+      </SFA>
+    </PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\student\documents\visual studio 2015\projects\horror_game000\</FILEPATH>
+      <FILENAME>result.cpp</FILENAME>
+      <LINE>104</LINE>
+      <COLUMN>12</COLUMN>
+    </SFA>
+    <DEFECTCODE>6246</DEFECTCODE>
+    <DESCRIPTION>'nCnt' のローカル宣言は、外部スコープの同じ名前の宣言を隠します。追加情報については、行 '71' ('c:\users\student\documents\visual studio 2015\projects\horror_game000\result.cpp') の以前の宣言を参照してください。</DESCRIPTION>
+    <FUNCTION>CResult::Init</FUNCTION>
+    <DECORATED>?Init@CResult@@UAEJXZ</DECORATED>
+    <FUNCLINE>68</FUNCLINE>
+    <PATH>
+      <SFA>
+        <FILEPATH>c:\users\student\documents\visual studio 2015\projects\horror_game000\</FILEPATH>
+        <FILENAME>result.cpp</FILENAME>
+        <LINE>71</LINE>
+        <COLUMN>18</COLUMN>
+      </SFA>
+    </PATH>
+  </DEFECT>
+</DEFECTS>

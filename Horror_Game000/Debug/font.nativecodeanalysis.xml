@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\program files (x86)\microsoft directx sdk (june 2010)\include\</FILEPATH>
+      <FILENAME>dinput.h</FILENAME>
+      <LINE>4321</LINE>
+      <COLUMN>25</COLUMN>
+    </SFA>
+    <DEFECTCODE>28251</DEFECTCODE>
+    <DESCRIPTION>'joyConfigChanged' に対する整合性のない注釈: このインスタンスには 注釈なし が含まれます。c:\program files (x86)\windows kits\8.1\include\um\joystickapi.h(444) を参照してください。</DESCRIPTION>
+    <FUNCTION>joyConfigChanged</FUNCTION>
+    <DECORATED>joyConfigChanged@4</DECORATED>
+    <FUNCLINE>4321</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\student\documents\visual studio 2015\projects\horror_game000\</FILEPATH>
+      <FILENAME>font.cpp</FILENAME>
+      <LINE>280</LINE>
+      <COLUMN>53</COLUMN>
+    </SFA>
+    <DEFECTCODE>28199</DEFECTCODE>
+    <DESCRIPTION>初期化されていない可能性のあるメモリ 'aSaveString' を使用しています。変数のアドレスが取得されましたが、それへの割り当ては検出されませんでした。</DESCRIPTION>
+    <FUNCTION>CFont::Print</FUNCTION>
+    <DECORATED>?Print@CFont@@QAAXPBDZZ</DECORATED>
+    <FUNCLINE>244</FUNCLINE>
+    <PROBABILITY>1</PROBABILITY>
+    <RANK>4</RANK>
+    <CATEGORY>
+      <RULECATEGORY>mspft</RULECATEGORY>
+    </CATEGORY>
+    <PATH>
+      <SFA>
+        <FILEPATH>c:\users\student\documents\visual studio 2015\projects\horror_game000\</FILEPATH>
+        <FILENAME>font.cpp</FILENAME>
+        <LINE>246</LINE>
+        <COLUMN>9</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\student\documents\visual studio 2015\projects\horror_game000\</FILEPATH>
+        <FILENAME>font.cpp</FILENAME>
+        <LINE>247</LINE>
+        <COLUMN>6</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\student\documents\visual studio 2015\projects\horror_game000\</FILEPATH>
+        <FILENAME>font.cpp</FILENAME>
+        <LINE>248</LINE>
+        <COLUMN>6</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\student\documents\visual studio 2015\projects\horror_game000\</FILEPATH>
+        <FILENAME>font.cpp</FILENAME>
+        <LINE>249</LINE>
+        <COLUMN>5</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\student\documents\visual studio 2015\projects\horror_game000\</FILEPATH>
+        <FILENAME>font.cpp</FILENAME>
+        <LINE>250</LINE>
+        <COLUMN>5</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\student\documents\visual studio 2015\projects\horror_game000\</FILEPATH>
+        <FILENAME>font.cpp</FILENAME>
+        <LINE>253</LINE>
+        <COLUMN>7</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\student\documents\visual studio 2015\projects\horror_game000\</FILEPATH>
+        <FILENAME>font.cpp</FILENAME>
+        <LINE>255</LINE>
+        <COLUMN>1</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\student\documents\visual studio 2015\projects\horror_game000\</FILEPATH>
+        <FILENAME>font.cpp</FILENAME>
+        <LINE>257</LINE>
+        <COLUMN>11</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\student\documents\visual studio 2015\projects\horror_game000\</FILEPATH>
+        <FILENAME>font.cpp</FILENAME>
+        <LINE>257</LINE>
+        <COLUMN>32</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\student\documents\visual studio 2015\projects\horror_game000\</FILEPATH>
+        <FILENAME>font.cpp</FILENAME>
+        <LINE>259</LINE>
+        <COLUMN>9</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\student\documents\visual studio 2015\projects\horror_game000\</FILEPATH>
+        <FILENAME>font.cpp</FILENAME>
+        <LINE>261</LINE>
+        <COLUMN>4</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\student\documents\visual studio 2015\projects\horror_game000\</FILEPATH>
+        <FILENAME>font.cpp</FILENAME>
+        <LINE>264</LINE>
+        <COLUMN>10</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\student\documents\visual studio 2015\projects\horror_game000\</FILEPATH>
+        <FILENAME>font.cpp</FILENAME>
+        <LINE>272</LINE>
+        <COLUMN>16</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\student\documents\visual studio 2015\projects\horror_game000\</FILEPATH>
+        <FILENAME>font.cpp</FILENAME>
+        <LINE>274</LINE>
+        <COLUMN>11</COLUMN>
+        <KEYEVENT>
+          <ID>1</ID>
+          <KIND>宣言</KIND>
+          <IMPORTANCE>Essential</IMPORTANCE>
+          <MESSAGE>'aSaveString' が初期化されていません</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\student\documents\visual studio 2015\projects\horror_game000\</FILEPATH>
+        <FILENAME>font.cpp</FILENAME>
+        <LINE>277</LINE>
+        <COLUMN>12</COLUMN>
+        <KEYEVENT>
+          <ID>2</ID>
+          <KIND>使用法</KIND>
+          <IMPORTANCE>Full</IMPORTANCE>
+          <MESSAGE>'aSaveString' は 'strlen' への入力です (c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h:215 で宣言)</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\student\documents\visual studio 2015\projects\horror_game000\</FILEPATH>
+        <FILENAME>font.cpp</FILENAME>
+        <LINE>280</LINE>
+        <COLUMN>13</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>c:\users\student\documents\visual studio 2015\projects\horror_game000\</FILEPATH>
+        <FILENAME>font.cpp</FILENAME>
+        <LINE>280</LINE>
+        <COLUMN>53</COLUMN>
+        <KEYEVENT>
+          <ID>3</ID>
+          <KIND>使用法</KIND>
+          <IMPORTANCE>Essential</IMPORTANCE>
+          <MESSAGE>'aSaveString' が使用されますが、初期化されていない可能性があります</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+    </PATH>
+  </DEFECT>
+</DEFECTS>
