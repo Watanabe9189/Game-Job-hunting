@@ -117,13 +117,13 @@ void Ccamera::Uninit(void)
 //<=================================
 void Ccamera::Update(void)
 {
-	CManager::GetDebugProc()->Print("<=====================================================\n");
-	CManager::GetDebugProc()->Print("[カメラ関連のデバッグ表示]\n");
-	CManager::GetDebugProc()->Print("<=====================================================\n");
-	CManager::GetDebugProc()->Print("[視点]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_posV.x, m_posV.y, m_posV.z);
-	CManager::GetDebugProc()->Print("[注視点]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_posR.x, m_posR.y, m_posR.z);
-	CManager::GetDebugProc()->Print("[向き]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_rot.x, m_rot.y, m_rot.z);
-	CManager::GetDebugProc()->Print("[距離]：%f\n",m_fDistance);
+	//CManager::GetDebugProc()->Print("<=====================================================\n");
+	//CManager::GetDebugProc()->Print("[カメラ関連のデバッグ表示]\n");
+	//CManager::GetDebugProc()->Print("<=====================================================\n");
+	//CManager::GetDebugProc()->Print("[視点]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_posV.x, m_posV.y, m_posV.z);
+	//CManager::GetDebugProc()->Print("[注視点]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_posR.x, m_posR.y, m_posR.z);
+	//CManager::GetDebugProc()->Print("[向き]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_rot.x, m_rot.y, m_rot.z);
+	//CManager::GetDebugProc()->Print("[距離]：%f\n",m_fDistance);
 
 	//CManager::GetDebugProc()->Print("追従の切り替え[Mキー]\n");
 	//CManager::GetDebugProc()->Print("投影方法の切り替え[LSHIFT]\n");

@@ -148,16 +148,16 @@ void CDestArrow::RotateToDest(void)
 		//見つかっていて、見ているアイテムがゲットされていなければ
 		if (m_bFind == false&&!m_apItem[nCnt]->bGet())
 		{
-			////当たっていたら
-			//if (Collision::CollidAll(m_p3DPlayer->GetPosition(),
-			//	D3DXVECTOR3(MAX_SERACH_RAD, MAX_SERACH_RAD, MAX_SERACH_RAD), m_apItem[nCnt]->GetPosition(),
-			//	m_apItem[nCnt]->GetVtxMax(), m_apItem[nCnt]->GetVtxMin()))
-			//{
-			//	//見つかっている状態にし、見つかったアイテムの番号を保存する
-			//	m_bFind = true;
-			//	m_nNum = nCnt;
-			//	break;
-			//}
+			//当たっていたら
+			if (Collision::CollidAll(m_p3DPlayer->GetPosition(),
+				D3DXVECTOR3(MAX_SERACH_RAD, MAX_SERACH_RAD, MAX_SERACH_RAD), m_apItem[nCnt]->GetPosition(),
+				m_apItem[nCnt]->GetModel().vtxMax, m_apItem[nCnt]->GetModel().vtxMin))
+			{
+				//見つかっている状態にし、見つかったアイテムの番号を保存する
+				m_bFind = true;
+				m_nNum = nCnt;
+				break;
+			}
 		}
 	}
 	//見つかっていて、見ているアイテムがゲットされたら

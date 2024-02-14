@@ -83,8 +83,8 @@ HRESULT CGame::Init(void)
 	//プレイヤー生成
 	m_p3DPlayer = C3DPlayer::Create(PLAYER_POS);
 
-	/*//フォグ生成
-	m_pFog = CFog::Create(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), D3DFOGMODE::D3DFOG_LINEAR, CFog::TYPE::TYPE_PIXEL,0.002f);*/
+	//フォグ生成
+	m_pFog = CFog::Create(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), D3DFOGMODE::D3DFOG_LINEAR, CFog::TYPE::TYPE_PIXEL,0.002f);
 
 	//地面生成
 	CField::ReadCreate(m_apField);
@@ -319,63 +319,63 @@ void CGame::Update(void)
 		}
 
 	}
-	////アイテムを拾い終えていたら
-	//if (CItem::GetNumCollect() == CItem::GetMax())
-	//{
-	//	//終了状態じゃない場合
-	//	if (m_sState != STATE_END)
-	//	{
-	//		//その他の音楽を止め、効果音を再生する
-	//		CManager::GetSound()->StopSound();
-	//		CManager::GetSound()->PlaySound(CSound::LABEL::LABEL_SE_ESCAPED);
-	//	}
-	//	CScene::SetResult(TYPE_RESULT::TYPE_RESULT_SUCCEEDED);
+	//アイテムを拾い終えていたら
+	if (CItem::GetNumCollect() == CItem::GetMax())
+	{
+		//終了状態じゃない場合
+		if (m_sState != STATE_END)
+		{
+			//その他の音楽を止め、効果音を再生する
+			CManager::GetSound()->StopSound();
+			CManager::GetSound()->PlaySound(CSound::LABEL::LABEL_SE_ESCAPED);
+		}
+		CScene::SetResult(TYPE_RESULT::TYPE_RESULT_SUCCEEDED);
 
-	//	//中身なしだったら
-	//	if (m_pCover == nullptr)
-	//	{
-	//		m_pCover = Ccover::Create(Ccover::TYPE::TYPE_SAFE_COV);
-	//	}
+		//中身なしだったら
+		if (m_pCover == nullptr)
+		{
+			m_pCover = Ccover::Create(Ccover::TYPE::TYPE_SAFE_COV);
+		}
 
-	//	//終わっている状態にする
-	//	m_sState = STATE_END;
+		//終わっている状態にする
+		m_sState = STATE_END;
 
-	//	//待機時間の最大値を超えていたら
-	//	if (m_nWaitTime >= MAX_WAIT)
-	//	{
-	//		//リザルト画面を成功モードにする
-	//		CManager::SetFade(CScene::MODE::MODE_RESULT);
-	//		m_nWaitTime = 0;
-	//	}
-	//	//いなければ
-	//	else
-	//	{
-	//		//加算していく
-	//		m_nWaitTime++;
-	//	}
-	//}
+		//待機時間の最大値を超えていたら
+		if (m_nWaitTime >= MAX_WAIT)
+		{
+			//リザルト画面を成功モードにする
+			CManager::SetFade(CScene::MODE::MODE_RESULT);
+			m_nWaitTime = 0;
+		}
+		//いなければ
+		else
+		{
+			//加算していく
+			m_nWaitTime++;
+		}
+	}
 
-	////アイテムの数分回す
-	//for (int nCnt = 0; nCnt < CItem::GetNum(); nCnt++)
-	//{
-	//	//アイテムを取得していなければ
-	//	if (!m_apItem[nCnt]->bGet())
-	//	{
-	//		//近づいていたら
-	//		if (m_apItem[nCnt]->GetAppro())
-	//		{
-	//			//表示をさせ、処理から抜ける
-	//			m_ap2DChar[CHAR2D_PICKUP]->SetDisptrue();
-	//			break;
-	//		}
-	//		//離れていたら
-	//		else if (!m_apItem[nCnt]->GetAppro())
-	//		{
-	//			//表示をさせない
-	//			m_ap2DChar[CHAR2D_PICKUP]->SetDispfalse();
-	//		}
-	//	}
-	//}
+	//アイテムの数分回す
+	for (int nCnt = 0; nCnt < CItem::GetNum(); nCnt++)
+	{
+		//アイテムを取得していなければ
+		if (!m_apItem[nCnt]->bGet())
+		{
+			//近づいていたら
+			if (m_apItem[nCnt]->GetAppro())
+			{
+				//表示をさせ、処理から抜ける
+				m_ap2DChar[CHAR2D_PICKUP]->SetDisptrue();
+				break;
+			}
+			//離れていたら
+			else if (!m_apItem[nCnt]->GetAppro())
+			{
+				//表示をさせない
+				m_ap2DChar[CHAR2D_PICKUP]->SetDispfalse();
+			}
+		}
+	}
 	
 #ifdef _DEBUG
 

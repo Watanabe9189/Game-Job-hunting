@@ -130,5 +130,6 @@ private:
 	TYPE m_eType;
 
 	DataModel m_sModel;
+	D3DXMATERIAL *m_pMat;
 };
 #endif

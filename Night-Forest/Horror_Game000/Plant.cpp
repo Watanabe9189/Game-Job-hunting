@@ -31,10 +31,16 @@ CPlant::CPlant(int nPriority)
 	m_rRot = INIT_VECTOR;
 	m_rSize = INIT_VECTOR;
 	m_rCol = INIT_COL;
+
+	m_fMove = INITIAL_FLOAT;
 }
 CPlant::~CPlant()
 {
 	m_nNumAll--;
+}
+void CPlant::Swaying(void)
+{
+
 }
 CPlant *CPlant::RandCreate(CPlant *apPlant[MAX_OBJECT], const int nNum)
 {

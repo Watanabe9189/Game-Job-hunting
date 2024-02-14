@@ -8,7 +8,7 @@
 #include "Texture.h"
 
 int CXObject::m_nNumAll = INITIAL_INT;
-
+int CXObject::m_nBuff = INITIAL_INT;
 const char *CXObject::m_apFileName[INT_VALUE::MAX_SIZE] = {};
 CXObject::DataModel CXObject::m_asaveModel[INT_VALUE::MAX_SIZE] = {};
 
@@ -26,7 +26,7 @@ CXObject::CXObject(int nPriority) : CObject(nPriority)
 	m_move		=	INIT_VECTOR;
 
 	m_bDraw = true;
-	m_nModelId = INITIAL_INT;
+	m_pMat = nullptr;
 
 	m_asModel = {};
 }
@@ -35,7 +35,7 @@ CXObject::CXObject(int nPriority) : CObject(nPriority)
 //<====================================
 CXObject::~CXObject()
 {
-
+	
 }
 //<====================================
 //Xファイルオブジェクトの初期化処理
@@ -79,7 +79,7 @@ void CXObject::Draw(void)
 
 		//現在のマテリアルを取得
 		CManager::GetRenderer()->GetDevice()->GetMaterial(&matDef);
-
+		
 		//頂点数分繰り返し
 		for (DWORD nCntMat = 0; nCntMat < m_asModel.dwNumMat; nCntMat++)
 		{
@@ -100,7 +100,7 @@ void CXObject::Draw(void)
 //<====================================
 //
 //<====================================
-CXObject::DataModel CXObject::BindModel(const char *pFileName)
+CXObject::DataModel CXObject::BindModel(const char *pFileName, const bool bMatChange)
 {
 	int nNum = m_nNumAll;
 
@@ -112,11 +112,36 @@ CXObject::DataModel CXObject::BindModel(const char *pFileName)
 			//もし保存されたファイル名と引数のファイル名が一緒だったら
 			if (strcmp(m_apFileName[nCnt], pFileName) == 0)
 			{
+				m_nBuff++;
 				//その番号を返し、すでに登録されているテクスチャ
-
 				m_asModel = m_asaveModel[nCnt];
-				m_nModelId = nCnt;
 
+				//もしマテリアルを変更したい場合
+				if (bMatChange)
+				{
+					//<==========================================
+					//色変えのためにもう一度モデルを読み込む
+					//(pBuffMat以外はすでに保存されているデータを使用)
+					//<==========================================
+					if (FAILED(D3DXLoadMeshFromX(m_apFileName[nCnt],
+						D3DXMESH_SYSTEMMEM,
+						CManager::GetRenderer()->GetDevice(),
+						NULL,
+						&m_asModel.pBuffMat,			//ここだけ変更するモデルの引数にする
+						NULL,
+						&m_asaveModel[nCnt].dwNumMat,
+						&m_asaveModel[nCnt].pMesh)))
+					{
+						return{};
+					}
+					assert((m_asModel.pMat =
+						(D3DXMATERIAL*)m_asModel.pBuffMat->GetBufferPointer()) != nullptr);
+					//<==========================================
+					//
+					//<==========================================
+				}
+
+				m_nModelId = nCnt;
 				return m_asModel;
 			}
 		}
@@ -263,3 +288,4 @@ CXObject *CXObject::Create(const D3DXVECTOR3 rPos, const D3DXVECTOR3 rRot, const
 
 	return pXObject;
 }
+

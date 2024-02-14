@@ -15,7 +15,7 @@ namespace
 	const float SEARCH_MOVE				= 0.0045f;	//探索している時の移動量
 	const float CHASE_VALUE				= 0.01f;	//追跡している時の移動値
 	const float FACE_VALUE				= 0.075f;	//高速移動の時の移動量
-	const float ALPHA_VALUE				= 1.0f;	//透明度の値
+	const float ALPHA_VALUE				= 0.08f;	//透明度の値
 	const float DOUBLE_VALUE			= 1.7f;		//倍にする値
 	const float ROTATE_VALUE			= 0.1f;		//回転値
 
@@ -99,7 +99,16 @@ C3DEnemy *C3DEnemy::Create(const D3DXVECTOR3 pos ,const int nLife, const int nTy
 //<=======================================
 HRESULT C3DEnemy::Init(void)
 {
-	m_sModel = BindModel(m_acFilename[m_eType]);
+	//透明の敵だったら
+	if (m_eType == TYPE::TYPE_ENEMY_INVISIBLE)
+	{
+		m_sModel = BindModel(m_acFilename[m_eType], true);
+	}
+	//透明では無ければ
+	else
+	{
+		m_sModel = BindModel(m_acFilename[m_eType]);
+	}
 	SetDest();
 
 	//透明の敵だったら
@@ -184,16 +193,17 @@ void C3DEnemy::Update(void)
 			//加算していく
 			m_pos += m_move;
 
-		/*	CManager::GetDebugProc()->Print("[位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_pos.x, m_pos.y, m_pos.z);
-			CManager::GetDebugProc()->Print("[距離]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_rDis.x, m_rDis.y, m_rDis.z);
-			CManager::GetDebugProc()->Print("[目的の位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_rDestPos.x, m_rDestPos.y, m_rDestPos.z);*/
-		/*	CManager::GetDebugProc()->Print("[前目的の位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_fFrontDest.x, m_fFrontDest.y, m_fFrontDest.z);
-			CManager::GetDebugProc()->Print("[あと目的の位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_fBackDest.x, m_fBackDest.y, m_fBackDest.z);
+			//CManager::GetDebugProc()->Print("[位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_pos.x, m_pos.y, m_pos.z);
+			//CManager::GetDebugProc()->Print("[距離]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_rDis.x, m_rDis.y, m_rDis.z);
+			//CManager::GetDebugProc()->Print("[目的の位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_rDestPos.x, m_rDestPos.y, m_rDestPos.z);
+			//CManager::GetDebugProc()->Print("[前目的の位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_fFrontDest.x, m_fFrontDest.y, m_fFrontDest.z);
+			//CManager::GetDebugProc()->Print("[あと目的の位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_fBackDest.x, m_fBackDest.y, m_fBackDest.z);
 
-			CManager::GetDebugProc()->Print("[今のインターバル]：%d\n", m_nInterval);
-			CManager::GetDebugProc()->Print("[今のランダムインターバル]：%d\n", m_nRandInter);
-			CManager::GetDebugProc()->Print("[今のステート]：%d\n", m_sState);
-			CManager::GetDebugProc()->Print("[敵タイプ]：%d\n", m_eType);*/
+			//CManager::GetDebugProc()->Print("[今のインターバル]：%d\n", m_nInterval);
+			//CManager::GetDebugProc()->Print("[今のランダムインターバル]：%d\n", m_nRandInter);
+			//CManager::GetDebugProc()->Print("[今のステート]：%d\n", m_sState);
+			CManager::GetDebugProc()->Print("[敵タイプ]：%d\n", m_eType);
+			CManager::GetDebugProc()->Print("[バッファ]：%d\n", m_sModel.pBuffMat);
 
 			MoveMent();
 
@@ -204,7 +214,6 @@ void C3DEnemy::Update(void)
 
 			//ベクトルの三要素の設定
 			SetVector3(m_pos, m_rot, m_move);
-			SetMaterial(m_sModel.pMat);
 		}
 	}
 	else
@@ -453,7 +462,7 @@ void C3DEnemy::Search(void)
 			SetDest(rRandDest);
 		}
 
-		//透明型の敵だったら
+		//透明型だったら
 		if (m_eType == TYPE::TYPE_ENEMY_INVISIBLE)
 		{
 			//頂点数分繰り返し
@@ -471,13 +480,11 @@ void C3DEnemy::Search(void)
 					m_sModel.pMat[nCntMaxMat].MatD3D.Diffuse.a += ALPHA_VALUE;
 					m_sModel.pMat[nCntMaxMat].MatD3D.Ambient.a += ALPHA_VALUE;
 				}
-
 			}
 		}
 	}
-
 	//探索モードだったら
-	if (m_sState == STATE_SEARCH)
+	else if (m_sState == STATE_SEARCH)
 	{
 		m_fMoveValue = SEARCH_MOVE;
 

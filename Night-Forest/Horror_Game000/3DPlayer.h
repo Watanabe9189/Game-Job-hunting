@@ -39,11 +39,11 @@ public:
 	void Update(void);
 	void Draw(void) 
 	{ 
-		//‰B‚ê‚Ä‚¢‚È‚¯‚ê‚Î
-		if (m_sState != STATE_DEATH&& m_sState != STATE_HIDE)
-		{
-			CXObject::Draw();
-		}
+		////‰B‚ê‚Ä‚¢‚È‚¯‚ê‚Î
+		//if (m_sState != STATE_DEATH&& m_sState != STATE_HIDE)
+		//{
+		//	CXObject::Draw();
+		//}
 	}
 
 	static C3DPlayer *Create(const D3DXVECTOR3 pos);

@@ -33,6 +33,8 @@ public:
 
 private:
 
+	void Swaying(void);
+
 	static LPDIRECT3DTEXTURE9	m_apTexture[TYPE::TYPE_MAX];		//テクスチャへのポインタ
 	static const char*			m_acFilename[TYPE::TYPE_MAX];				//ファイル名
 
@@ -42,6 +44,8 @@ private:
 	D3DXVECTOR3 m_rRot;
 	D3DXVECTOR3 m_rSize;
 	D3DXCOLOR m_rCol;
+
+	float m_fMove;
 
 	TYPE m_eType;
 
