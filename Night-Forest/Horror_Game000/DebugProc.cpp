@@ -216,5 +216,7 @@ void CDebug::SetManual(void)
 	CManager::GetDebugProc()->Print("チュートリアルからゲーム遷移[右矢印キー]\n");
 	CManager::GetDebugProc()->Print("ゲームからリザルト遷移[奥のボスを倒す]\n");
 	CManager::GetDebugProc()->Print("リザルトからタイトル遷移[2キー]\n");
+	CManager::GetDebugProc()->Print("登録されているモデル数[%d]\n",CXObject::GetNum());
 	CManager::GetDebugProc()->Print("現在の周回数[%d]\n",CScene::GetCount());
+
 }

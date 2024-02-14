@@ -1,8 +1,6 @@
 #include "LandMark.h"
 #include "game.h"
 
-LPDIRECT3DTEXTURE9	CLandMark::m_apTexture[INT_VALUE::MAX_TEX] = {};		//テクスチャへのポインタ
-
 const char*			CLandMark::m_acFilename[TYPE::TYPE_MAX]
 {
 	"data\\MODEL\\LandMark\\SignBoard000.x",
@@ -23,20 +21,10 @@ CLandMark::CLandMark(int nPriority)
 	m_rot = INIT_VECTOR;
 	m_move = INIT_VECTOR;
 
-	m_vtxMax = INIT_VECTOR;
-	m_vtxMin = INIT_VECTOR;
-	m_rSize = INIT_VECTOR;
-	m_rSizeX = INIT_VECTOR;
-	m_rSizeZ = INIT_VECTOR;
-
-	m_pMesh = NULL;
-	m_pBuffMat = NULL;
-	m_dwNumMat = NULL;
-	m_pMat = NULL;
-
 	m_eType = TYPE::TYPE_MAX;
 
 	m_pBillBIcon = nullptr;
+	m_sModel = {};
 }
 //<================================================
 //
@@ -62,11 +50,6 @@ CLandMark *CLandMark::FixedCreate(CLandMark *apLandMark[MAX_OBJECT])
 		apLandMark[nCnt] = new CLandMark;
 
 		assert(apLandMark[nCnt] != nullptr);
-
-		//モデルの読み込みをする
-		apLandMark[nCnt]->LoadMesh(m_acFilename[nCnt], &apLandMark[nCnt]->m_pBuffMat,
-			&apLandMark[nCnt]->m_dwNumMat,
-			&apLandMark[nCnt]->m_pMesh, apLandMark[nCnt]->m_pMat, m_apTexture);
 
 		//処理を分ける
 		switch (nCnt)
@@ -111,20 +94,11 @@ CLandMark *CLandMark::FixedCreate(CLandMark *apLandMark[MAX_OBJECT])
 			apLandMark[nCnt]->GetPosition().z),
 			nCnt);
 
-		//初期化処理
-		apLandMark[nCnt]->Init();
-
-		//もし頂点確認に失敗したら
-		if (FAILED(apLandMark[nCnt]->CheckVtx(&apLandMark[nCnt]->m_vtxMax, &apLandMark[nCnt]->m_vtxMin, apLandMark[nCnt]->m_rot.y)))
-		{
-			return NULL;
-		}
-
-		//サイズ設定
-		apLandMark[nCnt]->SetSize(apLandMark[nCnt]->m_rSize, apLandMark[nCnt]->m_rSizeX, apLandMark[nCnt]->m_rSizeZ);
-
 		//タイプを設定する
 		apLandMark[nCnt]->m_eType = (TYPE)nCnt;
+
+		//初期化処理
+		apLandMark[nCnt]->Init();
 	}
 
 
@@ -135,14 +109,9 @@ CLandMark *CLandMark::FixedCreate(CLandMark *apLandMark[MAX_OBJECT])
 //<================================================
 HRESULT CLandMark::Init(void)
 {
+	m_sModel = BindModel(m_acFilename[m_eType]);
 	//もし初期化に失敗したら
 	if (FAILED(CXObject::Init()))
-	{
-		return E_FAIL;
-	}
-
-	//マテリアルデータへのポインタを取得
-	if (FAILED(m_pMat = (D3DXMATERIAL*)m_pBuffMat->GetBufferPointer()))
 	{
 		return E_FAIL;
 	}
@@ -163,8 +132,6 @@ void CLandMark::Update(void)
 	//向きを取得
 	m_rot = GetRotation();
 
-	m_pMat = GetMaterial();
-
 	CManager::GetDebugProc()->Print("[位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_pos.x, m_pos.y, m_pos.z);
 
 	Collid();
@@ -177,8 +144,9 @@ void CLandMark::Update(void)
 void CLandMark::Collid(void)
 {
 	//当たっていたら
-	if (Collision::CollidAll(m_pos, m_rSize, CManager::GetScene()->GetGame()->Get3DPlayer()->GetPosition(),
-		CManager::GetScene()->GetGame()->Get3DPlayer()->GetVtxMax(), CManager::GetScene()->GetGame()->Get3DPlayer()->GetVtxMin()))
+	if (Collision::CollidAll(m_pos, m_sModel.rSize, CManager::GetScene()->GetGame()->Get3DPlayer()->GetPosition(),
+		CManager::GetScene()->GetGame()->Get3DPlayer()->GetModel().vtxMax, 
+		CManager::GetScene()->GetGame()->Get3DPlayer()->GetModel().vtxMin))
 	{
 		//もし中身があれば
 		if (m_pBillBIcon != nullptr)

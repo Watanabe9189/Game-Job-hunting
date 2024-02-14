@@ -15,7 +15,7 @@ namespace
 	const float SEARCH_MOVE				= 0.0045f;	//探索している時の移動量
 	const float CHASE_VALUE				= 0.01f;	//追跡している時の移動値
 	const float FACE_VALUE				= 0.075f;	//高速移動の時の移動量
-	const float ALPHA_VALUE				= 0.008f;	//透明度の値
+	const float ALPHA_VALUE				= 1.0f;	//透明度の値
 	const float DOUBLE_VALUE			= 1.7f;		//倍にする値
 	const float ROTATE_VALUE			= 0.1f;		//回転値
 
@@ -32,13 +32,13 @@ namespace
 //<*******************************************
 //静的メンバ変数の宣言
 //<*******************************************
-																//テクスチャ関連
-LPDIRECT3DTEXTURE9	C3DEnemy::m_apTexture[INT_VALUE::MAX_TEX] = { NULL };	//テクスチャ情報
+																//テクスチャ関
 
 int C3DEnemy::m_nNumAll = NULL;									//数
 int C3DEnemy::m_nNumSet = MAX_NUM_SET;
 int C3DEnemy::m_nNumMax = MAX_NUM_SET;
 int C3DEnemy::m_nNumMin = MIN_NUM_SET;
+
 //<==========================================
 //ファイル名指定
 //<==========================================
@@ -66,28 +66,16 @@ C3DEnemy::C3DEnemy(int nPriority)
 	m_sState = STATE::STATE_SEARCH;
 	m_sFastState = FAST_STATE::FAST_STATE_WAIT;
 
-	m_pBuffMat = {};
-	m_dwNumMat = {};
-	m_pMesh = {};
-
-	m_vtxMax = INIT_VECTOR;
-	m_vtxMin = INIT_VECTOR;
-
-	m_rSize = INIT_VECTOR;
-	m_rSizeX = INIT_VECTOR;
-	m_rSizeZ = INIT_VECTOR;
-
 	m_nSoundCount = INITIAL_INT;
 	m_nInterval = INITIAL_INT;
 	m_nRandInter = INITIAL_INT;
-
-	m_pMat = nullptr;
 	m_eType = TYPE::TYPE_MAX;
 
 	m_fFrontDest = INIT_VECTOR;
 	m_fBackDest = INIT_VECTOR;
 	
 	m_rTelportPos = INIT_VECTOR;
+	m_sModel = {};
 
 	m_pPlayer = nullptr;
 	m_pSound = nullptr;
@@ -111,7 +99,7 @@ C3DEnemy *C3DEnemy::Create(const D3DXVECTOR3 pos ,const int nLife, const int nTy
 //<=======================================
 HRESULT C3DEnemy::Init(void)
 {
-	m_pMat = GetMaterial();
+	m_sModel = BindModel(m_acFilename[m_eType]);
 	SetDest();
 
 	//透明の敵だったら
@@ -134,17 +122,18 @@ HRESULT C3DEnemy::Init(void)
 	if (CManager::GetMode() == CScene::MODE_GAME)
 	{
 		//頂点数分繰り返し
-		for (int nCntMaxMat = 0; nCntMaxMat < (int)m_dwNumMat; nCntMaxMat++)
+		for (int nCntMaxMat = 0; nCntMaxMat < (int)m_sModel.dwNumMat; nCntMaxMat++)
 		{
 			//透明の敵だったら
 			if (m_eType == TYPE::TYPE_ENEMY_INVISIBLE)
 			{
 				//初期の透明度を透明色にする
-				m_pMat[nCntMaxMat].MatD3D.Diffuse.a = COLOR_VALUE::ALPHA_CLEANNESS;
-				m_pMat[nCntMaxMat].MatD3D.Ambient.a = COLOR_VALUE::ALPHA_CLEANNESS;
+				m_sModel.pMat[nCntMaxMat].MatD3D.Diffuse.a = COLOR_VALUE::ALPHA_CLEANNESS;
+				m_sModel.pMat[nCntMaxMat].MatD3D.Ambient.a = COLOR_VALUE::ALPHA_CLEANNESS;
 			}
 		}
 	}
+
 	//モードがゲームの時のみ
 	if (CManager::GetMode() == CScene::MODE_GAME)
 	{
@@ -166,12 +155,6 @@ void C3DEnemy::Uninit(void)
 	CXObject::Uninit();
 
 	//サウンド破棄
-	if (m_pPlayer != nullptr)
-	{
-		m_pPlayer->Uninit();
-		m_pPlayer = nullptr;
-	}
-	//サウンド破棄
 	if (m_pSound != nullptr)
 	{
 		//破棄
@@ -191,42 +174,37 @@ void C3DEnemy::Update(void)
 		//まだゲームが終わっていなければ
 		if (CManager::GetScene()->GetGame()->GetGame()->GetState() == CGame::STATE_NONE)
 		{
-			//情報を取得してくる
-			m_pPlayer = CManager::GetScene()->GetGame()->Get3DPlayer();
-
 			//<***********************************
 			//それぞれの情報の取得
 			//<***********************************
 			m_pos = GetPosition();
 			m_rot = GetRotation();
 			m_move = GetMove();
-			m_pMat = GetMaterial();
 
 			//加算していく
 			m_pos += m_move;
 
-			//CManager::GetDebugProc()->Print("[位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_pos.x, m_pos.y, m_pos.z);
-			//CManager::GetDebugProc()->Print("[距離]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_rDis.x, m_rDis.y, m_rDis.z);
-			//CManager::GetDebugProc()->Print("[目的の位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_rDestPos.x, m_rDestPos.y, m_rDestPos.z);
-			//CManager::GetDebugProc()->Print("[前目的の位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_fFrontDest.x, m_fFrontDest.y, m_fFrontDest.z);
-			//CManager::GetDebugProc()->Print("[あと目的の位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_fBackDest.x, m_fBackDest.y, m_fBackDest.z);
+		/*	CManager::GetDebugProc()->Print("[位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_pos.x, m_pos.y, m_pos.z);
+			CManager::GetDebugProc()->Print("[距離]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_rDis.x, m_rDis.y, m_rDis.z);
+			CManager::GetDebugProc()->Print("[目的の位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_rDestPos.x, m_rDestPos.y, m_rDestPos.z);*/
+		/*	CManager::GetDebugProc()->Print("[前目的の位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_fFrontDest.x, m_fFrontDest.y, m_fFrontDest.z);
+			CManager::GetDebugProc()->Print("[あと目的の位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_fBackDest.x, m_fBackDest.y, m_fBackDest.z);
 
-			//CManager::GetDebugProc()->Print("[今のインターバル]：%d\n", m_nInterval);
-			//CManager::GetDebugProc()->Print("[今のランダムインターバル]：%d\n", m_nRandInter);
-			//CManager::GetDebugProc()->Print("[今のステート]：%d\n", m_sState);
-			//CManager::GetDebugProc()->Print("[敵タイプ]：%d\n", m_eType);
+			CManager::GetDebugProc()->Print("[今のインターバル]：%d\n", m_nInterval);
+			CManager::GetDebugProc()->Print("[今のランダムインターバル]：%d\n", m_nRandInter);
+			CManager::GetDebugProc()->Print("[今のステート]：%d\n", m_sState);
+			CManager::GetDebugProc()->Print("[敵タイプ]：%d\n", m_eType);*/
 
 			MoveMent();
 
 			ChangeRot();
-
 
 			m_move.x += (0.0f - m_move.x) *0.1f;
 			m_move.z += (0.0f - m_move.z) *0.1f;
 
 			//ベクトルの三要素の設定
 			SetVector3(m_pos, m_rot, m_move);
-			SetMaterial(m_pMat);
+			SetMaterial(m_sModel.pMat);
 		}
 	}
 	else
@@ -240,9 +218,6 @@ void C3DEnemy::Update(void)
 
 		//加算していく
 		m_pos += m_move;
-
-		//マテリアルの取得(色を変更するため[重要！！])
-		m_pMat = GetMaterial();
 
 		//ベクトルの三要素の設定
 		SetVector3(m_pos, m_rot, m_move);
@@ -277,18 +252,18 @@ void C3DEnemy::MoveMent(void)
 			if (m_nInterval >= m_nRandInter)
 			{
 				//プレイヤーが隠れていなければ
-				if (m_pPlayer->GetState() != C3DPlayer::STATE_HIDE)
+				if (CManager::GetScene()->GetGame()->Get3DPlayer()->GetState() != C3DPlayer::STATE_HIDE)
 				{
 					//行動ステートに移行させる
 					m_sFastState = FAST_STATE::FAST_STATE_INTERVAL;
 					CManager::GetSound()->PlaySound(CSound::LABEL::LABLE_SE_MOAN2);
 
 					//動いていれば
-					if (Bool::bMove(m_pPlayer->GetMove()))
+					if (Bool::bMove(CManager::GetScene()->GetGame()->Get3DPlayer()->GetMove()))
 					{
 						//プレイヤーの動いている位置にテレポートする
-						m_rTelportPos = D3DXVECTOR3(m_pPlayer->GetPosition().x + 150.0f* m_pPlayer->GetMove().x, +m_pPlayer->GetPosition().y,
-							m_pPlayer->GetPosition().z + 150.0f* m_pPlayer->GetMove().z);
+						m_rTelportPos = D3DXVECTOR3(CManager::GetScene()->GetGame()->Get3DPlayer()->GetPosition().x + 150.0f* CManager::GetScene()->GetGame()->Get3DPlayer()->GetMove().x, +CManager::GetScene()->GetGame()->Get3DPlayer()->GetPosition().y,
+							CManager::GetScene()->GetGame()->Get3DPlayer()->GetPosition().z + 150.0f* CManager::GetScene()->GetGame()->Get3DPlayer()->GetMove().z);
 
 						//そのテレポート位置に行く
 						m_pos = m_rTelportPos;
@@ -296,7 +271,7 @@ void C3DEnemy::MoveMent(void)
 					//動いていなければ
 					else
 					{
-						m_pos = m_pPlayer->GetPosition();
+						m_pos = CManager::GetScene()->GetGame()->Get3DPlayer()->GetPosition();
 					}
 				}
 
@@ -308,7 +283,7 @@ void C3DEnemy::MoveMent(void)
 			else
 			{
 				//動いていれば
-				if (Bool::bMove(m_pPlayer->GetMove()))
+				if (Bool::bMove(CManager::GetScene()->GetGame()->Get3DPlayer()->GetMove()))
 				{
 					//加算させる
 					m_nInterval++;
@@ -326,7 +301,7 @@ void C3DEnemy::MoveMent(void)
 			m_rot.y += fRotDiff * ROTATE_VALUE;
 
 			//プレイヤーの位置を目的地とする
-			SetDest(m_pPlayer->GetPosition());
+			SetDest(CManager::GetScene()->GetGame()->Get3DPlayer()->GetPosition());
 
 			m_fMoveValue = 0.085f;
 
@@ -335,7 +310,7 @@ void C3DEnemy::MoveMent(void)
 			m_move.z = (m_rDestPos.z - m_pos.z - m_move.z)*m_fMoveValue;//Z軸
 
 			 //プレイヤーが隠れていれば
-			if (m_pPlayer->GetState() == C3DPlayer::STATE_HIDE)
+			if (CManager::GetScene()->GetGame()->Get3DPlayer()->GetState() == C3DPlayer::STATE_HIDE)
 			{
 				//間隔を設定する
 				m_nInterval = 500;
@@ -347,7 +322,7 @@ void C3DEnemy::MoveMent(void)
 				//行動ステートに移行させる
 				m_sFastState = FAST_STATE_WAIT;
 				m_nInterval = 0;
-				m_nRandInter = Calculate::CalculeteRandInt(3500, 1000);
+				m_nRandInter = Calculate::CalculeteRandInt(4000, 1000);
 			}
 			//いなければ
 			else
@@ -368,18 +343,18 @@ void C3DEnemy::MoveMent(void)
 			m_rot.y += fRotDiff * ROTATE_VALUE;
 
 			//プレイヤーの位置を目的地とする
-			SetDest(m_pPlayer->GetPosition());
+			SetDest(CManager::GetScene()->GetGame()->Get3DPlayer()->GetPosition());
 
 			CManager::GetSound()->SetBgm(2.0f, CSound::LABEL_BGM_APPROACH);
 			CManager::GetSound()->PlaySound(CSound::LABEL_BGM_APPROACH);
 
 			//プレイヤーが隠れていれば
-			if (m_pPlayer->GetState() == C3DPlayer::STATE_HIDE)
+			if (CManager::GetScene()->GetGame()->Get3DPlayer()->GetState() == C3DPlayer::STATE_HIDE)
 			{
 				//行動ステートに移行させる
 				m_sFastState = FAST_STATE_WAIT;
 				m_nInterval = 0;
-				m_nRandInter = Calculate::CalculeteRandInt(3500,1000);
+				m_nRandInter = Calculate::CalculeteRandInt(4000,1000);
 			}
 
 			//間隔が一定値を超えていたら
@@ -423,7 +398,7 @@ void C3DEnemy::Search(void)
 	D3DXVECTOR3 rRotDest = Calculate::CalculateDest(m_pos, m_rDestPos);
 
 	//距離を計算する(その位置-目的とする位置)
-	m_rDis = Calculate::CalculateDest(m_pos, m_pPlayer->GetPosition());
+	m_rDis = Calculate::CalculateDest(m_pos, CManager::GetScene()->GetGame()->Get3DPlayer()->GetPosition());
 
 	Calculate::CalculteRandVec3(D3DXVECTOR3(4000.0f, 0.0f, 4000.0f), D3DXVECTOR3(-4000.0f, 0.0f, -4000.0f), false);
 
@@ -434,13 +409,13 @@ void C3DEnemy::Search(void)
 	if (m_eType == TYPE::TYPE_ENEMY_INVISIBLE)
 	{
 		//サウンドセット
-		SetSound(CSound::LABEL_SE_MOAN1, m_nSoundMax, m_pPlayer->GetPosition());
+		SetSound(CSound::LABEL_SE_MOAN1, m_nSoundMax, CManager::GetScene()->GetGame()->Get3DPlayer()->GetPosition());
 	}
 	//通常型だったら
 	else if (m_eType == TYPE::TYPE_ENEMY_NORMAL)
 	{
 		//サウンドセット
-		SetSound(CSound::LABEL_SE_MOAN0, m_nSoundMax, m_pPlayer->GetPosition());
+		SetSound(CSound::LABEL_SE_MOAN0, m_nSoundMax, CManager::GetScene()->GetGame()->Get3DPlayer()->GetPosition());
 	}
 
 	m_move.x = (m_rDestPos.x -m_pos.x - m_move.x) *m_fMoveValue;//X軸
@@ -449,7 +424,7 @@ void C3DEnemy::Search(void)
 	  //追跡状態だったら
 	if (m_sState == STATE::STATE_CHASE)
 	{
-		SetDest(m_pPlayer->GetPosition());
+		SetDest(CManager::GetScene()->GetGame()->Get3DPlayer()->GetPosition());
 
 		m_fMoveValue = CHASE_VALUE;
 
@@ -471,7 +446,7 @@ void C3DEnemy::Search(void)
 			SetDest(rRandDest);
 		}
 		//プレイヤーが隠れていたら
-		if (m_pPlayer->GetState() == C3DPlayer::STATE_HIDE)
+		if (CManager::GetScene()->GetGame()->Get3DPlayer()->GetState() == C3DPlayer::STATE_HIDE)
 		{
 			//探索モードに移行する
 			m_sState = STATE_SEARCH;
@@ -482,19 +457,19 @@ void C3DEnemy::Search(void)
 		if (m_eType == TYPE::TYPE_ENEMY_INVISIBLE)
 		{
 			//頂点数分繰り返し
-			for (int nCntMaxMat = 0; nCntMaxMat < (int)m_dwNumMat; nCntMaxMat++)
+			for (int nCntMaxMat = 0; nCntMaxMat < (int)m_sModel.dwNumMat; nCntMaxMat++)
 			{
-				if (m_pMat[nCntMaxMat].MatD3D.Diffuse.a >= COLOR_VALUE::ALPHA_OPACITY
-					&&m_pMat[nCntMaxMat].MatD3D.Ambient.a >= COLOR_VALUE::ALPHA_OPACITY)
+				if (m_sModel.pMat[nCntMaxMat].MatD3D.Diffuse.a >= COLOR_VALUE::ALPHA_OPACITY
+					&&m_sModel.pMat[nCntMaxMat].MatD3D.Ambient.a >= COLOR_VALUE::ALPHA_OPACITY)
 				{
-					m_pMat[nCntMaxMat].MatD3D.Diffuse.a = COLOR_VALUE::ALPHA_OPACITY;
-					m_pMat[nCntMaxMat].MatD3D.Ambient.a = COLOR_VALUE::ALPHA_OPACITY;
+					m_sModel.pMat[nCntMaxMat].MatD3D.Diffuse.a = COLOR_VALUE::ALPHA_OPACITY;
+					m_sModel.pMat[nCntMaxMat].MatD3D.Ambient.a = COLOR_VALUE::ALPHA_OPACITY;
 				}
 				else
 				{
 					//赤色に変える
-					m_pMat[nCntMaxMat].MatD3D.Diffuse.a += ALPHA_VALUE;
-					m_pMat[nCntMaxMat].MatD3D.Ambient.a += ALPHA_VALUE;
+					m_sModel.pMat[nCntMaxMat].MatD3D.Diffuse.a += ALPHA_VALUE;
+					m_sModel.pMat[nCntMaxMat].MatD3D.Ambient.a += ALPHA_VALUE;
 				}
 
 			}
@@ -521,7 +496,7 @@ void C3DEnemy::Search(void)
 		{
 			SetDest(rRandDest);
 		}
-		if (m_pPlayer->GetState() != C3DPlayer::STATE_HIDE)
+		if (CManager::GetScene()->GetGame()->Get3DPlayer()->GetState() != C3DPlayer::STATE_HIDE)
 		{
 			//もし近づいていたら
 			if (m_rDis.x <= m_fSearchRad
@@ -549,19 +524,19 @@ void C3DEnemy::Search(void)
 		if (m_eType == TYPE::TYPE_ENEMY_INVISIBLE)
 		{
 			//頂点数分繰り返し
-			for (int nCntMaxMat = 0; nCntMaxMat < (int)m_dwNumMat; nCntMaxMat++)
+			for (int nCntMaxMat = 0; nCntMaxMat < (int)m_sModel.dwNumMat; nCntMaxMat++)
 			{
-				if (m_pMat[nCntMaxMat].MatD3D.Diffuse.a <= COLOR_VALUE::ALPHA_CLEANNESS
-					&&m_pMat[nCntMaxMat].MatD3D.Ambient.a <= COLOR_VALUE::ALPHA_CLEANNESS)
+				if (m_sModel.pMat[nCntMaxMat].MatD3D.Diffuse.a <= COLOR_VALUE::ALPHA_CLEANNESS
+					&&m_sModel.pMat[nCntMaxMat].MatD3D.Ambient.a <= COLOR_VALUE::ALPHA_CLEANNESS)
 				{
-					m_pMat[nCntMaxMat].MatD3D.Diffuse.a = COLOR_VALUE::ALPHA_CLEANNESS;
-					m_pMat[nCntMaxMat].MatD3D.Ambient.a = COLOR_VALUE::ALPHA_CLEANNESS;
+					m_sModel.pMat[nCntMaxMat].MatD3D.Diffuse.a = COLOR_VALUE::ALPHA_CLEANNESS;
+					m_sModel.pMat[nCntMaxMat].MatD3D.Ambient.a = COLOR_VALUE::ALPHA_CLEANNESS;
 				}
 				else
 				{
 					//赤色に変える
-					m_pMat[nCntMaxMat].MatD3D.Diffuse.a -= ALPHA_VALUE;
-					m_pMat[nCntMaxMat].MatD3D.Ambient.a -= ALPHA_VALUE;
+					m_sModel.pMat[nCntMaxMat].MatD3D.Diffuse.a -= ALPHA_VALUE;
+					m_sModel.pMat[nCntMaxMat].MatD3D.Ambient.a -= ALPHA_VALUE;
 				}
 			}
 		}
@@ -663,12 +638,6 @@ C3DEnemy *C3DEnemy::ReadCreate(C3DEnemy *apEnemy[MAX_OBJECT])
 							//タイプを読み込む
 							(void)fscanf(pFile, "%d", &apEnemy[nCntMax]->m_eType);
 
-							assert(SUCCEEDED(apEnemy[nCntMax]->LoadMesh(
-								m_acFilename[apEnemy[nCntMax]->m_eType],
-								&apEnemy[nCntMax]->m_pBuffMat,
-								&apEnemy[nCntMax]->m_dwNumMat,
-								&apEnemy[nCntMax]->m_pMesh,
-								apEnemy[nCntMax]->m_pMat, m_apTexture)));
 						}
 						apEnemy[nCntMax]->Init();
 
@@ -692,15 +661,6 @@ C3DEnemy *C3DEnemy::ReadCreate(C3DEnemy *apEnemy[MAX_OBJECT])
 					}
 					//
 					apEnemy[nCntMax]->SetType3D(TYPE_3D::TYPE_ENEMY3D);
-
-					//もし頂点確認に失敗したら
-					if (FAILED(apEnemy[nCntMax]->CheckVtx(&apEnemy[nCntMax]->m_vtxMax, &apEnemy[nCntMax]->m_vtxMin, apEnemy[nCntMax]->m_rot.y)))
-					{
-						return nullptr;
-					}
-
-					//サイズ設定
-					apEnemy[nCntMax]->SetSize(apEnemy[nCntMax]->m_rSize, apEnemy[nCntMax]->m_rSizeX, apEnemy[nCntMax]->m_rSizeZ);
 				}
 				//数を増やす
 				nCntMax++;
@@ -731,14 +691,6 @@ C3DEnemy *C3DEnemy::RandCreate(C3DEnemy *apEnemy[MAX_OBJECT])
 		//最大の手前まで行っていれば
 		if (nCnt == m_nNumSet - 1)
 		{
-
-			//高速型の敵を配置する
-			apEnemy[nCnt]->LoadMesh(
-				m_acFilename[TYPE::TYPE_ENEMY_HIGHSPEED],
-				&apEnemy[nCnt]->m_pBuffMat,
-				&apEnemy[nCnt]->m_dwNumMat,
-				&apEnemy[nCnt]->m_pMesh, apEnemy[nCnt]->m_pMat, m_apTexture);
-
 			apEnemy[nCnt]->m_eType = TYPE::TYPE_ENEMY_HIGHSPEED;
 		}
 		//まだ最大の手前まで行っていなければ
@@ -746,15 +698,9 @@ C3DEnemy *C3DEnemy::RandCreate(C3DEnemy *apEnemy[MAX_OBJECT])
 		{
 			nRandType = rand() % TYPE::TYPE_ENEMY_HIGHSPEED + TYPE::TYPE_ENEMY_NORMAL;
 
-			//高速型の敵を配置する
-			apEnemy[nCnt]->LoadMesh(
-				m_acFilename[nRandType],
-				&apEnemy[nCnt]->m_pBuffMat,
-				&apEnemy[nCnt]->m_dwNumMat,
-				&apEnemy[nCnt]->m_pMesh, apEnemy[nCnt]->m_pMat, m_apTexture);
-
 			apEnemy[nCnt]->m_eType = (TYPE)nRandType;
 		}
+
 		apEnemy[nCnt]->Init();
 
 		rRandPos = D3DXVECTOR3(Calculate::CalculateRandfloat(2500, -4000), 0.0f, Calculate::CalculateRandfloat(4000, -4000));
@@ -767,15 +713,6 @@ C3DEnemy *C3DEnemy::RandCreate(C3DEnemy *apEnemy[MAX_OBJECT])
 
 		//
 		apEnemy[nCnt]->SetType3D(TYPE_3D::TYPE_ENEMY3D);
-
-		//もし頂点確認に失敗したら
-		if (FAILED(apEnemy[nCnt]->CheckVtx(&apEnemy[nCnt]->m_vtxMax, &apEnemy[nCnt]->m_vtxMin, apEnemy[nCnt]->m_rot.y)))
-		{
-			return nullptr;
-		}
-
-		//サイズ設定
-		apEnemy[nCnt]->SetSize(apEnemy[nCnt]->m_rSize, apEnemy[nCnt]->m_rSizeX, apEnemy[nCnt]->m_rSizeZ);
 	}
 
 	return *apEnemy;
@@ -786,15 +723,15 @@ C3DEnemy *C3DEnemy::RandCreate(C3DEnemy *apEnemy[MAX_OBJECT])
 void C3DEnemy::CollidPlayer(void)
 {
 	//隠れ状態では無ければ
-	if (m_pPlayer->GetState() != C3DPlayer::STATE_HIDE)
+	if (CManager::GetScene()->GetGame()->Get3DPlayer()->GetState() != C3DPlayer::STATE_HIDE)
 	{
 		if (Collision::OnlyCollid(
-			m_pPlayer->GetPosition(),
-			m_pPlayer->GetSizeX(),
-			m_pPlayer->GetSizeZ(),
-			m_pPlayer->GetVtxMax(),
-			m_pPlayer->GetVtxMin(),
-			m_pos, m_vtxMax, m_vtxMin))
+			CManager::GetScene()->GetGame()->Get3DPlayer()->GetPosition(),
+			CManager::GetScene()->GetGame()->Get3DPlayer()->GetModel().rSizeX,
+			CManager::GetScene()->GetGame()->Get3DPlayer()->GetModel().rSizeZ,
+			CManager::GetScene()->GetGame()->Get3DPlayer()->GetModel().vtxMax,
+			CManager::GetScene()->GetGame()->Get3DPlayer()->GetModel().vtxMin,
+			m_pos, m_sModel.vtxMax, m_sModel.vtxMin))
 		{
 			DeathSound();
 		}
@@ -806,10 +743,11 @@ void C3DEnemy::CollidPlayer(void)
 void C3DEnemy::DeathSound(void)
 {
 	//死亡ステートにする
-	m_pPlayer->SetState(C3DPlayer::STATE_DEATH);
+	CManager::GetScene()->GetGame()->Get3DPlayer()->SetState(C3DPlayer::STATE_DEATH);
 
 	//すべての音楽を止める
 	CManager::GetSound()->StopSound();
+	m_pSound->StopSound();
 
 	//通常型だったら
 	if (m_eType == TYPE::TYPE_ENEMY_NORMAL)

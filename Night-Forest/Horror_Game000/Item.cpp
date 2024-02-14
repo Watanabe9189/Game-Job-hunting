@@ -80,23 +80,12 @@ CItem *CItem::Create(const D3DXVECTOR3 pos, const TYPE eType)
 	//中身チェック
 	assert(pItem != nullptr);
 
-	//メッシュ読み込みと初期化チェック
-	assert(SUCCEEDED(pItem->LoadMesh(m_acFilename[eType], &pItem->m_pBuffMat, &pItem->m_dwNumMat, 
-		&pItem->m_pMesh, pItem->m_pMat, m_apTexture))
-		&& SUCCEEDED(pItem->Init()));
-
 	//情報設定
 	pItem->SetVector3(Calculate::CalculteRandVec3(D3DXVECTOR3(4000.0f, 0.0f, 4000.0f), D3DXVECTOR3(-4000.0f, 0.0f, -4000.0f), false), pItem->m_rot, {});
 	pItem->m_eType = eType;
 
 	//アイテムタイプに設定
 	pItem->SetType3D(TYPE_3D::TYPE_ITEM);
-
-	//もし頂点確認に失敗したら
-	if (FAILED(pItem->CheckVtx(&pItem->m_vtxMax, &pItem->m_vtxMin, pItem->m_rot.y)))
-	{
-		return nullptr;
-	}
 
 	return pItem;
 }
@@ -129,11 +118,6 @@ CItem *CItem::RandCreate(CItem *apItem[MAX_OBJECT], int nNum)
 		//中身チェック
 		assert(apItem[nCnt] != nullptr);
 
-		//メッシュ読み込みと初期化チェック
-		assert(SUCCEEDED(apItem[nCnt]->LoadMesh(m_acFilename[0], &apItem[nCnt]->m_pBuffMat, &apItem[nCnt]->m_dwNumMat,
-			&apItem[nCnt]->m_pMesh, apItem[nCnt]->m_pMat, m_apTexture))
-			&& SUCCEEDED(apItem[nCnt]->Init()));
-
 		rRandPos = D3DXVECTOR3(Calculate::CalculteRandVec3(D3DXVECTOR3(4000.0f, 0.0f, 4000.0f), D3DXVECTOR3(-4000.0f, 0.0f, -4000.0f), false));
 		nRandType = rand() % TYPE::TYPE_MAX + TYPE::TYPE_ITEM0;
 
@@ -144,40 +128,31 @@ CItem *CItem::RandCreate(CItem *apItem[MAX_OBJECT], int nNum)
 		//アイテムタイプに設定
 		apItem[nCnt]->SetType3D(TYPE_3D::TYPE_ITEM);
 
-		//もし頂点確認に失敗したら
-		if (FAILED(apItem[nCnt]->CheckVtx(&apItem[nCnt]->m_vtxMax, &apItem[nCnt]->m_vtxMin, apItem[nCnt]->m_rot.y)))
-		{
-			return nullptr;
-		}
-
-		//サイズ設定
-		apItem[nCnt]->SetSize(apItem[nCnt]->m_rSize, apItem[nCnt]->m_rSizeX, apItem[nCnt]->m_rSizeZ);
-
-		//<******************************************
-		//壁の破棄
-		//<******************************************
-		for (int nCntBuild = 0; nCntBuild < CBuilding::GetNum(); nCntBuild++)
-		{
-			//中身があれば
-			if (CManager::GetScene()->GetGame()->GetBuil(nCnt) != nullptr)
-			{
-				//<****************************************
-				//隠れる処理
-				//<****************************************
-				//どの軸にも当たっていたら
-				if (CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetPosition().z + CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetSize().z > apItem[nCnt]->GetPosition().z + apItem[nCnt]->GetVtxMin().z&&
-					CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetPosition().z + -CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetSize().z < apItem[nCnt]->GetPosition().z + apItem[nCnt]->GetVtxMax().z&&
-					CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetPosition().x + CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetSize().x > apItem[nCnt]->GetPosition().x + apItem[nCnt]->GetVtxMin().x&&
-					CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetPosition().x + -CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetSize().x < apItem[nCnt]->GetPosition().x + apItem[nCnt]->GetVtxMax().x&&
-					CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetPosition().y + CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetSize().y > apItem[nCnt]->GetPosition().y + apItem[nCnt]->GetVtxMin().y&&
-					CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetPosition().y + -CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetSize().y < apItem[nCnt]->GetPosition().y + apItem[nCnt]->GetVtxMax().y)
-				{
-					//重ならないように位置を変える
-					rRandPos = D3DXVECTOR3(Calculate::CalculteRandVec3(D3DXVECTOR3(4000.0f, 0.0f, 4000.0f), D3DXVECTOR3(-4000.0f, 0.0f, -4000.0f), false));
-					apItem[nCnt]->SetPosition(rRandPos);
-				}
-			}
-		}
+		////<******************************************
+		////壁の破棄
+		////<******************************************
+		//for (int nCntBuild = 0; nCntBuild < CBuilding::GetNum(); nCntBuild++)
+		//{
+		//	//中身があれば
+		//	if (CManager::GetScene()->GetGame()->GetBuil(nCnt) != nullptr)
+		//	{
+		//		//<****************************************
+		//		//隠れる処理
+		//		//<****************************************
+		//		//どの軸にも当たっていたら
+		//		if (CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetPosition().z + CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetSize().z > apItem[nCnt]->GetPosition().z + apItem[nCnt]->GetVtxMin().z&&
+		//			CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetPosition().z + -CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetSize().z < apItem[nCnt]->GetPosition().z + apItem[nCnt]->GetVtxMax().z&&
+		//			CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetPosition().x + CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetSize().x > apItem[nCnt]->GetPosition().x + apItem[nCnt]->GetVtxMin().x&&
+		//			CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetPosition().x + -CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetSize().x < apItem[nCnt]->GetPosition().x + apItem[nCnt]->GetVtxMax().x&&
+		//			CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetPosition().y + CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetSize().y > apItem[nCnt]->GetPosition().y + apItem[nCnt]->GetVtxMin().y&&
+		//			CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetPosition().y + -CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetSize().y < apItem[nCnt]->GetPosition().y + apItem[nCnt]->GetVtxMax().y)
+		//		{
+		//			//重ならないように位置を変える
+		//			rRandPos = D3DXVECTOR3(Calculate::CalculteRandVec3(D3DXVECTOR3(4000.0f, 0.0f, 4000.0f), D3DXVECTOR3(-4000.0f, 0.0f, -4000.0f), false));
+		//			apItem[nCnt]->SetPosition(rRandPos);
+		//		}
+		//	}
+		//}
 	}
 
 	//残り数を代入する
@@ -200,7 +175,7 @@ void CItem::Update(void)
 
 		m_rot.y = Correction::NormalizeRotation(m_rot.y);
 
-		m_pMat = GetMaterial();
+	/*	m_pMat = GetMaterial();*/
 
 		//情報を取得してくる
 		m_pPlayer = CManager::GetScene()->GetGame()->Get3DPlayer();
@@ -222,25 +197,25 @@ void CItem::Update(void)
 //<==========================================================
 void CItem::Collid(void)
 {
-	//当たっていれば
-	if (Collision::CollidAll(m_pPlayer->GetPosition(), m_pPlayer->GetSize(), m_pos, m_vtxMax, m_vtxMin))
-	{
-		m_bAppro = true;
+	////当たっていれば
+	//if (Collision::CollidAll(m_pPlayer->GetPosition(), m_pPlayer->GetSize(), m_pos, m_vtxMax, m_vtxMin))
+	//{
+	//	m_bAppro = true;
 
-		//Lボタンが押された+ゲット状態がfalseだったら
-		if (CManager::GetKeyboard()->bGetTrigger(DIK_L) || CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_A, 0) && !m_bGet)
-		{
-			//ゲットした判定にする
-			/*C3DParticle::Create(m_pos, D3DXCOLOR(1.0f, 0.5f, 0.1f, 1.0f), C3DParticle::TYPE::TYPE_TEST);*/
-			m_NumCollect++;
-			m_nLeft--;
-			CManager::GetSound()->PlaySound(CSound::LABEL::LABEL_SE_ITEMGET);
-			m_bGet = true;
-		}
-	}
-	//当たっていなければ
-	else
-	{
-		m_bAppro = false;
-	}
+	//	//Lボタンが押された+ゲット状態がfalseだったら
+	//	if (CManager::GetKeyboard()->bGetTrigger(DIK_L) || CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_A, 0) && !m_bGet)
+	//	{
+	//		//ゲットした判定にする
+	//		/*C3DParticle::Create(m_pos, D3DXCOLOR(1.0f, 0.5f, 0.1f, 1.0f), C3DParticle::TYPE::TYPE_TEST);*/
+	//		m_NumCollect++;
+	//		m_nLeft--;
+	//		CManager::GetSound()->PlaySound(CSound::LABEL::LABEL_SE_ITEMGET);
+	//		m_bGet = true;
+	//	}
+	//}
+	////当たっていなければ
+	//else
+	//{
+	//	m_bAppro = false;
+	//}
 }

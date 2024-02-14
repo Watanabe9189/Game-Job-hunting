@@ -15,8 +15,6 @@
 //<*******************************************
 //マテリアル関連
 //テクスチャ関連
-LPDIRECT3DTEXTURE9	C3DPlayer::m_apTexture[INT_VALUE::MAX_TEX] = {NULL};
-const char		*C3DPlayer::m_acFilename = NULL;
 
 namespace
 {
@@ -45,7 +43,6 @@ C3DPlayer::C3DPlayer(int nPriority)
 	m_fRotDiff = NULL;
 
 	//ファイル名
-	m_acFilename = NULL;
 	m_bJump = false;
 	m_bDash = false;
 	m_bMove = false;
@@ -56,16 +53,7 @@ C3DPlayer::C3DPlayer(int nPriority)
 
 	m_nStamina = INITIAL_INT;
 
-	m_vtxMax = INIT_VECTOR;
-	m_vtxMin = INIT_VECTOR;
-	m_rSize = INIT_VECTOR;
-	m_rSizeX = INIT_VECTOR;
-	m_rSizeZ = INIT_VECTOR;
-
-	m_pMesh = NULL;
-	m_pBuffMat = NULL;
-	m_dwNumMat = NULL;
-	m_pMat = NULL;
+	m_sModel = {};
 }
 //<==================================
 //3Dプレイヤーのデストラクタ
@@ -85,16 +73,6 @@ C3DPlayer *C3DPlayer::Create(const D3DXVECTOR3 pos)
 	//もしメモリ確保に成功したら
 	if (pPlayer3D != NULL)
 	{
-		//モデルの読み込みをする
-		if (FAILED(pPlayer3D->LoadMesh("data\\MODEL\\Enemy001.x", &pPlayer3D->m_pBuffMat, &pPlayer3D->m_dwNumMat, 
-			&pPlayer3D->m_pMesh, pPlayer3D->m_pMat, m_apTexture)))
-		{
-			//警告文を表示
-			MessageBox(NULL, "FAILED TO LOAD Enemy's XFILE", "ERROR", MB_ICONWARNING);
-
-			return NULL;
-		}
-
 		pPlayer3D->Init();
 
 		//位置を代入
@@ -102,18 +80,6 @@ C3DPlayer *C3DPlayer::Create(const D3DXVECTOR3 pos)
 
 		//
 		pPlayer3D->SetType3D(TYPE_3D::TYPE_PLAYER3D);
-
-		//もし頂点確認に失敗したら
-		if (FAILED(pPlayer3D->CheckVtx(&pPlayer3D->m_vtxMax, &pPlayer3D->m_vtxMin, pPlayer3D->m_rot.y)))
-		{
-			return NULL;
-		}
-		
-		//
-		pPlayer3D->m_rRad = pPlayer3D->m_vtxMax - pPlayer3D->m_vtxMin;
-
-		//サイズ設定
-		pPlayer3D->SetSize(pPlayer3D->m_rSize, pPlayer3D->m_rSizeX, pPlayer3D->m_rSizeZ);
 	}
 	//
 	else
@@ -132,10 +98,7 @@ HRESULT C3DPlayer::Init(void)
 	//スタミナの値設定
 	m_nStamina = C2DGauge::GetFixed();
 	m_fCollidRad = 50.0f;
-
-	m_pMat = GetMaterial();
-
-	//CScene::GetGame()->GetLight()->SetPosition(m_pos);
+	m_sModel = BindModel("data\\MODEL\\Enemy001.x");
 
 	return S_OK;
 }
@@ -166,8 +129,6 @@ void C3DPlayer::Update(void)
 		m_pos = Correction::LimitPos(m_pos, D3DXVECTOR3(4000.0f, 0.0f, 4000.0f),true,true,true);
 
 		SetVector3(m_pos, m_rot, m_move);
-
-		SetMaterial(m_pMat);
 
 		CScene::GetGame()->GetLight()->SetPosition(m_pos);
 
@@ -308,18 +269,18 @@ void C3DPlayer::Hide(void)
 	{
 		Collision::CollidXZ
 		(CManager::GetScene()->GetGame()->GetBuil(nCnt)->GetPosition(),
-			CManager::GetScene()->GetGame()->GetBuil(nCnt)->GetSizeX(),
-			CManager::GetScene()->GetGame()->GetBuil(nCnt)->GetSizeZ(),
-			CManager::GetScene()->GetGame()->GetBuil(nCnt)->GetVtxMax(),
-			CManager::GetScene()->GetGame()->GetBuil(nCnt)->GetVtxMin(),
-			&m_pos, m_posOld, &m_move, m_vtxMax, m_vtxMin);
+			CManager::GetScene()->GetGame()->GetBuil(nCnt)->GetModel().rSizeX,
+			CManager::GetScene()->GetGame()->GetBuil(nCnt)->GetModel().rSizeZ,
+			CManager::GetScene()->GetGame()->GetBuil(nCnt)->GetModel().vtxMax,
+			CManager::GetScene()->GetGame()->GetBuil(nCnt)->GetModel().vtxMin,
+			&m_pos, m_posOld, &m_move, m_sModel.vtxMax, m_sModel.vtxMin);
 
 		//<****************************************
 		//隠れる処理
 		//<****************************************
 		//当たっていたら
 		if (Collision::CollidAll(CManager::GetScene()->GetGame()->GetBuil(nCnt)->GetPosition(),
-			CManager::GetScene()->GetGame()->GetBuil(nCnt)->GetHideRad(), m_pos, m_vtxMax, m_vtxMin))
+			CManager::GetScene()->GetGame()->GetBuil(nCnt)->GetHideRad(), m_pos, m_sModel.vtxMax, m_sModel.vtxMin))
 		{
 			//隠れ状態だったら
 			if (m_sState == STATE_HIDE)

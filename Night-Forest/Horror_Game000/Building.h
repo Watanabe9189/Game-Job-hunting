@@ -44,32 +44,11 @@ private:
 
 	static int m_nNumAll;	//総数
 
-
-															//<==============
-															//マテリアル関連
-															//<==============
-	LPD3DXMESH			m_pMesh;							//メッシュ(頂点情報)へのポインタ
-	LPD3DXBUFFER		m_pBuffMat;							//マテリアルへのポインタ
-	DWORD				m_dwNumMat;							//マテリアルの数
-	D3DXMATERIAL*		m_pMat;								//マテリアルデータへのポインタ
-
-													//<==============
-													//テクスチャ関連
-													//<==============
-	static LPDIRECT3DTEXTURE9	m_apTexture[INT_VALUE::MAX_TEX];			//テクスチャへのポインタ
 	static const char*			m_acFilename[TYPE::TYPE_MAX];				//ファイル名
-
-															//<=============
-															//頂点情報関連
-															//<=============
-	D3DXVECTOR3			m_vtxMin;					//頂点の最小値
-	D3DXVECTOR3			m_vtxMax;					//頂点の最大値
 
 	D3DXVECTOR3 m_rHideRad;
 
-	D3DXVECTOR3 m_rSize;
-	D3DXVECTOR3 m_rSizeX;
-	D3DXVECTOR3 m_rSizeZ;
+	DataModel m_sModel;
 
 	TYPE m_eType;
 
