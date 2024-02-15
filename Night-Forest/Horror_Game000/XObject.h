@@ -102,6 +102,7 @@ public:
 	void SetMaterial(D3DXMATERIAL *pMat) { m_asModel.pMat = pMat; }
 
 	DataModel BindModel(const char *pFileName, const bool bMatChange = false);
+	void LoadModel(void);
 
 	void SetDrawfalse(void) { m_bDraw = false; }	//描画のオンオフ
 	void SetDrawtrue(void) { m_bDraw = true; }	//描画のオンオフ
@@ -113,12 +114,6 @@ public:
 	D3DXVECTOR3		GetPosition(void)	const	{ return m_pos; }				//位置取得
 	D3DXVECTOR3		GetMove(void)		const	{ return m_move; }				//移動量取得
 	D3DXVECTOR3		GetRotation(void)	const	{ return m_rot; }				//向き取得
-	//D3DXVECTOR3		GetVtxMax(void)		const	{ return m_asModel[m_nModelId].vtxMax; }			//頂点情報の最大値取得
-	//D3DXVECTOR3		GetVtxMin(void)		const	{ return m_asModel[m_nModelId].vtxMin; }			//頂点情報の最小値取得
-
-	//D3DXVECTOR3		GetSize(void)		const	{ return m_asModel[m_nModelId].rSize; }				//サイズ取得
-	//D3DXVECTOR3		GetSizeX(void)		const	{ return m_asModel[m_nModelId].rSizeX; }			//判定用Xサイズの取得
-	//D3DXVECTOR3		GetSizeZ(void)		const	{ return m_asModel[m_nModelId].rSizeZ; }			//判定用Zサイズの取得
 
 	D3DXMATERIAL*	GetMaterial(void)	const	{ return m_pMat; }				//マテリアル情報の取得
 
@@ -132,7 +127,6 @@ private:
 	static DataModel m_asaveModel[INT_VALUE::MAX_SIZE];
 	static const char *m_apFileName[INT_VALUE::MAX_SIZE];				//
 	int m_nModelId;
-	static int m_nBuff;
 
 	D3DXMATRIX			m_mtxWorld;					//ワールドマトリックス
 	D3DXMATERIAL		*m_pMat;

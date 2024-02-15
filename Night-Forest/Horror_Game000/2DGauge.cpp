@@ -15,7 +15,7 @@ namespace
 {
 	const D3DXVECTOR2 SIZEPOS_X = D3DXVECTOR2(625.0f, 750.0f);	//横方向だった場合の位置
 	const D3DXVECTOR2 SIZEPOS_Y = D3DXVECTOR2(150.0f, 50.0f);	//縦方向だった場合の位置
-	const D3DXVECTOR2 SIZEMAX_X = D3DXVECTOR2(200.0f, 25.0f);	//横方向の場合のサイズの最大値
+	const D3DXVECTOR2 SIZEMAX_X = D3DXVECTOR2(200.0f, 10.0f);	//横方向の場合のサイズの最大値
 	const D3DXVECTOR2 SIZEMAX_Y = D3DXVECTOR2(15.0f, 100.0f);	//縦方向の場合のサイズの最大値
 	const float		VALUE_ALPHA = 0.05f;						//透明度変更値		
 	const int		INIT_MAX	= 500;							//静的メンバ変数の初期値
@@ -162,7 +162,24 @@ void C2DGauge::Update(void)
 	//使っている時だけ表示させるモード
 	else if (m_eMode == MODE::MODE_ONLY_USE)
 	{
-	
+		//タイプ分回す
+		for (int nCnt = 0; nCnt < TYPE::TYPE_MAX; nCnt++)
+		{
+			//中身チェック
+			if (m_apObject2D[nCnt] != nullptr)
+			{
+				//変更されていれば
+				if (m_fAddValue != 0)
+				{
+					m_apObject2D[nCnt]->SetDrawtrue();
+				}
+				//もし変更されていなければ
+				else 
+				{
+					m_apObject2D[nCnt]->SetDrawfalse();
+				}
+			}
+		}
 	}
 
 	CManager::GetDebugProc()->Print("[m_fOldAdd]：%f\n", m_fOldAdd);

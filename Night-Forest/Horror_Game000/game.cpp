@@ -46,7 +46,7 @@ namespace
 	const int NUM_ITEM = 5;
 	const int NUM_PLANT = 35;
 	const D3DXVECTOR3 PLAYER_POS = D3DXVECTOR3(3750.0f, 0.0f, 3640.0f);
-	const D3DXVECTOR2 GAUGE_POS = D3DXVECTOR2(700.0f,660.0f);
+	const D3DXVECTOR2 GAUGE_POS = D3DXVECTOR2(720.0f,660.0f);
 }
 
 //<====================================
@@ -105,7 +105,7 @@ HRESULT CGame::Init(void)
 	m_pDestArrow = CDestArrow::Create();
 
 	//ÉQÅ[ÉWê∂ê¨
-	m_p2DGauge = C2DGauge::Create(GAUGE_POS, m_p3DPlayer->GetStamina(), C2DGauge::VERTEX_X, C2DGauge::MODE_ALWAYS);
+	m_p2DGauge = C2DGauge::Create(GAUGE_POS, m_p3DPlayer->GetStamina(), C2DGauge::VERTEX_X, C2DGauge::MODE_ONLY_USE);
 
 	//èÓïÒê∂ê¨
 	m_pInfo = C2DInfo::Create(C2DInfo::Class::CLASS_NUMBER);

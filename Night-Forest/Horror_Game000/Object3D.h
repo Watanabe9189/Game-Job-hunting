@@ -20,8 +20,6 @@ public:
 		TYPE_PLANE = 0,
 		TYPE_PLANE_Y,
 		TYPE_MAX
-
-
 	};
 
 	//<================================

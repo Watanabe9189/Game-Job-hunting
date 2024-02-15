@@ -51,6 +51,14 @@ HRESULT CRenderer::Init(HWND hWnd, BOOL bWindow)
 	{//失敗したとき
 		return E_FAIL;
 	}
+	
+	//
+	if (FAILED(m_pD3D->CheckDeviceMultiSampleType(D3DADAPTER_DEFAULT,
+		D3DDEVTYPE_HAL, D3DFMT_R8G8B8, bWindow,
+		D3DMULTISAMPLE_NONE, NULL)))
+	{
+		return E_FAIL;
+	}
 
 	//デバイスのプレゼンテーションパラメータの設定
 	ZeroMemory(&d3dpp, sizeof(d3dpp));		//パラメータのゼロクリア
@@ -60,6 +68,8 @@ HRESULT CRenderer::Init(HWND hWnd, BOOL bWindow)
 	d3dpp.BackBufferFormat = d3ddm.Format;		//バックバッファの形式
 	d3dpp.BackBufferCount = 1;					//バックバッファの数
 	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;	//ダブルバッファの切り替え(映像信号に同期)
+	d3dpp.MultiSampleType = D3DMULTISAMPLE_NONE;
+	d3dpp.MultiSampleQuality = 0;
 	d3dpp.EnableAutoDepthStencil = TRUE;		//デプスバッファとステンシルバッファを作成
 	d3dpp.AutoDepthStencilFormat = D3DFMT_D24S8;	//デバイスバッファとして16bitを使う
 	d3dpp.Windowed = bWindow;					//ウィンドウモード
@@ -112,7 +122,8 @@ HRESULT CRenderer::Init(HWND hWnd, BOOL bWindow)
 	m_pD3DDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	m_pD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	m_pD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-
+	m_pD3DDevice->SetRenderState(D3DRS_MULTISAMPLEANTIALIAS, TRUE);		//マルチサンプリングの適応
+	m_pD3DDevice->SetRenderState(D3DRS_SHADEMODE, D3DSHADE_GOURAUD);
 
 	//サンプラーステートの設定
 	m_pD3DDevice->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
@@ -137,6 +148,18 @@ HRESULT CRenderer::Init(HWND hWnd, BOOL bWindow)
 	CheckPixShade();
 	/*m_pPixShade = LoadPixShade();*/
 	//<**************************
+#ifndef _DEBUG
+
+	//フルスクリーンに移動する
+	SetWindowLong(m_hWnd, GWL_STYLE, WS_VISIBLE | WS_POPUP);
+
+	//画面にウィンドウを合わせる
+	MoveWindow(m_hWnd, GetSystemMetrics(SM_XVIRTUALSCREEN),
+		GetSystemMetrics(SM_YVIRTUALSCREEN),
+		GetSystemMetrics(SM_CXVIRTUALSCREEN),
+		GetSystemMetrics(SM_CYVIRTUALSCREEN), TRUE);
+
+#endif
 
 	return S_OK;
 }
@@ -145,28 +168,29 @@ HRESULT CRenderer::Init(HWND hWnd, BOOL bWindow)
 //<==================================================================================
 void CRenderer::Uninit(void)
 {
-CObject::ReleaseAll();
-
-//Direct3Dデバイスの破棄
-if (m_pD3DDevice != NULL)
-{
-	m_pD3DDevice->Release();
-	m_pD3DDevice = NULL;
-}
-
-//Direct3Dオブジェクトの破棄
-if (m_pD3D != NULL)
-{
-	m_pD3D->Release();
-	m_pD3D = NULL;
-}
-
+	CObject::ReleaseAll();
+	
+	//Direct3Dデバイスの破棄
+	if (m_pD3DDevice != NULL)
+	{
+		m_pD3DDevice->Release();
+		m_pD3DDevice = NULL;
+	}
+	
+	//Direct3Dオブジェクトの破棄
+	if (m_pD3D != NULL)
+	{
+		m_pD3D->Release();
+		m_pD3D = NULL;
+	}
+	
 }
 //<==================================================================================
 //レンダラーの更新処理
 //<==================================================================================
 void CRenderer::Update(void)
 {
+#ifdef _DEBUG
 	//Iボタンが押されていたら
 	if (CManager::GetKeyboard()->bGetTrigger(DIK_I))
 	{
@@ -188,7 +212,7 @@ void CRenderer::Update(void)
 		//画面にウィンドウを合わせる
 		MoveWindow(m_hWnd, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, TRUE);
 	}
-
+#endif
 	CObject::UpdateAll();
 }
 //<==================================================================================

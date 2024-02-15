@@ -67,7 +67,6 @@ private:
 
 	void Collid(void);
 
-
 	//ƒƒ“ƒo•Ï”
 	D3DXVECTOR3 m_pos;			//ˆÊ’u
 	D3DXVECTOR3 m_rot;			//Œü‚«

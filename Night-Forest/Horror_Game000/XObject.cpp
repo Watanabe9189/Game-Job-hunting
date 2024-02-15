@@ -8,7 +8,6 @@
 #include "Texture.h"
 
 int CXObject::m_nNumAll = INITIAL_INT;
-int CXObject::m_nBuff = INITIAL_INT;
 const char *CXObject::m_apFileName[INT_VALUE::MAX_SIZE] = {};
 CXObject::DataModel CXObject::m_asaveModel[INT_VALUE::MAX_SIZE] = {};
 
@@ -112,7 +111,6 @@ CXObject::DataModel CXObject::BindModel(const char *pFileName, const bool bMatCh
 			//もし保存されたファイル名と引数のファイル名が一緒だったら
 			if (strcmp(m_apFileName[nCnt], pFileName) == 0)
 			{
-				m_nBuff++;
 				//その番号を返し、すでに登録されているテクスチャ
 				m_asModel = m_asaveModel[nCnt];
 
@@ -134,6 +132,7 @@ CXObject::DataModel CXObject::BindModel(const char *pFileName, const bool bMatCh
 					{
 						return{};
 					}
+
 					assert((m_asModel.pMat =
 						(D3DXMATERIAL*)m_asModel.pBuffMat->GetBufferPointer()) != nullptr);
 					//<==========================================
@@ -148,36 +147,8 @@ CXObject::DataModel CXObject::BindModel(const char *pFileName, const bool bMatCh
 
 	m_apFileName[nNum] = pFileName;
 
-	//Xファイルの読み込み
-	if (FAILED(D3DXLoadMeshFromX(m_apFileName[nNum],
-		D3DXMESH_SYSTEMMEM,
-		CManager::GetRenderer()->GetDevice(),
-		NULL,
-		&m_asaveModel[nNum].pBuffMat,
-		NULL,
-		&m_asaveModel[nNum].dwNumMat,
-		&m_asaveModel[nNum].pMesh)))
-	{
-		return{};
-	}
-
-	assert((m_asaveModel[nNum].pMat =
-		(D3DXMATERIAL*)m_asaveModel[nNum].pBuffMat->GetBufferPointer()) != nullptr);
-
-	//頂点数分繰り返し
-	for (DWORD nCntMat = 0; nCntMat < m_asaveModel[nNum].dwNumMat; nCntMat++)
-	{
-		//ファイルが存在していたら
-		if (m_asaveModel[nNum].pMat[nCntMat].pTextureFilename != NULL &&
-			m_asaveModel[nNum].apTexture[nCntMat] == nullptr)
-		{
-			//テクスチャを割り当てる
-			CManager::GetTex()->Regist(
-				m_asaveModel[nNum].pMat[nCntMat].pTextureFilename,
-				m_asaveModel[nNum].apTexture[nCntMat]);
-		}
-	}
-
+	//モデルの設定を行う
+	LoadModel();
 	CheckVtxNo();
 
 	m_nModelId = m_nNumAll;
@@ -187,6 +158,41 @@ CXObject::DataModel CXObject::BindModel(const char *pFileName, const bool bMatCh
 	m_nNumAll++;
 
 	return m_asModel;
+}
+//<====================================
+//サイズの設定
+//<====================================
+void CXObject::LoadModel(void)
+{
+	//Xファイルの読み込み
+	if (FAILED(D3DXLoadMeshFromX(m_apFileName[m_nNumAll],
+		D3DXMESH_SYSTEMMEM,
+		CManager::GetRenderer()->GetDevice(),
+		NULL,
+		&m_asaveModel[m_nNumAll].pBuffMat,
+		NULL,
+		&m_asaveModel[m_nNumAll].dwNumMat,
+		&m_asaveModel[m_nNumAll].pMesh)))
+	{
+		
+	}
+
+	assert((m_asaveModel[m_nNumAll].pMat =
+		(D3DXMATERIAL*)m_asaveModel[m_nNumAll].pBuffMat->GetBufferPointer()) != nullptr);
+
+	//頂点数分繰り返し
+	for (DWORD nCntMat = 0; nCntMat < m_asaveModel[m_nNumAll].dwNumMat; nCntMat++)
+	{
+		//ファイルが存在していたら
+		if (m_asaveModel[m_nNumAll].pMat[nCntMat].pTextureFilename != NULL &&
+			m_asaveModel[m_nNumAll].apTexture[nCntMat] == nullptr)
+		{
+			//テクスチャを割り当てる
+			CManager::GetTex()->Regist(
+				m_asaveModel[m_nNumAll].pMat[nCntMat].pTextureFilename,
+				m_asaveModel[m_nNumAll].apTexture[nCntMat]);
+		}
+	}
 }
 //<====================================
 //サイズの設定
@@ -267,8 +273,8 @@ void CXObject::CheckVtxNo(void)
 	m_asaveModel[m_nNumAll].rSizeZ = m_asaveModel[m_nNumAll].rSize;
 
 	//判定用に半減する
-	m_asaveModel[m_nNumAll].rSizeX.z = m_asaveModel[m_nNumAll].rSizeX.z / 2.1f;
-	m_asaveModel[m_nNumAll].rSizeZ.x = m_asaveModel[m_nNumAll].rSizeZ.x / 2.1f;
+	m_asaveModel[m_nNumAll].rSizeX.z = m_asaveModel[m_nNumAll].rSizeX.z;
+	m_asaveModel[m_nNumAll].rSizeZ.x = m_asaveModel[m_nNumAll].rSizeZ.x;
 }
 //<====================================
 //サイズの設定
