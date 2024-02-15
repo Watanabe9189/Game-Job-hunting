@@ -124,7 +124,7 @@ C2DChar *C2DChar::Create(const D3DXVECTOR2 pos, const D3DXVECTOR2 Size, const in
 	//•\Ž¦‚·‚é‚È‚ç
 	if (!bDisp)
 	{
-		//•`‰æ‚ð‰¹‚É‚·‚é
+		//•`‰æ‚ðƒIƒ“‚É‚·‚é
 		p2DChar->SetDrawfalse();
 	}
 

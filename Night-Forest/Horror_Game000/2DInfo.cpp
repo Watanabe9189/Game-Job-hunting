@@ -21,7 +21,7 @@ const char*			C2DInfo::m_acFilename[TYPE_MAX] =
 //<*************************************************************************
 namespace Number
 {
-	const D3DXVECTOR2 INFO_POS = D3DXVECTOR2(80.0f, 85.0f);
+	const D3DXVECTOR2 INFO_POS = D3DXVECTOR2(70.0f, 660.0f);
 	const D3DXVECTOR2 INFO_SIZE = D3DXVECTOR2(75.0f, 75.0f);
 
 	const D3DXVECTOR2 NUMBER_POS = D3DXVECTOR2(INFO_POS.x+100.0f , INFO_POS.y);

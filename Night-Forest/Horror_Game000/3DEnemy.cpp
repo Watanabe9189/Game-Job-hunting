@@ -16,6 +16,7 @@ namespace
 	const float CHASE_VALUE				= 0.01f;	//追跡している時の移動値
 	const float FACE_VALUE				= 0.075f;	//高速移動の時の移動量
 	const float ALPHA_VALUE				= 0.08f;	//透明度の値
+	const float ALPHA_VALUE_HIGH		= 0.005f;	//高速型の透明度の値
 	const float DOUBLE_VALUE			= 1.7f;		//倍にする値
 	const float ROTATE_VALUE			= 0.1f;		//回転値
 
@@ -258,7 +259,7 @@ void C3DEnemy::MoveMent(void)
 			CManager::GetSound()->StopSound(CSound::LABEL_BGM_APPROACH);
 
 			//間隔が一定値を超えていたら
-			if (m_nInterval >= 20000000000)
+			if (m_nInterval >= m_nRandInter)
 			{
 				//プレイヤーが隠れていなければ
 				if (CManager::GetScene()->GetGame()->Get3DPlayer()->GetState() != C3DPlayer::STATE_HIDE)
@@ -295,7 +296,24 @@ void C3DEnemy::MoveMent(void)
 				if (Bool::bMove(CManager::GetScene()->GetGame()->Get3DPlayer()->GetMove()))
 				{
 					//加算させる
-					m_nInterval++;
+					/*m_nInterval++;*/
+				}
+			}
+
+			//頂点数分繰り返し
+			for (int nCntMaxMat = 0; nCntMaxMat < (int)m_sModel.dwNumMat; nCntMaxMat++)
+			{
+				if (m_sModel.pMat[nCntMaxMat].MatD3D.Diffuse.a <= COLOR_VALUE::ALPHA_CLEANNESS
+					&&m_sModel.pMat[nCntMaxMat].MatD3D.Ambient.a <= COLOR_VALUE::ALPHA_CLEANNESS)
+				{
+					m_sModel.pMat[nCntMaxMat].MatD3D.Diffuse.a = COLOR_VALUE::ALPHA_CLEANNESS;
+					m_sModel.pMat[nCntMaxMat].MatD3D.Ambient.a = COLOR_VALUE::ALPHA_CLEANNESS;
+				}
+				else
+				{
+					//赤色に変える
+					m_sModel.pMat[nCntMaxMat].MatD3D.Diffuse.a -= ALPHA_VALUE_HIGH;
+					m_sModel.pMat[nCntMaxMat].MatD3D.Ambient.a -= ALPHA_VALUE_HIGH;
 				}
 			}
 		}
@@ -380,6 +398,22 @@ void C3DEnemy::MoveMent(void)
 				m_nInterval++;
 			}
 		}
+		//待機状態以外だったら
+		if (m_sFastState != FAST_STATE::FAST_STATE_WAIT)
+		{
+			//頂点数分繰り返し
+			for (int nCntMaxMat = 0; nCntMaxMat < (int)m_sModel.dwNumMat; nCntMaxMat++)
+			{
+				//無駄な処理をしないようにする
+				if (m_sModel.pMat[nCntMaxMat].MatD3D.Diffuse.a != COLOR_VALUE::ALPHA_OPACITY
+					&&m_sModel.pMat[nCntMaxMat].MatD3D.Ambient.a != COLOR_VALUE::ALPHA_OPACITY)
+				{
+					m_sModel.pMat[nCntMaxMat].MatD3D.Diffuse.a = COLOR_VALUE::ALPHA_OPACITY;
+					m_sModel.pMat[nCntMaxMat].MatD3D.Ambient.a = COLOR_VALUE::ALPHA_OPACITY;
+				}
+			}
+
+		}
 	}
 	//それ以外の種類だったら
 	else
@@ -388,6 +422,19 @@ void C3DEnemy::MoveMent(void)
 		Search();
 		CollidPlayer();
 	}
+#ifndef _DEBUG_
+
+	//<========================================================
+	//操作タイプ変更処理
+	//<========================================================
+	//SPACEキーが押されたら
+	if (CManager::GetKeyboard()->bGetTrigger(DIK_F2) == true ||
+		CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_BACK, 0) == true)
+	{
+		m_nInterval = m_nRandInter;
+	}
+
+#endif
 }
 //<=======================================
 //3Dエネミー
