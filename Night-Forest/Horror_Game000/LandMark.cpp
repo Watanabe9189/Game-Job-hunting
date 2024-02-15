@@ -5,7 +5,7 @@ const char*			CLandMark::m_acFilename[TYPE::TYPE_MAX]
 {
 	"data\\MODEL\\LandMark\\SignBoard000.x",
 	"data\\MODEL\\LandMark\\TrunkTable000.x",
-	"data\\MODEL\\LandMark\\SignBoard000.x",
+	"data\\MODEL\\LandMark\\Car000.x",
 	"data\\MODEL\\LandMark\\House001.x",
 };
 int CLandMark::m_nNumAll = INITIAL_INT;

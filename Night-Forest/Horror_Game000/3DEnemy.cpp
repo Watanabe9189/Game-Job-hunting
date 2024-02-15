@@ -202,8 +202,8 @@ void C3DEnemy::Update(void)
 			//CManager::GetDebugProc()->Print("[今のインターバル]：%d\n", m_nInterval);
 			//CManager::GetDebugProc()->Print("[今のランダムインターバル]：%d\n", m_nRandInter);
 			//CManager::GetDebugProc()->Print("[今のステート]：%d\n", m_sState);
-			CManager::GetDebugProc()->Print("[敵タイプ]：%d\n", m_eType);
-			CManager::GetDebugProc()->Print("[バッファ]：%d\n", m_sModel.pBuffMat);
+			//CManager::GetDebugProc()->Print("[敵タイプ]：%d\n", m_eType);
+			//CManager::GetDebugProc()->Print("[バッファ]：%d\n", m_sModel.pBuffMat);
 
 			MoveMent();
 

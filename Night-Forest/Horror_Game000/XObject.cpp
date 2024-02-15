@@ -140,7 +140,6 @@ CXObject::DataModel CXObject::BindModel(const char *pFileName, const bool bMatCh
 					//
 					//<==========================================
 				}
-
 				m_nModelId = nCnt;
 				return m_asModel;
 			}

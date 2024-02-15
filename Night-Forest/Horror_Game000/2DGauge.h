@@ -8,6 +8,7 @@
 
 #include "main.h"
 #include "object.h"
+#include "object2D.h"
 
 //<****************************************
 //クラス定義
@@ -31,8 +32,7 @@ public:
 	//<===================================
 	enum TYPE
 	{
-		TYPE_BACK = 0,
-		TYPE_GAUGE,
+		TYPE_GAUGE = 0,
 		TYPE_FRAME,
 		TYPE_MAX
 	};
@@ -67,7 +67,13 @@ public:
 	static int GetLimitMax(void) { return m_nMaxLimit; }
 	static int GetLimitMin(void) { return m_nMinLimit; }
 
+	void NoUseFrame(void) { m_apObject2D[TYPE::TYPE_FRAME]->SetDrawfalse(); }
+
 private:
+
+	//静的メンバ変数
+	static LPDIRECT3DTEXTURE9	m_apTexture[INT_VALUE::MAX_TEX];
+	static const char*			m_acFilename[];				//ファイル名
 
 	D3DXVECTOR2 m_rPos;					//位置
 	D3DXVECTOR2 m_rSize;				//サイズ
@@ -80,12 +86,13 @@ private:
 	float m_fOldAdd;
 	float m_fChange;					//変動量
 	float m_fCurrent;					//今のゲージ量
+	float m_fGaugeSize;
 	int m_nNum;							//ゲージ量
 	int m_nMax;							//最大ゲージ量
 	VERTEX m_eVer;						//方向列挙型
 	MODE m_eMode;						//モード列挙型
 
-	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;	//頂点バッファ
+	CObject2D *m_apObject2D[TYPE::TYPE_MAX];
 
 };
 

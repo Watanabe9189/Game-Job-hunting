@@ -3,6 +3,8 @@
 
 C2DGauge *COption::m_p2DGauge = nullptr;
 CNumber  *COption::m_pNumber = nullptr;
+Ccamera *COption::m_pCamera = nullptr;
+CLight *COption::m_pLight = nullptr;
 
 LPDIRECT3DTEXTURE9	COption::m_apTexture[INT_VALUE::MAX_TEX] = {};
 
@@ -99,6 +101,8 @@ HRESULT COption::Init(void)
 
 	//中身チェック
 	assert(m_p2DGauge != nullptr&&m_pNumber != nullptr);
+
+	m_p2DGauge->NoUseFrame();
 
 	//数を設定する
 	m_pNumber->SetNum(&m_nNumEnemy);

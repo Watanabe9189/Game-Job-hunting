@@ -46,7 +46,7 @@ namespace
 	const int NUM_ITEM = 5;
 	const int NUM_PLANT = 35;
 	const D3DXVECTOR3 PLAYER_POS = D3DXVECTOR3(3750.0f, 0.0f, 3640.0f);
-	const D3DXVECTOR2 GAUGE_POS = D3DXVECTOR2(125.0f, 15.0f);
+	const D3DXVECTOR2 GAUGE_POS = D3DXVECTOR2(200.0f, 25.0f);
 }
 
 //<====================================
@@ -92,9 +92,6 @@ HRESULT CGame::Init(void)
 	//åöï®ê∂ê¨
 	CBuilding::RandCreate(m_apBuilding, NUM_BUILDING);
 
-	//ÉQÅ[ÉWê∂ê¨
-	m_p2DGauge = C2DGauge::Create(GAUGE_POS, m_p3DPlayer->GetStamina(),C2DGauge::VERTEX_X,C2DGauge::MODE_ALWAYS);
-
 	//ìGê∂ê¨
 	C3DEnemy::RandCreate(m_ap3DEnemy);
 
@@ -106,6 +103,9 @@ HRESULT CGame::Init(void)
 	CLandMark::FixedCreate(m_apLandMark);
 
 	m_pDestArrow = CDestArrow::Create();
+
+	//ÉQÅ[ÉWê∂ê¨
+	m_p2DGauge = C2DGauge::Create(GAUGE_POS, m_p3DPlayer->GetStamina(), C2DGauge::VERTEX_X, C2DGauge::MODE_ALWAYS);
 
 	//èÓïÒê∂ê¨
 	m_pInfo = C2DInfo::Create(C2DInfo::Class::CLASS_FIGURE);

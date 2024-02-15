@@ -10,6 +10,9 @@
 #include "manager.h"
 #include "fade.h"
 #include "object.h"
+#include "Camera.h"
+#include "Camera.h"
+#include "Light.h"
 
 #include "object2D.h"
 #include "2DGauge.h"
@@ -52,6 +55,9 @@ private:
 
 	static C2DGauge *m_p2DGauge;
 	static CNumber  *m_pNumber;
+	static CLight *m_pLight;					//
+	static Ccamera *m_pCamera;					//
+
 	int m_nStamina;
 	int m_nNumEnemy;
 	int m_nSelect;
