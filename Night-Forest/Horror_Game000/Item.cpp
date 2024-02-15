@@ -187,7 +187,7 @@ void CItem::Collid(void)
 		m_bAppro = true;
 
 		//Lボタンが押された+ゲット状態がfalseだったら
-		if (CManager::GetKeyboard()->bGetTrigger(DIK_L) || CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_B, 0) && !m_bGet)
+		if (CManager::GetKeyboard()->bGetTrigger(DIK_SPACE) || CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_B, 0) && !m_bGet)
 		{
 			//ゲットした判定にする
 			/*C3DParticle::Create(m_pos, D3DXCOLOR(1.0f, 0.5f, 0.1f, 1.0f), C3DParticle::TYPE::TYPE_TEST);*/
