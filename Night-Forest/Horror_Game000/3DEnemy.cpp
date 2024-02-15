@@ -152,7 +152,6 @@ HRESULT C3DEnemy::Init(void)
 
 		assert(m_pSound != nullptr);
 	}
-	/*SetStencil(4);*/
 
 return S_OK;
 }
@@ -792,7 +791,7 @@ void C3DEnemy::CollidPlayer(void)
 	if (m_pPlayer->GetState() != C3DPlayer::STATE_HIDE)
 	{
 		//“–‚½‚Á‚Ä‚¢‚½‚ç
-		if (Collision::CollidAll(m_pPlayer->GetPosition(), m_pPlayer->GetModel().rSize,
+		if (Collision::CollidAll(m_pPlayer->GetPosition(), m_pPlayer->GetModel().vtxMax,
 			m_pos, m_sModel.vtxMax, m_sModel.vtxMin))
 		{
 			DeathSound();

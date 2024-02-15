@@ -37,7 +37,7 @@ Ccover *CGame::m_pCover = nullptr;
 C2DChar *CGame::m_ap2DChar[CGame::CHAR2D::CHAR2D_MAX] = {};
 CPlant *CGame::m_apPlant[INT_VALUE::MAX_SIZE] = {};
 CLandMark *CGame::m_apLandMark[INT_VALUE::MAX_SIZE] = {};
-CDestArrow *CGame::m_pDestArrow = nullptr;
+CDestArrowX *CGame::m_pDestArrowX = nullptr;
 Ccamera *CGame::m_pCamera = nullptr;
 
 namespace
@@ -102,7 +102,7 @@ HRESULT CGame::Init(void)
 
 	CLandMark::FixedCreate(m_apLandMark);
 
-	m_pDestArrow = CDestArrow::Create();
+	m_pDestArrowX = CDestArrowX::Create();
 
 	//ゲージ生成
 	m_p2DGauge = C2DGauge::Create(GAUGE_POS, m_p3DPlayer->GetStamina(), C2DGauge::VERTEX_X, C2DGauge::MODE_ONLY_USE);
@@ -187,10 +187,10 @@ void CGame::Uninit(void)
 	//<******************************************
 	//カバーの破棄
 	//<******************************************
-	if (m_pDestArrow != nullptr)
+	if (m_pDestArrowX != nullptr)
 	{
-		m_pDestArrow->Uninit();
-		m_pDestArrow = nullptr;
+		m_pDestArrowX->Uninit();
+		m_pDestArrowX = nullptr;
 	}
 	
 	//<******************************************

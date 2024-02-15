@@ -33,6 +33,7 @@
 #include "Plant.h"
 #include "LandMark.h"
 #include "DestArrow.h"
+#include "DestArrowX.h"
 //<*************************************************
 //
 //<*************************************************
@@ -74,7 +75,6 @@ public:
 	static C3DEnemy *Get3DEnemy(int nCnt) { return m_ap3DEnemy[nCnt]; }
 	static C2DChar *Get2DChar(int nCnt) { return m_ap2DChar[nCnt]; }
 	static CItem *GetItem(int nCnt) { return m_apItem[nCnt]; }
-	static CDestArrow *GetDestArrow(void) { return m_pDestArrow; }
 	static Ccamera *GetCamera(void) { return m_pCamera; }
 
 private:
@@ -92,7 +92,7 @@ private:
 	static C2DChar *m_ap2DChar[CHAR2D_MAX];
 	static CPlant *m_apPlant[INT_VALUE::MAX_SIZE];
 	static CLandMark *m_apLandMark[INT_VALUE::MAX_SIZE];
-	static CDestArrow *m_pDestArrow;
+	static CDestArrowX *m_pDestArrowX;
 	//
 	static Ccamera *m_pCamera;					//
 

@@ -169,6 +169,7 @@
     <ClCompile Include="Cover.cpp" />
     <ClCompile Include="DebugProc.cpp" />
     <ClCompile Include="DestArrow.cpp" />
+    <ClCompile Include="DestArrowX.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="fog.cpp" />
@@ -216,6 +217,7 @@
     <ClInclude Include="Cover.h" />
     <ClInclude Include="DebugProc.h" />
     <ClInclude Include="DestArrow.h" />
+    <ClInclude Include="DestArrowX.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="fog.h" />

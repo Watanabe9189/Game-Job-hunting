@@ -571,7 +571,7 @@ void Ccamera::SetCamera(void)
 //<************************
 //この関数限定のマクロ定義
 //<************************
-#define MAX_Z	(1000.0f)	//プロジェクションマトリックス作成時のZ軸の最大値
+#define MAX_Z	(5000.0f)	//プロジェクションマトリックス作成時のZ軸の最大値
 #define MIN_Z	(10.0f)		//プロジェクションマトリックス作成時のZ軸の最小値
 
 	//プロジェクションマトリックスの初期化
@@ -614,5 +614,4 @@ void Ccamera::SetCamera(void)
 
 	//ビューマトリックスの設定
 	CManager::GetRenderer()->GetDevice()->SetTransform(D3DTS_VIEW, &m_mtxView);
-
 }

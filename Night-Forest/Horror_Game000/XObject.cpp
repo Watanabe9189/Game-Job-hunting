@@ -79,6 +79,9 @@ void CXObject::Draw(void)
 		//現在のマテリアルを取得
 		CManager::GetRenderer()->GetDevice()->GetMaterial(&matDef);
 		
+		//頂点フォーマットをセット
+		CManager::GetRenderer()->GetDevice()->SetFVF(m_asModel.pMesh->GetFVF());
+
 		//頂点数分繰り返し
 		for (DWORD nCntMat = 0; nCntMat < m_asModel.dwNumMat; nCntMat++)
 		{
@@ -273,8 +276,8 @@ void CXObject::CheckVtxNo(void)
 	m_asaveModel[m_nNumAll].rSizeZ = m_asaveModel[m_nNumAll].rSize;
 
 	//判定用に半減する
-	m_asaveModel[m_nNumAll].rSizeX.z = m_asaveModel[m_nNumAll].rSizeX.z;
-	m_asaveModel[m_nNumAll].rSizeZ.x = m_asaveModel[m_nNumAll].rSizeZ.x;
+	m_asaveModel[m_nNumAll].rSizeX.z = m_asaveModel[m_nNumAll].rSizeX.z / 2.1f;
+	m_asaveModel[m_nNumAll].rSizeZ.x = m_asaveModel[m_nNumAll].rSizeZ.x / 2.1f;
 }
 //<====================================
 //サイズの設定
