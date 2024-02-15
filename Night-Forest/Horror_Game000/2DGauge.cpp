@@ -13,7 +13,7 @@
 //<**********************************************************
 namespace
 {
-	const D3DXVECTOR2 SIZEPOS_X = D3DXVECTOR2(130.0f, 15.0f);	//横方向だった場合の位置
+	const D3DXVECTOR2 SIZEPOS_X = D3DXVECTOR2(625.0f, 750.0f);	//横方向だった場合の位置
 	const D3DXVECTOR2 SIZEPOS_Y = D3DXVECTOR2(150.0f, 50.0f);	//縦方向だった場合の位置
 	const D3DXVECTOR2 SIZEMAX_X = D3DXVECTOR2(200.0f, 25.0f);	//横方向の場合のサイズの最大値
 	const D3DXVECTOR2 SIZEMAX_Y = D3DXVECTOR2(15.0f, 100.0f);	//縦方向の場合のサイズの最大値
@@ -157,16 +157,7 @@ void C2DGauge::Update(void)
 	//常に表示させるモード
 	if (m_eMode == MODE::MODE_ALWAYS)
 	{
-		//今のゲージが最大ゲージの半分になっていたら
-		if (m_fCurrent <= m_nMax/2)
-		{
-			m_rCol = COLOR_VALUE::COLOR_RED;
-		}
-		//それ以外の場合
-		else
-		{
-			m_rCol = COLOR_VALUE::COLOR_INIT;
-		}
+		
 	}
 	//使っている時だけ表示させるモード
 	else if (m_eMode == MODE::MODE_ONLY_USE)

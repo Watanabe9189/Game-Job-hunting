@@ -19,7 +19,7 @@ namespace
 	const float DOUBLE_VALUE			= 1.7f;		//”{‚É‚·‚é’l
 	const float ROTATE_VALUE			= 0.1f;		//‰ñ“]’l
 
-	const float RADIUSE_VALUE_NORMAL	= 750.0f;	//’ÊíŒ^‚Ì”¼Œa‚Ì’l
+	const float RADIUSE_VALUE_NORMAL	= 600.0f;	//’ÊíŒ^‚Ì”¼Œa‚Ì’l
 	const float RADIUSE_VALUE_INVISIBLE = 500.0f;	//“§–¾Œ^‚Ì”¼Œa‚Ì’l
 
 	const int	MAX_INTERVAL			= 500;		//ŠÔŠu‚ÌÅ‘å’l
@@ -258,7 +258,7 @@ void C3DEnemy::MoveMent(void)
 			CManager::GetSound()->StopSound(CSound::LABEL_BGM_APPROACH);
 
 			//ŠÔŠu‚ªˆê’è’l‚ð’´‚¦‚Ä‚¢‚½‚ç
-			if (m_nInterval >= m_nRandInter)
+			if (m_nInterval >= 20000000000)
 			{
 				//ƒvƒŒƒCƒ„[‚ª‰B‚ê‚Ä‚¢‚È‚¯‚ê‚Î
 				if (CManager::GetScene()->GetGame()->Get3DPlayer()->GetState() != C3DPlayer::STATE_HIDE)

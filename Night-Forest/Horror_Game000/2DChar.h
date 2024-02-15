@@ -50,13 +50,7 @@ public:
 	HRESULT Init(void);
 	void Uninit(void) {CObject2D::Uninit();}
 	void Update(void);
-	void Draw(void) 
-	{
-		if (m_bDisp != false)
-		{
-			CObject2D::Draw();
-		}
-	}
+	void Draw(void) {CObject2D::Draw();}
 	void SetVtx(void);
 	static int GetNum(void) { return m_nNumAll; }
 

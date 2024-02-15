@@ -120,7 +120,13 @@ C2DChar *C2DChar::Create(const D3DXVECTOR2 pos, const D3DXVECTOR2 Size, const in
 	}
 
 	p2DChar->SetSize(Size);
-	p2DChar->m_bDisp = bDisp;
+
+	//表示するなら
+	if (!bDisp)
+	{
+		//描画を音にする
+		p2DChar->SetDrawfalse();
+	}
 
 	p2DChar->BindTexture(m_apTexture[CType]);
 
@@ -154,22 +160,15 @@ HRESULT C2DChar::Init(void)
 //<======================================
 void C2DChar::Update(void)
 {
-	if (m_bDisp != false)
-	{
-		m_pos = GetPosition();
+	m_pos = GetPosition();
 
-		//もし二番目の目的の位置に
-		if (m_pos.x != m_posDest[1].x)
-		{
-			SetVtx();
+	SetVtx();
 
-			//移動方法によって通るか
-			MoveVer();
-			MoveSide();
+	//移動方法によって通るか
+	MoveVer();
+	MoveSide();
 
-			SetPosition(m_pos);
-		}
-	}
+	SetPosition(m_pos);
 }
 //<======================================
 //

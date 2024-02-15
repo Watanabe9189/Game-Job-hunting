@@ -46,7 +46,7 @@ namespace
 	const int NUM_ITEM = 5;
 	const int NUM_PLANT = 35;
 	const D3DXVECTOR3 PLAYER_POS = D3DXVECTOR3(3750.0f, 0.0f, 3640.0f);
-	const D3DXVECTOR2 GAUGE_POS = D3DXVECTOR2(200.0f, 25.0f);
+	const D3DXVECTOR2 GAUGE_POS = D3DXVECTOR2(700.0f,625.0f);
 }
 
 //<====================================
@@ -108,11 +108,14 @@ HRESULT CGame::Init(void)
 	m_p2DGauge = C2DGauge::Create(GAUGE_POS, m_p3DPlayer->GetStamina(), C2DGauge::VERTEX_X, C2DGauge::MODE_ALWAYS);
 
 	//î•ñ¶¬
-	m_pInfo = C2DInfo::Create(C2DInfo::Class::CLASS_FIGURE);
+	m_pInfo = C2DInfo::Create(C2DInfo::Class::CLASS_NUMBER);
 
-	m_ap2DChar[CHAR2D_HIDE] = C2DChar::Create(D3DXVECTOR2(625.0f, 125.0f), D3DXVECTOR2(200.0f, 150.0f), C2DChar::CHAR_TYPE::CHAR_TYPE_HIDEINFO, C2DChar::MOVE_FROM_NONE, false);
-	m_ap2DChar[CHAR2D_PICKUP] = C2DChar::Create(D3DXVECTOR2(625.0f, 125.0f), D3DXVECTOR2(200.0f, 150.0f), C2DChar::CHAR_TYPE::CHAR_TYPE_PICKUP_INFO, C2DChar::MOVE_FROM_NONE, false);
-	m_ap2DChar[CHAR2D_COMEOUT] = C2DChar::Create(D3DXVECTOR2(625.0f, 125.0f), D3DXVECTOR2(200.0f, 150.0f), C2DChar::CHAR_TYPE::CHAR_TYPE_COMEOUT_INFO, C2DChar::MOVE_FROM_NONE, false);
+	m_ap2DChar[CHAR2D_HIDE] = C2DChar::Create(D3DXVECTOR2(1080.0f, 675.0f), D3DXVECTOR2(200.0f, 150.0f), C2DChar::CHAR_TYPE::CHAR_TYPE_HIDEINFO, C2DChar::MOVE_FROM_NONE, false);
+
+	m_ap2DChar[CHAR2D_PICKUP] = C2DChar::Create(D3DXVECTOR2(1080.0f, 
+		m_ap2DChar[CHAR2D_HIDE]->GetPosition().y), D3DXVECTOR2(200.0f, 150.0f), C2DChar::CHAR_TYPE::CHAR_TYPE_PICKUP_INFO, C2DChar::MOVE_FROM_NONE, false);
+
+	m_ap2DChar[CHAR2D_COMEOUT] = C2DChar::Create(D3DXVECTOR2(1080.0f, 675.0f), D3DXVECTOR2(200.0f, 150.0f), C2DChar::CHAR_TYPE::CHAR_TYPE_COMEOUT_INFO, C2DChar::MOVE_FROM_NONE, false);
 
 	return S_OK;
 }
@@ -365,18 +368,29 @@ void CGame::Update(void)
 			if (m_apItem[nCnt]->GetAppro())
 			{
 				//•\Ž¦‚ð‚³‚¹Aˆ—‚©‚ç”²‚¯‚é
-				m_ap2DChar[CHAR2D_PICKUP]->SetDisptrue();
+				m_ap2DChar[CHAR2D_PICKUP]->SetDrawtrue();
 				break;
 			}
 			//—£‚ê‚Ä‚¢‚½‚ç
 			else if (!m_apItem[nCnt]->GetAppro())
 			{
 				//•\Ž¦‚ð‚³‚¹‚È‚¢
-				m_ap2DChar[CHAR2D_PICKUP]->SetDispfalse();
+				m_ap2DChar[CHAR2D_PICKUP]->SetDrawfalse();
 			}
 		}
 	}
 	
+	if (m_ap2DChar[CHAR2D_HIDE]->GetbDraw()|| m_ap2DChar[CHAR2D_COMEOUT]->GetbDraw())
+	{
+		m_ap2DChar[CHAR2D::CHAR2D_PICKUP]->SetPosition(D3DXVECTOR2(1080.0f,
+			m_ap2DChar[CHAR2D_HIDE]->GetPosition().y - 140.0f));
+	}
+	if (!m_ap2DChar[CHAR2D_HIDE]->GetbDraw() &&!m_ap2DChar[CHAR2D_COMEOUT]->GetbDraw())
+	{
+		m_ap2DChar[CHAR2D::CHAR2D_PICKUP]->SetPosition(D3DXVECTOR2(1080.0f,
+			m_ap2DChar[CHAR2D_HIDE]->GetPosition().y));
+	}
+
 #ifdef _DEBUG
 
 	//<========================================================

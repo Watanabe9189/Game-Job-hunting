@@ -286,20 +286,20 @@ void C3DPlayer::Hide(void)
 			if (m_sState == STATE_HIDE)
 			{
 				//表示をさせる
-				CManager::GetScene()->GetGame()->Get2DChar(CGame::CHAR2D_COMEOUT)->SetDisptrue();
+				CManager::GetScene()->GetGame()->Get2DChar(CGame::CHAR2D_COMEOUT)->SetDrawtrue();
 
 				//表示をさせない
-				CManager::GetScene()->GetGame()->Get2DChar(CGame::CHAR2D_HIDE)->SetDispfalse();
+				CManager::GetScene()->GetGame()->Get2DChar(CGame::CHAR2D_HIDE)->SetDrawfalse();
 			}
 			//隠れ状態では無ければ
 			else if (m_sState == STATE_NONE)
 			{
 
 				//表示をさせる
-				CManager::GetScene()->GetGame()->Get2DChar(CGame::CHAR2D_HIDE)->SetDisptrue();
+				CManager::GetScene()->GetGame()->Get2DChar(CGame::CHAR2D_HIDE)->SetDrawtrue();
 
 				//表示をさない
-				CManager::GetScene()->GetGame()->Get2DChar(CGame::CHAR2D_COMEOUT)->SetDispfalse();
+				CManager::GetScene()->GetGame()->Get2DChar(CGame::CHAR2D_COMEOUT)->SetDrawfalse();
 			}
 
 			//範囲内に入っている際にキーを押すと
@@ -318,10 +318,10 @@ void C3DPlayer::Hide(void)
 		else
 		{
 			//表示をさせない
-			CManager::GetScene()->GetGame()->Get2DChar(CGame::CHAR2D_HIDE)->SetDispfalse();
+			CManager::GetScene()->GetGame()->Get2DChar(CGame::CHAR2D_HIDE)->SetDrawfalse();
 
 			//表示をさない
-			CManager::GetScene()->GetGame()->Get2DChar(CGame::CHAR2D_COMEOUT)->SetDispfalse();
+			CManager::GetScene()->GetGame()->Get2DChar(CGame::CHAR2D_COMEOUT)->SetDrawfalse();
 		}
 	}
 }

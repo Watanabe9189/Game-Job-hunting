@@ -12,7 +12,7 @@
 LPDIRECT3DTEXTURE9	C2DInfo::m_apTexture[TYPE_MAX] = {};
 const char*			C2DInfo::m_acFilename[TYPE_MAX] =
 {
-	"data\\TEXTURE\\HORROR_INFO001.png",
+	"data\\TEXTURE\\Item001.png",
 	"data\\TEXTURE\\number_02.png",
 	"data\\TEXTURE\\Item000.png",
 };
@@ -21,10 +21,10 @@ const char*			C2DInfo::m_acFilename[TYPE_MAX] =
 //<*************************************************************************
 namespace Number
 {
-	const D3DXVECTOR2 INFO_POS = D3DXVECTOR2(125.0f, 85.0f);
-	const D3DXVECTOR2 INFO_SIZE = D3DXVECTOR2(100.0f, 100.0f);
+	const D3DXVECTOR2 INFO_POS = D3DXVECTOR2(80.0f, 85.0f);
+	const D3DXVECTOR2 INFO_SIZE = D3DXVECTOR2(75.0f, 75.0f);
 
-	const D3DXVECTOR2 NUMBER_POS = D3DXVECTOR2(INFO_POS.x+125.0f , INFO_POS.y);
+	const D3DXVECTOR2 NUMBER_POS = D3DXVECTOR2(INFO_POS.x+100.0f , INFO_POS.y);
 	const D3DXVECTOR2 NUMBER_SIZE = D3DXVECTOR2(50.0f, 50.0f);
 
 }
@@ -174,6 +174,12 @@ void CInfoNum::Update(void)
 {
 	//Žc‚è”‚ðŽæ“¾‚µ‚Ä‚­‚é
 	m_nNum = CItem::GetNumLeft();
+
+	//0ŒÂ‚¾‚Á‚½‚ç
+	if (m_nNum == 0)
+	{
+		m_pNumber->SetDrawfalse();
+	}
 
 	//”‚ðÝ’è‚·‚é
 	m_pNumber->SetNum(&m_nNum);
