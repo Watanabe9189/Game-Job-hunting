@@ -3,7 +3,7 @@
 
 namespace
 {
-	const float MAX_SERACH_RAD = 1000.0f;		//‘{õ”ÍˆÍ‚ÌÅ‘å’l
+	const float MAX_SERACH_RAD = 750.0f;		//‘{õ”ÍˆÍ‚ÌÅ‘å’l
 }
 //<=============================
 //

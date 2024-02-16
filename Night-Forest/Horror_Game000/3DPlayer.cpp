@@ -23,7 +23,7 @@ namespace
 	const float ROTATE_VALUE	= 0.05f;	//回転量
 	const float REVISE_ROT		= 0.5f;
 	const float NO_DASH_VALUE	= 0.3f;		//斜め移動込みの移動量(1.0fがちょうどいい)
-	const float DASH_VALUE		= 0.8f;		//斜め移動込みの移動量(1.0fがちょうどいい)
+	const float DASH_VALUE		= 0.9f;		//斜め移動込みの移動量(1.0fがちょうどいい)
 	const int	MAX_STAMINA		= 500;		//スタミナの最大値
 }
 

@@ -13,14 +13,14 @@
 namespace
 {
 	const float SEARCH_MOVE				= 0.0045f;	//探索している時の移動量
-	const float CHASE_VALUE				= 0.01f;	//追跡している時の移動値
+	const float CHASE_VALUE				= 0.012f;	//追跡している時の移動値
 	const float FACE_VALUE				= 0.075f;	//高速移動の時の移動量
-	const float ALPHA_VALUE				= 0.08f;	//透明度の値
+	const float ALPHA_VALUE				= 0.09f;	//透明度の値
 	const float ALPHA_VALUE_HIGH		= 0.005f;	//高速型の透明度の値
 	const float DOUBLE_VALUE			= 1.7f;		//倍にする値
 	const float ROTATE_VALUE			= 0.1f;		//回転値
 
-	const float RADIUSE_VALUE_NORMAL	= 600.0f;	//通常型の半径の値
+	const float RADIUSE_VALUE_NORMAL	= 650.0f;	//通常型の半径の値
 	const float RADIUSE_VALUE_INVISIBLE = 500.0f;	//透明型の半径の値
 
 	const int	MAX_INTERVAL			= 500;		//間隔の最大値
@@ -35,8 +35,16 @@ namespace
 //<*******************************************
 																//テクスチャ関
 
-int C3DEnemy::m_nNumAll = NULL;									//数
+int C3DEnemy::m_nNumAll = NULL;			//数
+#ifdef _DEBUG
+
+int C3DEnemy::m_nNumSet = MAX_NUM_SET;
+
+#else
+
 int C3DEnemy::m_nNumSet = DEFAULT_NUM_SET;
+
+#endif
 int C3DEnemy::m_nNumMax = MAX_NUM_SET;
 int C3DEnemy::m_nNumMin = MIN_NUM_SET;
 
@@ -343,11 +351,11 @@ void C3DEnemy::MoveMent(void)
 			if (m_pPlayer->GetState() == C3DPlayer::STATE_HIDE)
 			{
 				//間隔を設定する
-				m_nInterval = 500;
+				m_nInterval = MAX_INTERVAL;
 			}
 
 			 //間隔が一定値を超えていたら
-			if (m_nInterval >= 500)
+			if (m_nInterval >= MAX_INTERVAL)
 			{
 				//行動ステートに移行させる
 				m_sFastState = FAST_STATE_WAIT;
@@ -366,7 +374,7 @@ void C3DEnemy::MoveMent(void)
 		//ugoku状態だったら
 		else if (m_sFastState == FAST_STATE::FAST_STATE_INTERVAL)
 		{
-			//向き
+			 //向き
 			 m_rot.y =Calculate::RotateToDest(m_rot.y,rRotDest, ROTATE_VALUE);
 
 			//プレイヤーの位置を目的地とする
@@ -385,7 +393,7 @@ void C3DEnemy::MoveMent(void)
 			}
 
 			//間隔が一定値を超えていたら
-			if (m_nInterval >= 500)
+			if (m_nInterval >= MAX_INTERVAL)
 			{
 				//行動ステートに移行させる
 				m_sFastState = FAST_STATE_MOVE;
