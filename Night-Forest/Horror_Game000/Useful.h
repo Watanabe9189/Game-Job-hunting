@@ -97,6 +97,7 @@ namespace Calculate
 	//<********************************************************************************************
 	D3DXVECTOR3 CalculteRandVec3(const D3DXVECTOR3 rMax, const D3DXVECTOR3 rMin, const bool bUseY);
 
+	float RotateToDest(const float rOwnerRot,const D3DXVECTOR3 fDestRot, const float fRotateValue);
 }
 //<============================================================================================================
 //boolŒ^”»’èŠÖ˜A‚Ì–¼‘OéŒ¾
@@ -104,5 +105,12 @@ namespace Calculate
 namespace Bool
 {
 	bool bMove(const D3DXVECTOR3 rMove);
+}
+namespace Color
+{
+
+	float AlphaChange(const float fOwnerAlpha, const float fAlphaValue);
+	D3DXMATERIAL *AlphaChangeMaterial(D3DXMATERIAL *pMat, const float fAlphaValue, const DWORD dwNumMat);
+
 }
 #endif

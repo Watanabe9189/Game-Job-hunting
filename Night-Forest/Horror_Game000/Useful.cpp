@@ -243,6 +243,22 @@ D3DXVECTOR3 Calculate::CalculteRandVec3(const D3DXVECTOR3 rMax, const D3DXVECTOR
 //<==========================================
 //bool型の変更処理
 //<==========================================
+float Calculate::RotateToDest(const float rOwnerRot, const D3DXVECTOR3 fDestRot, const float fRotateValue)
+{
+	float fRot = rOwnerRot;		//向き
+	float fRotDest = INITIAL_FLOAT;	//目的向き
+	float fRotDiff = INITIAL_FLOAT;	//向き
+
+	//角度設定
+	fRotDest = atan2f((fDestRot.x), (fDestRot.z));
+	fRotDiff = fRotDest - fRot;
+
+	//プレイヤーのいる位置に向く
+	return fRot += fRotDiff * fRotateValue;
+}
+//<==========================================
+//bool型の変更処理
+//<==========================================
 bool Bool::bMove(const D3DXVECTOR3 rMove)
 {
 	bool bMove = false;	//判定用
@@ -389,4 +405,52 @@ bool Collision::CollidAll(const D3DXVECTOR3 rOwnerPos, const D3DXVECTOR3 rOwnerS
 
 	//判定を返す
 	return bCollid;
+}
+//<================================================
+//
+//<================================================
+float Color::AlphaChange(const float fOwnerAlpha, const float fAlphaValue)
+{
+	float fAlpha = fOwnerAlpha;
+
+
+
+
+
+
+
+	return fAlpha;
+}
+//<================================================
+//
+//<================================================
+D3DXMATERIAL *Color::AlphaChangeMaterial(D3DXMATERIAL *pMat, const float fAlphaValue,
+	const DWORD dwNumMat)
+{
+	D3DXMATERIAL *Material = pMat;
+
+	//マテリアルの数分繰り返す
+	for (DWORD nCnt = 0; nCnt < dwNumMat; nCnt++)
+	{
+		//赤色に変える
+		Material[nCnt].MatD3D.Diffuse.a += fAlphaValue;
+		Material[nCnt].MatD3D.Ambient.a += fAlphaValue;
+
+		//
+		if (Material[nCnt].MatD3D.Diffuse.a >= COLOR_VALUE::ALPHA_OPACITY
+			&&Material[nCnt].MatD3D.Ambient.a >= COLOR_VALUE::ALPHA_OPACITY)
+		{
+			Material[nCnt].MatD3D.Diffuse.a = COLOR_VALUE::ALPHA_OPACITY;
+			Material[nCnt].MatD3D.Ambient.a = COLOR_VALUE::ALPHA_OPACITY;
+		}
+		//もし
+		else if (Material[nCnt].MatD3D.Diffuse.a <= COLOR_VALUE::ALPHA_CLEANNESS
+				&&Material[nCnt].MatD3D.Ambient.a <= COLOR_VALUE::ALPHA_CLEANNESS)
+		{
+			Material[nCnt].MatD3D.Diffuse.a = COLOR_VALUE::ALPHA_CLEANNESS;
+			Material[nCnt].MatD3D.Ambient.a = COLOR_VALUE::ALPHA_CLEANNESS;
+		}
+	}
+
+	return Material;
 }

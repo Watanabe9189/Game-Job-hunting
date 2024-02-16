@@ -79,9 +79,6 @@ void CXObject::Draw(void)
 		//現在のマテリアルを取得
 		CManager::GetRenderer()->GetDevice()->GetMaterial(&matDef);
 		
-		//頂点フォーマットをセット
-		CManager::GetRenderer()->GetDevice()->SetFVF(m_asModel.pMesh->GetFVF());
-
 		//頂点数分繰り返し
 		for (DWORD nCntMat = 0; nCntMat < m_asModel.dwNumMat; nCntMat++)
 		{

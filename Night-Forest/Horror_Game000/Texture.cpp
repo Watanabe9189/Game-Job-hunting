@@ -159,7 +159,7 @@ int CTexture::Regist(const char *pTexName, LPDIRECT3DTEXTURE9 &pTex)
 		if (pTex == nullptr)
 		{
 			assert((D3DXCreateTextureFromFile(CManager::GetRenderer()->GetDevice(),
-				pTexName,
+				m_apFileName[nNum],
 				&m_apTexture[nNum])) == D3D_OK);
 
 			pTex = m_apTexture[nNum];

@@ -62,7 +62,7 @@ C3DEnemy::C3DEnemy(int nPriority)
 	m_rDestPos = INIT_VECTOR;
 	m_rot = INIT_VECTOR;
 	m_move = INIT_VECTOR;
-	m_fMoveValue = INITIAL_FLOAT;
+ 	m_fMoveValue = INITIAL_FLOAT;
 
 	m_sState = STATE::STATE_SEARCH;
 	m_sFastState = FAST_STATE::FAST_STATE_WAIT;
@@ -254,9 +254,6 @@ void C3DEnemy::MoveMent(void)
 {
 	D3DXVECTOR3 rRotDest = Calculate::CalculateDest(m_pos, m_rDestPos);
 
-	float fRotDest = INITIAL_FLOAT;
-	float fRotDiff = INITIAL_FLOAT;
-
 	//高速型だったら
 	if (m_eType == TYPE::TYPE_ENEMY_HIGHSPEED)
 	{
@@ -330,13 +327,9 @@ void C3DEnemy::MoveMent(void)
 		//ugoku状態だったら
 		else if (m_sFastState == FAST_STATE::FAST_STATE_MOVE)
 		{
-			//角度設定
-			fRotDest = atan2f((rRotDest.x), (rRotDest.z));
-			fRotDiff = fRotDest - m_rot.y;
 
-			//目的地の方向に向く
-			m_rot.y += fRotDiff * ROTATE_VALUE;
-
+			m_rot.y = Calculate::RotateToDest(m_rot.y, rRotDest, ROTATE_VALUE);
+		
 			//プレイヤーの位置を目的地とする
 			SetDest(m_pPlayer->GetPosition());
 
@@ -373,12 +366,8 @@ void C3DEnemy::MoveMent(void)
 		//ugoku状態だったら
 		else if (m_sFastState == FAST_STATE::FAST_STATE_INTERVAL)
 		{
-			//角度設定
-			fRotDest = atan2f((rRotDest.x), (rRotDest.z));
-			fRotDiff = fRotDest - m_rot.y;
-
-			//目的地の方向に向く
-			m_rot.y += fRotDiff * ROTATE_VALUE;
+			//向き
+			 m_rot.y =Calculate::RotateToDest(m_rot.y,rRotDest, ROTATE_VALUE);
 
 			//プレイヤーの位置を目的地とする
 			SetDest(m_pPlayer->GetPosition());
@@ -459,9 +448,6 @@ void C3DEnemy::ChangeRot(void)
 //<=======================================
 void C3DEnemy::Search(void)
 {
-	float fRotDest = INITIAL_FLOAT;
-	float fRotDiff = INITIAL_FLOAT;
-
 	D3DXVECTOR3 rRotDest = Calculate::CalculateDest(m_pos, m_rDestPos);
 
 	//距離を計算する(その位置-目的とする位置)
@@ -488,19 +474,16 @@ void C3DEnemy::Search(void)
 	m_move.x = (m_rDestPos.x -m_pos.x - m_move.x) *m_fMoveValue;//X軸
 	m_move.z = (m_rDestPos.z - m_pos.z - m_move.z) *m_fMoveValue;//Z軸
 
-	  //追跡状態だったら
+	 
+	//追跡状態だったら
 	if (m_sState == STATE::STATE_CHASE)
 	{
 		SetDest(m_pPlayer->GetPosition());
 
 		m_fMoveValue = CHASE_VALUE;
 
-		//角度設定
-		fRotDest = atan2f((m_rDis.x), (m_rDis.z));
-		fRotDiff = fRotDest - m_rot.y;
-
-		//プレイヤーのいる位置に向く
-		m_rot.y += fRotDiff * ROTATE_VALUE;
+		//向き
+		m_rot.y = Calculate::RotateToDest(m_rot.y, rRotDest, ROTATE_VALUE);
 
 		//もし離れていたら
 		if (m_rDis.x >= m_fSearchRad
@@ -523,22 +506,7 @@ void C3DEnemy::Search(void)
 		//透明型だったら
 		if (m_eType == TYPE::TYPE_ENEMY_INVISIBLE)
 		{
-			//頂点数分繰り返し
-			for (int nCntMaxMat = 0; nCntMaxMat < (int)m_sModel.dwNumMat; nCntMaxMat++)
-			{
-				if (m_sModel.pMat[nCntMaxMat].MatD3D.Diffuse.a >= COLOR_VALUE::ALPHA_OPACITY
-					&&m_sModel.pMat[nCntMaxMat].MatD3D.Ambient.a >= COLOR_VALUE::ALPHA_OPACITY)
-				{
-					m_sModel.pMat[nCntMaxMat].MatD3D.Diffuse.a = COLOR_VALUE::ALPHA_OPACITY;
-					m_sModel.pMat[nCntMaxMat].MatD3D.Ambient.a = COLOR_VALUE::ALPHA_OPACITY;
-				}
-				else
-				{
-					//赤色に変える
-					m_sModel.pMat[nCntMaxMat].MatD3D.Diffuse.a += ALPHA_VALUE;
-					m_sModel.pMat[nCntMaxMat].MatD3D.Ambient.a += ALPHA_VALUE;
-				}
-			}
+			m_sModel.pMat = Color::AlphaChangeMaterial(m_sModel.pMat, ALPHA_VALUE, m_sModel.dwNumMat);
 		}
 	}
 	//探索モードだったら
@@ -546,12 +514,8 @@ void C3DEnemy::Search(void)
 	{
 		m_fMoveValue = SEARCH_MOVE;
 
-		//角度設定
-		fRotDest = atan2f((rRotDest.x), (rRotDest.z));
-		fRotDiff = fRotDest - m_rot.y;
-
-		//目的地の方向に向く
-		m_rot.y += fRotDiff * ROTATE_VALUE;
+		//向き
+		m_rot.y = Calculate::RotateToDest(m_rot.y, rRotDest, ROTATE_VALUE);
 
 		//目的の位置についたら
 		if (m_pos.x >= m_fFrontDest.x&&m_pos.x <= m_fBackDest.x
@@ -588,22 +552,7 @@ void C3DEnemy::Search(void)
 		//透明型だったら
 		if (m_eType == TYPE::TYPE_ENEMY_INVISIBLE)
 		{
-			//頂点数分繰り返し
-			for (int nCntMaxMat = 0; nCntMaxMat < (int)m_sModel.dwNumMat; nCntMaxMat++)
-			{
-				if (m_sModel.pMat[nCntMaxMat].MatD3D.Diffuse.a <= COLOR_VALUE::ALPHA_CLEANNESS
-					&&m_sModel.pMat[nCntMaxMat].MatD3D.Ambient.a <= COLOR_VALUE::ALPHA_CLEANNESS)
-				{
-					m_sModel.pMat[nCntMaxMat].MatD3D.Diffuse.a = COLOR_VALUE::ALPHA_CLEANNESS;
-					m_sModel.pMat[nCntMaxMat].MatD3D.Ambient.a = COLOR_VALUE::ALPHA_CLEANNESS;
-				}
-				else
-				{
-					//赤色に変える
-					m_sModel.pMat[nCntMaxMat].MatD3D.Diffuse.a -= ALPHA_VALUE;
-					m_sModel.pMat[nCntMaxMat].MatD3D.Ambient.a -= ALPHA_VALUE;
-				}
-			}
+			m_sModel.pMat = Color::AlphaChangeMaterial(m_sModel.pMat, -ALPHA_VALUE, m_sModel.dwNumMat);
 		}
 	}
 }
@@ -616,8 +565,8 @@ void C3DEnemy::SetDest(const D3DXVECTOR3 rDestPos)
 	m_rDestPos = rDestPos;
 
 	//手前と後ろの位置を設定
-	m_fFrontDest = D3DXVECTOR3(m_rDestPos.x + 1.0f, m_rDestPos.y + 1.0f, m_rDestPos.z + 1.0f);
-	m_fBackDest = D3DXVECTOR3(m_rDestPos.x - 1.0f, m_rDestPos.y - 1.0f, m_rDestPos.z - 1.0f);
+	m_fFrontDest = D3DXVECTOR3(m_rDestPos.x + 10.0f, m_rDestPos.y + 10.0f, m_rDestPos.z + 10.0f);
+	m_fBackDest = D3DXVECTOR3(m_rDestPos.x - 10.0f, m_rDestPos.y - 10.0f, m_rDestPos.z - 10.0f);
 	
 }
 //<========================================================
@@ -632,8 +581,8 @@ void C3DEnemy::SetDest(void)
 	m_rDestPos = rRandDest;
 
 	//手前と後ろの位置を設定
-	m_fFrontDest = D3DXVECTOR3(m_rDestPos.x + 1.0f, m_rDestPos.y + 1.0f, m_rDestPos.z + 1.0f);
-	m_fBackDest = D3DXVECTOR3(m_rDestPos.x - 1.0f, m_rDestPos.y - 1.0f, m_rDestPos.z - 1.0f);
+	m_fFrontDest = D3DXVECTOR3(m_rDestPos.x + 10.0f, m_rDestPos.y + 10.0f, m_rDestPos.z + 10.0f);
+	m_fBackDest = D3DXVECTOR3(m_rDestPos.x - 10.0f, m_rDestPos.y - 10.0f, m_rDestPos.z - 10.0f);
 }
 //<=======================================
 //3Dエネミーのサウンド設定
