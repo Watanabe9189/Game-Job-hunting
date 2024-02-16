@@ -383,7 +383,7 @@ void C3DEnemy::MoveMent(void)
 			//プレイヤーの位置を目的地とする
 			SetDest(m_pPlayer->GetPosition());
 
-			CManager::GetSound()->SetBgm(1.5f, CSound::LABEL_BGM_APPROACH);
+			CManager::GetSound()->SetBgm(2.0f, CSound::LABEL_BGM_APPROACH);
 			CManager::GetSound()->PlaySound(CSound::LABEL_BGM_APPROACH);
 
 			//プレイヤーが隠れていれば
