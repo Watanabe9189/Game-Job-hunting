@@ -46,6 +46,8 @@ public:
 	void SetupVertexFog(DWORD Color, DWORD Mode, BOOL UseRange);
 	void SetupPixelFog(DWORD Mode);
 
+	void ChangeUse(void) {m_bUse == false ? m_bUse = true : m_bUse = false;}
+
 private:
 
 	D3DXCOLOR m_Col;
@@ -55,6 +57,8 @@ private:
 	float m_fStart;
 	float m_fEnd;
 	float m_fDensity;
+
+	bool m_bUse;
 
 };
 

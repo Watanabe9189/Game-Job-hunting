@@ -25,6 +25,7 @@ CFog::CFog(int nPriority)
 	m_fStart = INITIAL_FLOAT;
 	m_fEnd = INITIAL_FLOAT;
 	m_fDensity = INITIAL_FLOAT;
+	m_bUse = true;
 
 }
 //<========================================================
@@ -68,17 +69,26 @@ HRESULT CFog::Init(void)
 //<========================================================
 void CFog::Update(void)
 {
-	//頂点霧場合
-	if (m_Type == TYPE::TYPE_VERTEX)
+	//使う場合
+	if (m_bUse)
 	{
-		SetupVertexFog(m_Col, m_Type, FALSE);//頂点フォグの設定
+		//頂点霧場合
+		if (m_Type == TYPE::TYPE_VERTEX)
+		{
+			SetupVertexFog(m_Col, m_Type, FALSE);//頂点フォグの設定
+		}
+		//使わない場合
+		else if (m_Type == TYPE::TYPE_PIXEL)
+		{
+			SetupPixelFog(m_Type);//ピクセルフォグの設定
+		}
 	}
-	//使わない場合
-	else if (m_Type == TYPE::TYPE_PIXEL)
+	//霧を使わない場合
+	else
 	{
-		SetupPixelFog(m_Type);//ピクセルフォグの設定
+		//霧のブレンドを無効にする
+		CManager::GetRenderer()->GetDevice()->SetRenderState(D3DRS_FOGENABLE, FALSE);
 	}
-
 }
 //<===========================================
 //頂点フォグの設定

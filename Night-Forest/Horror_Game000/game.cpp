@@ -405,6 +405,15 @@ void CGame::Update(void)
 	{
 		CItem::SetNumCollect(CItem::GetMax());
 	}
+	//<========================================================
+	//操作タイプ変更処理
+	//<========================================================
+	//SPACEキーが押されたら
+	if (CManager::GetKeyboard()->bGetTrigger(DIK_2) == true ||
+		CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_BACK, 0) == true)
+	{
+		m_pFog->ChangeUse();
+	}
 #endif
 }
 //<====================================
