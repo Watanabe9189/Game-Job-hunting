@@ -36,7 +36,7 @@ namespace
 																//テクスチャ関
 
 int C3DEnemy::m_nNumAll = NULL;									//数
-int C3DEnemy::m_nNumSet = MAX_NUM_SET;
+int C3DEnemy::m_nNumSet = DEFAULT_NUM_SET;
 int C3DEnemy::m_nNumMax = MAX_NUM_SET;
 int C3DEnemy::m_nNumMin = MIN_NUM_SET;
 
