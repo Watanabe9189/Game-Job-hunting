@@ -17,6 +17,7 @@ CRenderer::CRenderer()
 	m_pD3DDevice = NULL;	//Direct3Dデバイスへのポインタ
 	m_pPixShade = nullptr;
 	m_bUsePix = false;
+	m_lpBackBuffer = nullptr;
 	m_nStencil = INITIAL_INT;
 }
 //<==================================================================================
@@ -148,6 +149,13 @@ HRESULT CRenderer::Init(HWND hWnd, BOOL bWindow)
 	CheckPixShade();
 	/*m_pPixShade = LoadPixShade();*/
 	//<**************************
+	
+	//バックバッフアの取得
+	if (m_pD3DDevice->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &m_lpBackBuffer)!=S_OK)
+	{
+		return E_FAIL;
+	}
+
 #ifndef _DEBUG
 
 	//フルスクリーンに移動する
@@ -182,6 +190,12 @@ void CRenderer::Uninit(void)
 	{
 		m_pD3D->Release();
 		m_pD3D = NULL;
+	}
+	//Direct3Dオブジェクトの破棄
+	if (m_lpBackBuffer != NULL)
+	{
+		m_lpBackBuffer->Release();
+		m_lpBackBuffer = NULL;
 	}
 	
 }

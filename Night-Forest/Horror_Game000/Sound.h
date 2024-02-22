@@ -47,6 +47,8 @@ public:
 		LABEL_SE_ESCAPED,
 		LABEL_SE_NOTICED1,
 		LABEL_SE_NOTICED2,
+		LABEL_SE_FOUND,
+		LABEL_SE_UNSEALED,
 		LABEL_MAX,
 
 	};
@@ -77,12 +79,13 @@ public:
 
 	HRESULT Init(HWND hWnd);
 	void Uninit(void);
-	void UninitWithOut(void);
 	HRESULT PlaySound(LABEL label);
 	HRESULT PlaySoundWithVolume(const LABEL label, const float fVolume);
 	HRESULT PlaySoundWithDis(const LABEL label, const D3DXVECTOR3 rPos, const D3DXVECTOR3 rTargetPos);
 	void StopSound(LABEL label);
 	void StopSound(void);
+	
+	bool CheckSoundStop(const LABEL Label);
 
 	HRESULT CheckChunk(HANDLE hFile, DWORD format, DWORD *pChunkSize, DWORD *pChunkDataPosition);
 	HRESULT ReadChunkData(HANDLE hFile, void *pBuffer, DWORD dwBuffersize, DWORD dwBufferoffset);

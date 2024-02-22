@@ -99,6 +99,7 @@ HRESULT Ccamera::Init(void)
 	m_rotVDiff = 0.0f;								//ñ⁄ïWÇÃéãì_ÇÃç∑ï™
 
 	m_bFollow = false;								//í«îˆÇ∑ÇÈ
+	m_nShakeCount = INITIAL_INT;
 
 	m_mtxProjection = {};
 	m_mtxView = {};
@@ -172,7 +173,7 @@ void Ccamera::Update(void)
 			m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.16f);
 			m_fDistance = 121.0f;
 		}
-		/*ControllMouse();*/
+		//ControllMouse();
 	}
 
 #ifdef _DEBUG
@@ -417,6 +418,24 @@ void Ccamera::MoveVR(void)
 	m_move.x = 0.0f;
 	m_move.y = 0.0f;
 	m_move.z = 0.0f;
+}
+//
+void Ccamera::Shake(void)
+{
+	if (m_nShakeCount < 4)
+	{
+		m_rot.y += 0.015f;
+		m_nShakeCount++;
+	}
+	if(m_nShakeCount >= 4)
+	{
+		m_rot.y -= 0.015f;
+		m_nShakeCount++;
+	}
+	if (m_nShakeCount >= 9)
+	{
+		m_nShakeCount= 0;
+	}
 }
 //<=================================
 //

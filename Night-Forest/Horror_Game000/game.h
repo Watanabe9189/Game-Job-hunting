@@ -13,7 +13,7 @@
 //<*****************************************
 //2DŠÖ˜A
 //<*****************************************
-
+#include "DestArrow2D.h"
 //<*****************************************
 //3DŠÖ˜A
 //<*****************************************
@@ -54,6 +54,8 @@ public:
 		CHAR2D_HIDE = 0,
 		CHAR2D_PICKUP,
 		CHAR2D_COMEOUT,
+		CHAR2D_SEALED,
+		CHAR2D_FOUND,
 		CHAR2D_MAX
 	};
 
@@ -76,8 +78,10 @@ public:
 	static C2DChar *Get2DChar(int nCnt) { return m_ap2DChar[nCnt]; }
 	static CItem *GetItem(int nCnt) { return m_apItem[nCnt]; }
 	static Ccamera *GetCamera(void) { return m_pCamera; }
-
+	static CDestArrow *GetDestArrow(void) { return m_pDestArrow; }
 private:
+
+	void ItemUpdate(void);
 
 	static CLight *m_pLight;					//
 	static C3DPlayer *m_p3DPlayer;
@@ -93,6 +97,7 @@ private:
 	static CPlant *m_apPlant[INT_VALUE::MAX_SIZE];
 	static CLandMark *m_apLandMark[INT_VALUE::MAX_SIZE];
 	static CDestArrowX *m_pDestArrowX;
+	static CDestArrow *m_pDestArrow;
 	//
 	static Ccamera *m_pCamera;					//
 

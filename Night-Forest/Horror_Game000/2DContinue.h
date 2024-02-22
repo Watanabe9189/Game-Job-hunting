@@ -49,8 +49,6 @@ public:
 	void Draw(void)		override;
 	void SetVtx(void)	override {}
 
-	CObject2D *GetObject2D(void)override { return NULL; }
-
 	//Œ»İ‚Ì‘I‘ğˆ
 	int GetSelect(void) { return m_nSelect; }
 

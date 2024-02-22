@@ -23,7 +23,7 @@ int CItem::m_nNumAll = NULL;									//数
 int CItem::m_NumCollect = NULL;									//数
 int CItem::m_MaxNum = NULL;										//最大の数
 int CItem::m_nLeft = NULL;
-
+bool CItem::m_bFlag = false;
 //<==========================================================
 //
 //<==========================================================
@@ -41,6 +41,7 @@ CItem::CItem(int nPriority)
 
 	m_bGet = false;
 	m_bAppro = false;
+	m_bSealed = false;
 
 	m_pPlayer = nullptr;
 }
@@ -54,6 +55,7 @@ CItem::~CItem()
 	m_MaxNum = INITIAL_INT;
 	m_NumCollect = INITIAL_INT;
 	m_nLeft = INITIAL_INT;
+	m_bFlag = false;
 }
 //<==========================================================
 //単体での読み込み
@@ -116,6 +118,13 @@ CItem *CItem::RandCreate(CItem *apItem[MAX_OBJECT], int nNum)
 
 		//アイテムタイプに設定
 		apItem[nCnt]->SetType3D(TYPE_3D::TYPE_ITEM);
+
+		//最大の手前まで行っていれば
+		if (nCnt == nNum - 1)
+		{
+			//封印状態をOFFにする
+			apItem[nCnt]->m_bSealed = true;
+		}
 
 		//<******************************************
 		//壁の破棄
@@ -186,15 +195,35 @@ void CItem::Collid(void)
 	{
 		m_bAppro = true;
 
-		//Lボタンが押された+ゲット状態がfalseだったら
-		if (CManager::GetKeyboard()->bGetTrigger(DIK_SPACE) || CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_B, 0) && !m_bGet)
+		//封印状態では無ければ
+		if (!m_bSealed)
 		{
-			//ゲットした判定にする
-			/*C3DParticle::Create(m_pos, D3DXCOLOR(1.0f, 0.5f, 0.1f, 1.0f), C3DParticle::TYPE::TYPE_TEST);*/
-			m_NumCollect++;
-			m_nLeft--;
-			CManager::GetSound()->PlaySound(CSound::LABEL::LABEL_SE_ITEMGET);
-			m_bGet = true;
+			//Lボタンが押された+ゲット状態がfalseだったら
+			if (CManager::GetKeyboard()->bGetTrigger(DIK_SPACE) || CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_B, 0) && !m_bGet)
+			{
+				//ゲットした判定にする
+				/*C3DParticle::Create(m_pos, D3DXCOLOR(1.0f, 0.5f, 0.1f, 1.0f), C3DParticle::TYPE::TYPE_TEST);*/
+				m_NumCollect++;
+				m_nLeft--;
+				CManager::GetSound()->PlaySound(CSound::LABEL::LABEL_SE_ITEMGET);
+				m_bGet = true;
+			}
+		}
+		//封印されていたら
+		else
+		{
+			if (m_pPlayer->GetUnsealed()&&CManager::GetKeyboard()->bGetTrigger(DIK_SPACE) ||
+				CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_B, 0))
+			{
+				CManager::GetSound()->PlaySound(CSound::LABEL_SE_UNSEALED);
+				m_bSealed = false;
+			}
+			//
+			if (!m_bFlag)
+			{
+				CScene::GetGame()->GetDestArrow()->SetFindtrue();
+				m_bFlag = true;
+			}
 		}
 	}
 	//当たっていなければ

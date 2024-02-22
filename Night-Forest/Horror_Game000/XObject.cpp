@@ -135,6 +135,8 @@ CXObject::DataModel CXObject::BindModel(const char *pFileName, const bool bMatCh
 
 					assert((m_asModel.pMat =
 						(D3DXMATERIAL*)m_asModel.pBuffMat->GetBufferPointer()) != nullptr);
+
+					m_asModel.pOriginMat = m_asaveModel[nCnt].pOriginMat;
 					//<==========================================
 					//
 					//<==========================================
@@ -179,6 +181,8 @@ void CXObject::LoadModel(void)
 
 	assert((m_asaveModel[m_nNumAll].pMat =
 		(D3DXMATERIAL*)m_asaveModel[m_nNumAll].pBuffMat->GetBufferPointer()) != nullptr);
+
+	m_asaveModel[m_nNumAll].pOriginMat = m_asaveModel[m_nNumAll].pMat;
 
 	//’¸“_”•ªŒJ‚è•Ô‚µ
 	for (DWORD nCntMat = 0; nCntMat < m_asaveModel[m_nNumAll].dwNumMat; nCntMat++)

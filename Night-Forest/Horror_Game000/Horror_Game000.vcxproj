@@ -160,6 +160,7 @@
     <ClCompile Include="2DSelect.cpp" />
     <ClCompile Include="3DEffect.cpp" />
     <ClCompile Include="3DEnemy.cpp" />
+    <ClCompile Include="3DFont.cpp" />
     <ClCompile Include="3DParticle.cpp" />
     <ClCompile Include="3DPlayer.cpp" />
     <ClCompile Include="BilB.cpp" />
@@ -169,6 +170,7 @@
     <ClCompile Include="Cover.cpp" />
     <ClCompile Include="DebugProc.cpp" />
     <ClCompile Include="DestArrow.cpp" />
+    <ClCompile Include="DestArrow2D.cpp" />
     <ClCompile Include="DestArrowX.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="Field.cpp" />
@@ -208,6 +210,7 @@
     <ClInclude Include="2DSelect.h" />
     <ClInclude Include="3DEffect.h" />
     <ClInclude Include="3DEnemy.h" />
+    <ClInclude Include="3DFont.h" />
     <ClInclude Include="3DParticle.h" />
     <ClInclude Include="3DPlayer.h" />
     <ClInclude Include="BilB.h" />
@@ -217,6 +220,7 @@
     <ClInclude Include="Cover.h" />
     <ClInclude Include="DebugProc.h" />
     <ClInclude Include="DestArrow.h" />
+    <ClInclude Include="DestArrow2D.h" />
     <ClInclude Include="DestArrowX.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="Field.h" />

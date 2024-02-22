@@ -28,8 +28,6 @@ public:
 	void Draw(void)		override {}
 	void SetVtx(void)	override {}
 
-	CObject2D *GetObject2D(void)override { return NULL; }
-
 private:
 
 	static LPDIRECT3DTEXTURE9	m_apTexture[TYPE_MAX];		//テクスチャへのポインタ

@@ -85,6 +85,8 @@ HRESULT CTitle::Init(void)
 
 	m_pSelect = C2DSelect::Create(SELECT_POS, SELECT_MAX);
 
+	//m_pMeshPolygon = CMeshPolygon::Create(NULL, D3DXVECTOR3(0.0f, 10.0f, 0.0f), 50.0f, 50);
+
 	//テクスチャの初期化
 	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); nCnt++)
 	{

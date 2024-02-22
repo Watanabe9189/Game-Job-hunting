@@ -36,6 +36,7 @@ public:
 		LPD3DXBUFFER		pBuffMat;					//マテリアルへのポインタ
 		DWORD				dwNumMat;					//マテリアルの数
 		D3DXMATERIAL		*pMat;
+		D3DXMATERIAL		*pOriginMat;
 
 		//頂点情報関連
 		int					nNumVtx;					//頂点数
@@ -71,7 +72,6 @@ public:
 	//今回使用しないオーバーロードメンバ関数
 	//<============================================
 	void Update(void) { return; }
-	CObject2D *GetObject2D(void) { return NULL; }
 	void SetVtx(void) { return; }
 	//<====================================================================================
 	//

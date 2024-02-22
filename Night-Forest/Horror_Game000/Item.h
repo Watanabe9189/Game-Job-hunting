@@ -56,12 +56,15 @@ public:
 
 	bool GetAppro(void) { return m_bAppro; }
 	bool bGet(void) { return m_bGet; }
+	bool bGetSealed(void) { return m_bSealed; }
 
 	static int GetNum(void) { return m_nNumAll; }
 	static int GetMax(void) { return m_MaxNum; }
 	static int GetNumCollect(void) { return m_NumCollect; }
 	static void SetNumCollect(const int nNumCollect) {m_NumCollect = nNumCollect;}
 	static int GetNumLeft(void) { return m_nLeft; }
+
+	static bool bGetFlag(void) { return m_bFlag; }
 
 private:
 
@@ -80,7 +83,9 @@ private:
 	static const char*			m_acFilename[TYPE::TYPE_MAX];				//ƒtƒ@ƒCƒ‹–¼
 
 	bool m_bGet;
+	bool m_bSealed;		//••ˆó‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
 	bool m_bAppro;
+	static bool m_bFlag;
 	TYPE m_eType;
 
 	C3DPlayer *m_pPlayer;

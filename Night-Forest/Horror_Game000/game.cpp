@@ -38,6 +38,7 @@ C2DChar *CGame::m_ap2DChar[CGame::CHAR2D::CHAR2D_MAX] = {};
 CPlant *CGame::m_apPlant[INT_VALUE::MAX_SIZE] = {};
 CLandMark *CGame::m_apLandMark[INT_VALUE::MAX_SIZE] = {};
 CDestArrowX *CGame::m_pDestArrowX = nullptr;
+CDestArrow *CGame::m_pDestArrow = nullptr;
 Ccamera *CGame::m_pCamera = nullptr;
 
 namespace
@@ -120,6 +121,11 @@ HRESULT CGame::Init(void)
 	m_ap2DChar[CHAR2D_COMEOUT] = C2DChar::Create(D3DXVECTOR2(1150.0f, 675.0f),
 		D3DXVECTOR2(125.0f, 125.0f), C2DChar::CHAR_TYPE::CHAR_TYPE_COMEOUT_INFO, C2DChar::MOVE_FROM_NONE, false);
 
+	m_ap2DChar[CHAR2D_SEALED] = C2DChar::Create(D3DXVECTOR2(575.0f, 500.0f),
+		D3DXVECTOR2(140.0f, 120.0f), C2DChar::CHAR_TYPE::CHAR_TYPE_SEALED_INFO, C2DChar::MOVE_FROM_NONE, false);
+
+	m_pDestArrow = CDestArrow::Create();
+
 	return S_OK;
 }
 //<====================================
@@ -192,7 +198,14 @@ void CGame::Uninit(void)
 		m_pDestArrowX->Uninit();
 		m_pDestArrowX = nullptr;
 	}
-	
+	//<******************************************
+	//カバーの破棄
+	//<******************************************
+	if (m_pDestArrow != nullptr)
+	{
+		m_pDestArrow->Uninit();
+		m_pDestArrow = nullptr;
+	}
 	//<******************************************
 	//壁の破棄
 	//<******************************************
@@ -360,40 +373,7 @@ void CGame::Update(void)
 			m_nWaitTime++;
 		}
 	}
-
-	//アイテムの数分回す
-	for (int nCnt = 0; nCnt < CItem::GetNum(); nCnt++)
-	{
-		//アイテムを取得していなければ
-		if (!m_apItem[nCnt]->bGet())
-		{
-			//近づいていたら
-			if (m_apItem[nCnt]->GetAppro())
-			{
-				//表示をさせ、処理から抜ける
-				m_ap2DChar[CHAR2D_PICKUP]->SetDrawtrue();
-				break;
-			}
-			//離れていたら
-			else if (!m_apItem[nCnt]->GetAppro())
-			{
-				//表示をさせない
-				m_ap2DChar[CHAR2D_PICKUP]->SetDrawfalse();
-			}
-		}
-	}
-	
-	if (m_ap2DChar[CHAR2D_HIDE]->GetbDraw()|| m_ap2DChar[CHAR2D_COMEOUT]->GetbDraw())
-	{
-		m_ap2DChar[CHAR2D::CHAR2D_PICKUP]->SetPosition(D3DXVECTOR2(1080.0f,
-			m_ap2DChar[CHAR2D_HIDE]->GetPosition().y - 140.0f));
-	}
-	if (!m_ap2DChar[CHAR2D_HIDE]->GetbDraw() &&!m_ap2DChar[CHAR2D_COMEOUT]->GetbDraw())
-	{
-		m_ap2DChar[CHAR2D::CHAR2D_PICKUP]->SetPosition(D3DXVECTOR2(1080.0f,
-			m_ap2DChar[CHAR2D_HIDE]->GetPosition().y));
-	}
-
+	ItemUpdate();
 #ifdef _DEBUG
 
 	//<========================================================
@@ -426,4 +406,69 @@ void CGame::Draw(void)
 	//ここに処理を書く必要はない
 	//<***************************************************
 	m_pCamera->SetCamera();
+}
+//<====================================
+//アイテム関連の更新処理
+//<====================================
+void CGame::ItemUpdate(void)
+{
+	//アイテムの数分回す
+	for (int nCnt = 0; nCnt < CItem::GetNum(); nCnt++)
+	{
+		//アイテムを取得していなければ
+		if (!m_apItem[nCnt]->bGet())
+		{
+			//近づいていたら
+			if (m_apItem[nCnt]->GetAppro())
+			{
+				//近づいていたら
+				if (m_apItem[nCnt]->bGetSealed())
+				{
+					//表示をさせ、処理から抜ける
+					m_ap2DChar[CHAR2D_SEALED]->SetDrawtrue();
+					break;
+				}
+				else
+				{
+					//表示をさせ、処理から抜ける
+					m_ap2DChar[CHAR2D_PICKUP]->SetDrawtrue();
+					break;
+				}
+			}
+			//離れていたら
+			else if (!m_apItem[nCnt]->GetAppro())
+			{
+				//表示をさせない
+				m_ap2DChar[CHAR2D_PICKUP]->SetDrawfalse();
+				//表示をさせない
+				m_ap2DChar[CHAR2D_SEALED]->SetDrawfalse();
+			}
+		}
+		//近づいていたら
+		if (!m_apItem[nCnt]->bGetSealed())
+		{
+			//表示をさせない
+			m_ap2DChar[CHAR2D_SEALED]->SetDrawfalse();
+		}
+	}
+
+	if (m_ap2DChar[CHAR2D_HIDE]->GetbDraw() || m_ap2DChar[CHAR2D_COMEOUT]->GetbDraw())
+	{
+		m_ap2DChar[CHAR2D::CHAR2D_PICKUP]->SetPosition(D3DXVECTOR2(1080.0f,
+			m_ap2DChar[CHAR2D_HIDE]->GetPosition().y - 140.0f));
+	}
+	if (!m_ap2DChar[CHAR2D_HIDE]->GetbDraw() && !m_ap2DChar[CHAR2D_COMEOUT]->GetbDraw())
+	{
+		m_ap2DChar[CHAR2D::CHAR2D_PICKUP]->SetPosition(D3DXVECTOR2(1080.0f,
+			m_ap2DChar[CHAR2D_HIDE]->GetPosition().y));
+	}
+	//
+	if (m_p3DPlayer->GetUnsealed())
+	{
+		if (m_ap2DChar[CHAR2D_FOUND] == nullptr)
+		{
+			m_ap2DChar[CHAR2D_FOUND] = C2DChar::Create(D3DXVECTOR2(600.0f, 425.0f),
+				D3DXVECTOR2(200.0f, 200.0f), C2DChar::CHAR_TYPE::CHAR_TYPE_FOUND_INFO, C2DChar::MOVE_FROM_LEFT, true);
+		}
+	}
 }

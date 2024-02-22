@@ -14,6 +14,12 @@ public:
 		TYPE_TENT,
 		TYPE_MAX
 	};
+	enum IMPORTANCE
+	{
+		IMPORTANCE_NONE = 0,
+		IMPORTANCE_HIGH,
+		IMPORTANCE_MAX
+	};
 
 	CBuilding();
 	~CBuilding();
@@ -33,6 +39,8 @@ public:
 	D3DXVECTOR3 GetHideRad(void) { return m_rHideRad; }
 	static int GetNum(void) { return m_nNumAll; }
 
+	IMPORTANCE GetImportance(void) { return m_eImportance; }
+
 private:
 
 	//<==============
@@ -51,6 +59,7 @@ private:
 	DataModel m_sModel;
 
 	TYPE m_eType;
+	IMPORTANCE m_eImportance;
 
 };
 

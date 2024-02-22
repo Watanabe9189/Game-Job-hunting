@@ -46,9 +46,6 @@ private:
 	bool m_bFind;
 	int m_nNum;
 
-	CItem *m_apItem[INT_VALUE::MAX_SIZE];
-	C3DPlayer *m_p3DPlayer;
-
 	DataModel m_sModel;
 
 };

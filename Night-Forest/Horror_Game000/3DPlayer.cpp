@@ -46,6 +46,7 @@ C3DPlayer::C3DPlayer(int nPriority)
 	m_bJump = false;
 	m_bDash = false;
 	m_bMove = false;
+	m_bUnsealed = false;
 	m_rRad = INIT_VECTOR;
 	m_fMoveValue = INITIAL_FLOAT;
 	m_sState = STATE_NONE;
@@ -294,7 +295,6 @@ void C3DPlayer::Hide(void)
 			//隠れ状態では無ければ
 			else if (m_sState == STATE_NONE)
 			{
-
 				//表示をさせる
 				CManager::GetScene()->GetGame()->Get2DChar(CGame::CHAR2D_HIDE)->SetDrawtrue();
 
@@ -306,10 +306,21 @@ void C3DPlayer::Hide(void)
 			if (CManager::GetKeyboard()->bGetTrigger(DIK_SPACE) == true
 				|| CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_B, 0))
 			{
-			
 				//ステートが何もなしなら隠れ状態になり、隠れ状態なら何もなしにする
 				m_sState == STATE_NONE ? m_sState = STATE_HIDE : m_sState = STATE_NONE;
 				CManager::GetSound()->PlaySound(CSound::LABEL_SE_HIDE);
+
+				if (CManager::GetScene()->GetGame()->GetBuil(nCnt)->
+					GetImportance()==CBuilding::IMPORTANCE_HIGH&&!m_bUnsealed)
+				{
+					//フラグがたっていたら
+					if (CItem::bGetFlag())
+					{
+						CScene::GetGame()->GetDestArrow()->SetFindfalse();
+						CManager::GetSound()->PlaySound(CSound::LABEL_SE_FOUND);
+						m_bUnsealed = true;
+					}
+				}
 			}
 
 			break;

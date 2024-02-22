@@ -57,8 +57,6 @@ public:
 	void Draw(void)		override;
 	void SetVtx(void)	override;
 
-	CObject2D *GetObject2D(void)override { return NULL; }
-
 	void Add(const int nValue);
 	void SetNum(const int nNum);
 	static void SetFixed(const int nFixed) 

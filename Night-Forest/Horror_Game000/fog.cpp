@@ -38,7 +38,8 @@ CFog::~CFog()
 //<========================================================
 //
 //<========================================================
-CFog *CFog::Create(const D3DXCOLOR Col, const D3DFOGMODE Mode, const TYPE Type, const float fDensity)
+CFog *CFog::Create(const D3DXCOLOR Col, const D3DFOGMODE Mode,
+	const TYPE Type, const float fDensity)
 {
 	CFog *pFog = new CFog;
 
@@ -124,7 +125,6 @@ void CFog::SetupVertexFog(DWORD Color, DWORD Mode, BOOL UseRange)
 	{
 		CManager::GetRenderer()->GetDevice()->SetRenderState(D3DRS_RANGEFOGENABLE, TRUE);
 	}
-
 }
 //<===========================================
 //ピクセルフォグの設定

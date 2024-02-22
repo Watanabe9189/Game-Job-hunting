@@ -71,6 +71,9 @@ public:
 	D3DXVECTOR3 m_rot;		//Œü‚«
 	float m_fDistance;		//‹——£
 	bool m_bFollow;			//’Ç”ö‚·‚é‚©‚Ç‚¤‚©
+	int m_nShakeCount;
+
+	void Shake(void);
 
 	//‚±‚ÌŠÖ”ŒÀ’è‚Ìƒƒ“ƒo•Ï”
 private:

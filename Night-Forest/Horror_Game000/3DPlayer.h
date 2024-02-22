@@ -55,6 +55,8 @@ public:
 
 	void SetStateHide(void) { m_sState == STATE_NONE ? m_sState = STATE_HIDE : m_sState = STATE_NONE; ; }
 
+	bool GetUnsealed(void) { return m_bUnsealed; }
+
 	void Controll(void);
 
 private:
@@ -89,8 +91,8 @@ private:
 	bool m_bJump;
 	bool m_bDash;
 	bool m_bMove;
+	bool m_bUnsealed;
 
 	DataModel m_sModel;
-
 };
 #endif

@@ -15,13 +15,13 @@ namespace
 	const float SEARCH_MOVE				= 0.0045f;	//探索している時の移動量
 	const float CHASE_VALUE				= 0.012f;	//追跡している時の移動値
 	const float FACE_VALUE				= 0.075f;	//高速移動の時の移動量
-	const float ALPHA_VALUE				= 0.09f;	//透明度の値
+	const float ALPHA_VALUE				= 0.08f;	//透明度の値
 	const float ALPHA_VALUE_HIGH		= 0.005f;	//高速型の透明度の値
 	const float DOUBLE_VALUE			= 1.7f;		//倍にする値
 	const float ROTATE_VALUE			= 0.1f;		//回転値
 
-	const float RADIUSE_VALUE_NORMAL	= 650.0f;	//通常型の半径の値
-	const float RADIUSE_VALUE_INVISIBLE = 500.0f;	//透明型の半径の値
+	const float RADIUSE_VALUE_NORMAL	= 800.0f;	//通常型の半径の値
+	const float RADIUSE_VALUE_INVISIBLE = 700.0f;	//透明型の半径の値
 
 	const int	MAX_INTERVAL			= 500;		//間隔の最大値
 
@@ -172,13 +172,6 @@ void C3DEnemy::Uninit(void)
 	CXObject::Uninit();
 
 	//サウンド破棄
-	if (m_pPlayer != nullptr)
-	{
-		//破棄
-		m_pPlayer->Uninit();
-		m_pPlayer = nullptr;
-	}
-	//サウンド破棄
 	if (m_pSound != nullptr)
 	{
 		//破棄
@@ -198,38 +191,38 @@ void C3DEnemy::Update(void)
 		//まだゲームが終わっていなければ
 		if (CManager::GetScene()->GetGame()->GetGame()->GetState() == CGame::STATE_NONE)
 		{
-			m_pPlayer = CScene::GetGame()->Get3DPlayer();
-			//<***********************************
-			//それぞれの情報の取得
-			//<***********************************
-			m_pos = GetPosition();
-			m_rot = GetRotation();
-			m_move = GetMove();
+			//m_pPlayer = CScene::GetGame()->Get3DPlayer();
+			////<***********************************
+			////それぞれの情報の取得
+			////<***********************************
+			//m_pos = GetPosition();
+			//m_rot = GetRotation();
+			//m_move = GetMove();
 
-			//加算していく
-			m_pos += m_move;
+			////加算していく
+			//m_pos += m_move;
 
-			//CManager::GetDebugProc()->Print("[位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_pos.x, m_pos.y, m_pos.z);
-			//CManager::GetDebugProc()->Print("[距離]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_rDis.x, m_rDis.y, m_rDis.z);
-			//CManager::GetDebugProc()->Print("[目的の位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_rDestPos.x, m_rDestPos.y, m_rDestPos.z);
-			//CManager::GetDebugProc()->Print("[前目的の位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_fFrontDest.x, m_fFrontDest.y, m_fFrontDest.z);
-			//CManager::GetDebugProc()->Print("[あと目的の位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_fBackDest.x, m_fBackDest.y, m_fBackDest.z);
+			////CManager::GetDebugProc()->Print("[位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_pos.x, m_pos.y, m_pos.z);
+			////CManager::GetDebugProc()->Print("[距離]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_rDis.x, m_rDis.y, m_rDis.z);
+			////CManager::GetDebugProc()->Print("[目的の位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_rDestPos.x, m_rDestPos.y, m_rDestPos.z);
+			////CManager::GetDebugProc()->Print("[前目的の位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_fFrontDest.x, m_fFrontDest.y, m_fFrontDest.z);
+			////CManager::GetDebugProc()->Print("[あと目的の位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_fBackDest.x, m_fBackDest.y, m_fBackDest.z);
 
-			//CManager::GetDebugProc()->Print("[今のインターバル]：%d\n", m_nInterval);
-			//CManager::GetDebugProc()->Print("[今のランダムインターバル]：%d\n", m_nRandInter);
-			//CManager::GetDebugProc()->Print("[今のステート]：%d\n", m_sState);
-			CManager::GetDebugProc()->Print("[敵タイプ]：%d\n", m_eType);
-			//CManager::GetDebugProc()->Print("[バッファ]：%d\n", m_sModel.pBuffMat);
+			////CManager::GetDebugProc()->Print("[今のインターバル]：%d\n", m_nInterval);
+			////CManager::GetDebugProc()->Print("[今のランダムインターバル]：%d\n", m_nRandInter);
+			////CManager::GetDebugProc()->Print("[今のステート]：%d\n", m_sState);
+			//CManager::GetDebugProc()->Print("[敵タイプ]：%d\n", m_eType);
+			////CManager::GetDebugProc()->Print("[バッファ]：%d\n", m_sModel.pBuffMat);
 
-			MoveMent();
+			//MoveMent();
 
-			ChangeRot();
+			//ChangeRot();
 
-			m_move.x += (0.0f - m_move.x) *0.1f;
-			m_move.z += (0.0f - m_move.z) *0.1f;
+			//m_move.x += (0.0f - m_move.x) *0.1f;
+			//m_move.z += (0.0f - m_move.z) *0.1f;
 
-			//ベクトルの三要素の設定
-			SetVector3(m_pos, m_rot, m_move);
+			////ベクトルの三要素の設定
+			//SetVector3(m_pos, m_rot, m_move);
 		}
 	}
 	else
@@ -298,6 +291,7 @@ void C3DEnemy::MoveMent(void)
 					{
 						m_pos = m_pPlayer->GetPosition();
 					}
+					CScene::GetGame()->GetCamera()->Shake();
 				}
 
 				//初期化する

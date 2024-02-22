@@ -41,6 +41,8 @@ CSound::INFO CSound::m_aSoundInfo[LABEL_MAX] =
 	{ "data/SE/Aura000.wav",LABEL::LABEL_SE_ESCAPED,TYPE_SE },//プレイヤーの弾発射音
 	{ "data/SE/crude_laughter.wav",LABEL::LABEL_SE_NOTICED1,TYPE_SE },//プレイヤーの弾発射音
 	{ "data/SE/wind_monster3.wav",LABEL::LABEL_SE_NOTICED2,TYPE_SE },//プレイヤーの弾発射音
+	{ "data/SE/se_mysterious2.wav",LABEL::LABEL_SE_FOUND,TYPE_SE },//プレイヤーの弾発射音
+	{ "data/SE/se_mysterious3.wav",LABEL::LABEL_SE_UNSEALED,TYPE_SE },//プレイヤーの弾発射音
 };
 
 float CSound::m_fMasterVolume = START_VOL_BGM;
@@ -659,3 +661,12 @@ void CSound::SetDistance(const D3DXVECTOR3 Pos, const int nType, const LABEL Lab
 		m_VolumeType[Label].BGMvolume = 0.0f;
 	}
 }
+//<=============================================================================
+//距離による音量調整
+//<=============================================================================
+//bool CSound::CheckSoundStop(const LABEL Label)
+//{
+//	bool bStoped = false;
+//
+//	if(m_)
+//}

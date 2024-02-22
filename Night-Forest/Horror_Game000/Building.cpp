@@ -4,6 +4,8 @@
 //Author:Kazuki Watanabe
 //<======================================================
 #include "Building.h"
+#include "Item.h"
+#include "game.h"
 
 //<*******************************************
 //静的メンバ変数の宣言
@@ -35,6 +37,7 @@ CBuilding::CBuilding()
 	m_rHideRad = INIT_VECTOR;
 
 	m_sModel = {};
+	m_eImportance = IMPORTANCE_NONE;
 
 }
 //<==========================================
@@ -51,7 +54,7 @@ HRESULT CBuilding::Init(void)
 {
 	//隠れられる範囲を設定
 	m_rHideRad = D3DXVECTOR3(150.0f, 150.0f, 150.0f);
-	m_sModel = BindModel(m_acFilename[m_eType]);
+	m_sModel = BindModel(m_acFilename[m_eType],true);
 
 	//もし初期化に失敗したら
 	if (FAILED(CXObject::Init()))
@@ -69,6 +72,28 @@ void CBuilding::Update(void)
 	//情報取得
 	m_pos = GetPosition();
 	m_rot = GetRotation();
+
+	//フラグがたっていたら
+	if (CItem::bGetFlag()&&m_eImportance == IMPORTANCE_HIGH&&!CScene::GetGame()->Get3DPlayer()->GetUnsealed())
+	{
+		//頂点数分繰り返し
+		for (int nCntMaxMat = 0; nCntMaxMat < (int)m_sModel.dwNumMat; nCntMaxMat++)
+		{
+			m_sModel.pMat[nCntMaxMat].MatD3D.Diffuse = D3DXCOLOR(2.0f,2.0f,2.0f,1.0f);
+			m_sModel.pMat[nCntMaxMat].MatD3D.Ambient = D3DXCOLOR(2.0f,2.0f,2.0f,1.0f);
+		}
+	}
+	//
+	else if(CItem::bGetFlag() && m_eImportance == IMPORTANCE_HIGH && 
+		CScene::GetGame()->Get3DPlayer()->GetUnsealed())
+	{
+		//頂点数分繰り返し
+		for (int nCntMaxMat = 0; nCntMaxMat < (int)m_sModel.dwNumMat; nCntMaxMat++)
+		{
+			m_sModel.pMat[nCntMaxMat] = m_sModel.pOriginMat[nCntMaxMat];
+			m_sModel.pMat[nCntMaxMat] = m_sModel.pOriginMat[nCntMaxMat];
+		}
+	}
 
 	//情報設定
 	SetVector3(m_pos, m_rot, {});
@@ -213,6 +238,11 @@ CBuilding *CBuilding::RandCreate(CBuilding *apBuilding[MAX_OBJECT], const int nN
 
 		//
 		apBuilding[nCnt]->SetType3D(TYPE_3D::TYPE_BUILDING);
+
+		if (nCnt == nNum - 1)
+		{
+			apBuilding[nCnt]->m_eImportance = IMPORTANCE_HIGH;
+		}
 
 		//建物の数分回す
 		for (int nCntBefore = -1; nCntBefore < m_nNumAll-1; nCntBefore++)

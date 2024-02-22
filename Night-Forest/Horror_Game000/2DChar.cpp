@@ -6,6 +6,7 @@
 #include "2DChar.h"
 #include "Texture.h"
 #include "manager.h"
+#include "game.h"
 
 int C2DChar::m_nNumAll = INITIAL_INT;
 
@@ -16,8 +17,10 @@ const char			*C2DChar::m_acFilename[CHAR_TYPE_MAX] =
 	"data/TEXTURE/HORROR_TITLE.png",						//目的
 	"data/TEXTURE/HORROR_INFO000.png",
 	"data/TEXTURE/HORROR_INFO002.png",
-	"data/TEXTURE/HORROR_INFO003.png"
-
+	"data/TEXTURE/HORROR_INFO003.png",
+	"data/TEXTURE/HORROR_INFO005.png",
+	"data/TEXTURE/HORROR_INFO006.png",
+	"data/TEXTURE/HORROR_INFO007.png",
 };
 //<======================================
 //
@@ -81,7 +84,7 @@ C2DChar *C2DChar::Create(const D3DXVECTOR2 pos, const D3DXVECTOR2 Size, const in
 		p2DChar->m_posDest[0].y = pos.y;
 
 		//位置の設定
-		p2DChar->SetPosition(pos);
+		p2DChar->SetPosition(D3DXVECTOR2(pos.x, -100.0f));
 
 		break;
 
@@ -92,7 +95,7 @@ C2DChar *C2DChar::Create(const D3DXVECTOR2 pos, const D3DXVECTOR2 Size, const in
 		p2DChar->m_posDest[0].y = pos.y;
 
 		//位置の設定
-		p2DChar->SetPosition(pos);
+		p2DChar->SetPosition(D3DXVECTOR2(pos.x, 1000.0f));
 
 		break;
 
@@ -103,18 +106,18 @@ C2DChar *C2DChar::Create(const D3DXVECTOR2 pos, const D3DXVECTOR2 Size, const in
 		p2DChar->m_posDest[0].x = pos.x;
 
 		//位置の設定
-		p2DChar->SetPosition(pos);
+		p2DChar->SetPosition(D3DXVECTOR2(1280.0f, pos.y));
 
-		break;					   
-				
+		break;
+
 		//左からくる場合
-	case MOVE_FROM_LEFT:		   
-				
+	case MOVE_FROM_LEFT:
+
 		//目的のX座標を設定する
 		p2DChar->m_posDest[0].x = pos.x;
 
 		//位置の設定
-		p2DChar->SetPosition(pos);
+		p2DChar->SetPosition(D3DXVECTOR2(-300.0f, pos.y));
 
 		break;
 	}
@@ -129,6 +132,8 @@ C2DChar *C2DChar::Create(const D3DXVECTOR2 pos, const D3DXVECTOR2 Size, const in
 	}
 
 	p2DChar->BindTexture(m_apTexture[CType]);
+
+	p2DChar->m_eCType = CType;
 
 	return p2DChar;
 }
@@ -167,6 +172,15 @@ void C2DChar::Update(void)
 	//移動方法によって通るか
 	MoveVer();
 	MoveSide();
+
+	if (m_eCType == CHAR_TYPE_SEALED_INFO)
+	{
+		if (CScene::GetGame()->Get3DPlayer()->GetUnsealed())
+		{
+			//
+			BindTexture(m_apTexture[CHAR_TYPE_UNSEALED_INFO]);
+		}
+	}
 
 	SetPosition(m_pos);
 }

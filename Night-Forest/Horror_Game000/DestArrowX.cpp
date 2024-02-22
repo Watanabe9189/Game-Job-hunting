@@ -22,13 +22,6 @@ CDestArrowX::CDestArrowX(int nPriority)
 
 	m_bFind = false;
 
-	//初期化
-	for (int nCnt = 0; nCnt < INT_VALUE::MAX_SIZE; nCnt++)
-	{
-		m_apItem[nCnt] = nullptr;
-	}
-
-	m_p3DPlayer = nullptr;
 	m_nNum = INITIAL_INT;
 }
 //<=============================
@@ -66,33 +59,12 @@ HRESULT CDestArrowX::Init(void)
 void CDestArrowX::Uninit(void)
 {
 	CXObject::Uninit();
-
-	if (m_p3DPlayer != nullptr)
-	{
-		m_p3DPlayer->Uninit();
-		m_p3DPlayer = nullptr;
-	}
-	for (int nCnt = 0; nCnt < CItem::GetNum(); nCnt++)
-	{
-		if (m_apItem[nCnt] != nullptr)
-		{
-			m_apItem[nCnt]->Uninit();
-			m_apItem[nCnt] = nullptr;
-		}
-	}
 }
 //<=============================
 //
 //<=============================
 void CDestArrowX::Update(void)
 {
-	m_p3DPlayer = CManager::GetScene()->GetGame()->Get3DPlayer();
-
-	for (int nCnt = 0; nCnt < CItem::GetNum(); nCnt++)
-	{
-		m_apItem[nCnt] = CManager::GetScene()->GetGame()->GetItem(nCnt);
-	}
-
 	RotateToDest();
 
 	//情報の取得
@@ -124,33 +96,36 @@ void CDestArrowX::RotateToDest(void)
 	//アイテムの数分繰り返す
 	for (int nCnt = 0; nCnt < CItem::GetNum(); nCnt++)
 	{
-		//見つかっていて、見ているアイテムがゲットされていなければ
-		if (m_bFind == false && !m_apItem[nCnt]->bGet())
+		if (!CManager::GetScene()->GetGame()->GetItem(nCnt)->bGetSealed())
 		{
-			//当たっていたら
-			if (Collision::CollidAll(m_p3DPlayer->GetPosition(),
-				D3DXVECTOR3(MAX_SERACH_RAD, MAX_SERACH_RAD, MAX_SERACH_RAD), m_apItem[nCnt]->GetPosition(),
-				m_apItem[nCnt]->GetModel().vtxMax, m_apItem[nCnt]->GetModel().vtxMin))
+			//見つかっていて、見ているアイテムがゲットされていなければ
+			if (m_bFind == false && !CManager::GetScene()->GetGame()->GetItem(nCnt)->bGet())
 			{
-				//見つかっている状態にし、見つかったアイテムの番号を保存する
-				m_bFind = true;
-				m_nNum = nCnt;
-				break;
+				//当たっていたら
+				if (Collision::CollidAll(CManager::GetScene()->GetGame()->Get3DPlayer()->GetPosition(),
+					D3DXVECTOR3(MAX_SERACH_RAD, MAX_SERACH_RAD, MAX_SERACH_RAD), CManager::GetScene()->GetGame()->GetItem(nCnt)->GetPosition(),
+					CManager::GetScene()->GetGame()->GetItem(nCnt)->GetModel().vtxMax, CManager::GetScene()->GetGame()->GetItem(nCnt)->GetModel().vtxMin))
+				{
+					//見つかっている状態にし、見つかったアイテムの番号を保存する
+					m_bFind = true;
+					m_nNum = nCnt;
+					break;
+				}
 			}
 		}
 	}
 	//見つかっていて、見ているアイテムがゲットされたら
-	if (m_bFind == true && m_apItem[m_nNum]->bGet())
+	if (m_bFind == true && CManager::GetScene()->GetGame()->GetItem(m_nNum)->bGet())
 	{
 		//見つかっていない状態にする
 		m_bFind = false;
 	}
 	//見つかっていて、見ているアイテムがゲットされたら
-	if (m_bFind == true && !m_apItem[m_nNum]->bGet())
+	if (m_bFind == true && !CManager::GetScene()->GetGame()->GetItem(m_nNum)->bGet())
 	{
 		//目的地までの距離
-		m_rDis = D3DXVECTOR3(m_p3DPlayer->GetPosition().x - m_apItem[m_nNum]->GetPosition().x,
-			m_p3DPlayer->GetPosition().y - m_apItem[m_nNum]->GetPosition().y,
-			m_p3DPlayer->GetPosition().z - m_apItem[m_nNum]->GetPosition().z);
+		m_rDis = D3DXVECTOR3(CManager::GetScene()->GetGame()->Get3DPlayer()->GetPosition().x - CManager::GetScene()->GetGame()->GetItem(m_nNum)->GetPosition().x,
+			CManager::GetScene()->GetGame()->Get3DPlayer()->GetPosition().y - CManager::GetScene()->GetGame()->GetItem(m_nNum)->GetPosition().y,
+			CManager::GetScene()->GetGame()->Get3DPlayer()->GetPosition().z - CManager::GetScene()->GetGame()->GetItem(m_nNum)->GetPosition().z);
 	}
 }

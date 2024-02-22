@@ -28,7 +28,6 @@ public:
 	void Draw(void)		override { CObject3D::Draw(); }
 	void SetVtx(void)	override {}
 
-	CObject2D *GetObject2D(void)override { return NULL; }
 	static int GetNum(void) { return m_nNumAll; }
 
 private:

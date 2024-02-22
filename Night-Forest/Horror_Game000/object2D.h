@@ -59,6 +59,8 @@ public:
 	void SetDrawfalse(void) { m_bDraw = false; }	//描画のオンオフ
 	void SetDrawtrue(void) { m_bDraw = true; }	//描画のオンオフ
 
+	bool GetDraw(void) { return m_bDraw; }
+
 	//<=======================================================
 	//メンバ関数(Get系)
 	//<=======================================================

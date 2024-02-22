@@ -30,6 +30,7 @@ public:
 	void Draw(void);
 	LPDIRECT3DDEVICE9 GetDevice(void) { return m_pD3DDevice; }	//デバイスを返す
 	HWND GetHwnd(void) { return m_hWnd; }
+	LPDIRECT3DSURFACE9 GetBackBuffer(void) { return m_lpBackBuffer; }
 
 	void ScreenShot(const char *cName);
 
@@ -55,6 +56,7 @@ private:
 	bool m_bUsePix;
 	bool m_bUseStancil;
 	int m_nStencil;
+	LPDIRECT3DSURFACE9  m_lpBackBuffer;
 };
 
 #endif

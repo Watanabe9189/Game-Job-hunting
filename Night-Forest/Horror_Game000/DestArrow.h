@@ -26,11 +26,11 @@ public:
 	}
 	void SetVtx(void)	override {}
 
-	CObject2D *GetObject2D(void)override { return NULL; }
-
 	void RotateToDest(void);
 
-	void SetBool(void){ m_bFind == false ? m_bFind = true : m_bFind = false; }
+	void SetFindfalse(void) { m_bFind = false; }	//描画のオンオフ
+	void SetFindtrue(void) { m_bFind = true; }	//描画のオンオフ
+
 	bool GetFind(void) { return m_bFind; }
 
 private:

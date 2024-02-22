@@ -18,6 +18,7 @@ static const int			MAX_OBJECT = 1024;									//オブジェクトの最大数
 static const int			INITIAL_INT = 0;									//Int型の初期値
 static const float			INITIAL_FLOAT = 0.0f;								//float型の初期値
 static const D3DXVECTOR3	INIT_VECTOR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		//D3DXVECTOR3型の初期値
+static const D3DXVECTOR2	INIT_VECTOR2 = D3DXVECTOR2(0.0f, 0.0f);				//D3DXVECTOR2型の初期値
 static const D3DXCOLOR		INIT_COL = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);		//色の初期値
 
 static const float MOVE_UP	 =	(1.0f);		//上移動
@@ -203,7 +204,6 @@ public:
 #if 0
 	static CObject *GetObject(int nPriority,int nIdx) { return m_apObject[nPriority][nIdx]; };
 #endif
-	virtual CObject2D *GetObject2D(void) = 0;
 
 	//<====================================
 	//

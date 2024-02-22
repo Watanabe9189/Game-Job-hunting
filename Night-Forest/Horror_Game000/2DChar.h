@@ -24,6 +24,9 @@ public:
 		CHAR_TYPE_HIDEINFO,				//
 		CHAR_TYPE_PICKUP_INFO,
 		CHAR_TYPE_COMEOUT_INFO,
+		CHAR_TYPE_SEALED_INFO,
+		CHAR_TYPE_FOUND_INFO,
+		CHAR_TYPE_UNSEALED_INFO,
 		CHAR_TYPE_MAX
 	};
 	//<*****************************************
