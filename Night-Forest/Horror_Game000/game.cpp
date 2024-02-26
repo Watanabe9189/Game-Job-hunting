@@ -49,7 +49,6 @@ namespace
 	const D3DXVECTOR3 PLAYER_POS = D3DXVECTOR3(-4000.0f, 0.0f, 3640.0f);
 	const D3DXVECTOR2 GAUGE_POS = D3DXVECTOR2(720.0f,660.0f);
 }
-
 //<====================================
 //ゲーム画面のコンストラクタ
 //<====================================
