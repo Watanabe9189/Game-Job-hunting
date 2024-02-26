@@ -234,6 +234,7 @@ void CItem::Collid(void)
 			//
 			if (!m_bFlag)
 			{
+				CManager::GetSound()->PlaySound(CSound::LABEL_SE_NOTICED3);
 				CScene::GetGame()->GetDestArrow()->SetFindtrue();
 				m_bFlag = true;
 			}

@@ -41,6 +41,7 @@ CSound::INFO CSound::m_aSoundInfo[LABEL_MAX] =
 	{ "data/SE/Aura000.wav",LABEL::LABEL_SE_ESCAPED,TYPE_SE },//プレイヤーの弾発射音
 	{ "data/SE/crude_laughter.wav",LABEL::LABEL_SE_NOTICED1,TYPE_SE },//プレイヤーの弾発射音
 	{ "data/SE/wind_monster3.wav",LABEL::LABEL_SE_NOTICED2,TYPE_SE },//プレイヤーの弾発射音
+	{ "data/SE/se_mysterious.wav",LABEL::LABEL_SE_NOTICED3,TYPE_SE },//プレイヤーの弾発射音
 	{ "data/SE/se_mysterious2.wav",LABEL::LABEL_SE_FOUND,TYPE_SE },//プレイヤーの弾発射音
 	{ "data/SE/se_mysterious3.wav",LABEL::LABEL_SE_UNSEALED,TYPE_SE },//プレイヤーの弾発射音
 };
