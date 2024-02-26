@@ -493,8 +493,7 @@ void C3DEnemy::Search(void)
 		if (m_pPlayer->GetState() == C3DPlayer::STATE_HIDE)
 		{
 			//探索モードに移行する
-			m_sState = STATE_SEARCH;
-			SetDest(rRandDest);
+			SerachRot(rRandDest);
 		}
 
 		//透明型だったら
@@ -593,6 +592,33 @@ void C3DEnemy::SetSound(const CSound::LABEL Label, const int nMaxCount, const D3
 	else
 	{
 		m_nSoundCount++;
+	}
+}
+//<=======================================
+//ファイル読み込みを使用した生成処理
+//<=======================================
+void C3DEnemy::SerachRot(const D3DXVECTOR3 rRandPos)
+{
+	m_fMoveValue = 0.0f;
+	if (m_nInterval >= 500)
+	{
+		m_sState = STATE_SEARCH;
+		SetDest(rRandPos);
+		m_nInterval = 0;
+	}
+	if (m_nInterval >= 150
+		&& !(m_nInterval >= 350))
+	{
+		m_rot.y = Calculate::RotateToDest(m_rot.y, D3DXVECTOR3(0.0f, 1.56f, 0.0f), 0.045f);
+	}
+	if (!(m_nInterval >= 150)
+		&& m_nInterval >= 350)
+	{
+		m_rot.y = Calculate::RotateToDest(m_rot.y, D3DXVECTOR3(0.0f, 3.14f, 0.0f), 0.045f);
+	}
+	if (!(m_nInterval >= 500))
+	{
+		m_nInterval++;
 	}
 }
 //<=======================================

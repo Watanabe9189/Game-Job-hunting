@@ -91,6 +91,7 @@ private:
 	void SetDest(const D3DXVECTOR3 rDestPos);
 	void CollidPlayer(void);
 	void DeathSound(void);
+	void SerachRot(const D3DXVECTOR3 rRandPos);
 
 	//ƒƒ“ƒo•Ï”
 	D3DXVECTOR3 m_pos;		//ˆÊ’u
