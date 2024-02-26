@@ -56,6 +56,7 @@ CItem::~CItem()
 	m_NumCollect = INITIAL_INT;
 	m_nLeft = INITIAL_INT;
 	m_bFlag = false;
+	m_nColCount = INITIAL_INT;
 }
 //<==========================================================
 //単体での読み込み
@@ -85,7 +86,7 @@ HRESULT CItem::Init(void)
 	//初期化とマテリアルデータ取得どちらも成功しているかのチェック
 	assert(SUCCEEDED(CXObject::Init()));
 
-	m_sModel = BindModel(m_acFilename[m_eType]);
+	m_sModel = BindModel(m_acFilename[m_eType],true);
 
 	return S_OK;
 }
@@ -167,18 +168,30 @@ void CItem::Update(void)
 
 		m_rot.y = Correction::NormalizeRotation(m_rot.y);
 
-	/*	m_pMat = GetMaterial();*/
-
 		//情報を取得してくる
 		m_pPlayer = CManager::GetScene()->GetGame()->Get3DPlayer();
 
 		m_rot.y += 0.01f;
 
-	/*	CManager::GetDebugProc()->Print("[アイテム位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_pos.x, m_pos.y, m_pos.z);*/
-		/*CManager::GetDebugProc()->Print("[アイテム向き]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_rot.x, m_rot.y, m_rot.z);*/
-		//CManager::GetDebugProc()->Print("[アイテムタイプ]：%d\n", m_eType);
-
 		Collid();
+
+		//封印状態では無ければ
+		if (m_bSealed)
+		{
+			//頂点数分繰り返し
+			for (int nCntMaxMat = 0; nCntMaxMat < (int)m_sModel.dwNumMat; nCntMaxMat++)
+			{
+				m_sModel.pMat[nCntMaxMat].MatD3D.Diffuse.r = COLOR_VALUE::ALPHA_CLEANNESS;
+				m_sModel.pMat[nCntMaxMat].MatD3D.Ambient.r = COLOR_VALUE::ALPHA_CLEANNESS;
+			}
+		}
+		else
+		{
+			for (int nCntMaxMat = 0; nCntMaxMat < (int)m_sModel.dwNumMat; nCntMaxMat++)
+			{
+				m_sModel.pMat[nCntMaxMat] = m_sModel.pOriginMat[nCntMaxMat];
+			}
+		}
 
 		//情報設定
 		SetVector3(m_pos, m_rot, {});

@@ -85,6 +85,7 @@ private:
 	bool m_bGet;
 	bool m_bSealed;		//••ˆó‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
 	bool m_bAppro;
+	int m_nColCount;
 	static bool m_bFlag;
 	TYPE m_eType;
 

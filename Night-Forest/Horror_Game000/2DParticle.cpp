@@ -71,18 +71,6 @@ void C2DParticle::Uninit(void)
 //<==================================================
 void C2DParticle::Update(void)
 {
-	//
-	if (!(m_nLife <= 0))
-	{
-		m_nLife--;
-	}
-	//
-	else
-	{
-		Uninit();
-
-		return;
-	}
 	switch (m_eType)
 	{
 	case TYPE::TYPE_TEST:
@@ -118,7 +106,6 @@ void C2DParticle::Test(void)
 		move.x *= Particle2D::MOVE_VALUE.x;
 		move.y *= Particle2D::MOVE_VALUE.y;
 	
-		
 		C2DEffect::Create
 		(
 

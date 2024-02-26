@@ -57,7 +57,7 @@ C3DParticle *C3DParticle::Create(const D3DXVECTOR3 rPos, const D3DXCOLOR rCol, c
 //<==================================================
 HRESULT C3DParticle::Init(void)
 {
-	m_nLife = 100;
+	m_nLife = 24;
 	return S_OK;
 }
 //<==================================================
@@ -110,28 +110,32 @@ void C3DParticle::Test(void)
 	D3DXVECTOR3 move = Particle2D::MOVE_VALUE;	// 移動量の代入用
 	D3DXVECTOR3 rot = INIT_VECTOR;	// 向きの代入用
 
-	for (int nCntPart = 0; nCntPart < 1; nCntPart++)
-	{ // 生成されるエフェクト数分繰り返す
+	//
+	if ((m_nLife + 1) % 12 == 0)
+	{ 
+		for (int nCntPart = 0; nCntPart < 1; nCntPart++)
+		{
 
-	  // ベクトルをランダムに設定
-		m_rMove.x = sinf((float)(rand() % 629 - 314) / 100.0f) * 0.1f;
-		m_rMove.y = cosf((float)(rand() % 629 - 314) / 100.0f) * 0.1f;
-		m_rMove.z = cosf((float)(rand() % 629 - 314) / 100.0f) * 0.1f;
+		  // ベクトルをランダムに設定
+			m_rMove.x = sinf((float)(rand() % 629 - 314) / 100.0f) * 0.1f;
+			m_rMove.y = cosf((float)(rand() % 629 - 314) / 100.0f) * 0.1f;
+			m_rMove.z = cosf((float)(rand() % 629 - 314) / 100.0f) * 0.1f;
 
-		// 移動量を設定
-		m_rMove.x *= move.x;
-		m_rMove.y *= move.y;
-		m_rMove.z *= move.z;
+			// 移動量を設定
+			m_rMove.x *= move.x;
+			m_rMove.y *= move.y;
+			m_rMove.z *= move.z;
 
-		// エフェクト2Dオブジェクトの生成
-		C3DEffect::Create
-		( // 引数
+			// エフェクト2Dオブジェクトの生成
+			C3DEffect::Create
+			( // 引数
 
-			m_rPos,
-			m_rMove,
-			m_nLife,
-			D3DXVECTOR2(50.0f, 50.0f),
-			m_rCol
-		);
+				m_rPos,
+				m_rMove,
+				120,
+				D3DXVECTOR2(50.0f, 50.0f),
+				m_rCol
+			);
+		}
 	}
 }

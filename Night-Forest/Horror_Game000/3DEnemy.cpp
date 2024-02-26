@@ -108,16 +108,8 @@ C3DEnemy *C3DEnemy::Create(const D3DXVECTOR3 pos ,const int nLife, const int nTy
 //<=======================================
 HRESULT C3DEnemy::Init(void)
 {
-	//透明の敵だったら
-	if (m_eType == TYPE::TYPE_ENEMY_INVISIBLE)
-	{
-		m_sModel = BindModel(m_acFilename[m_eType], true);
-	}
-	//透明では無ければ
-	else
-	{
-		m_sModel = BindModel(m_acFilename[m_eType]);
-	}
+	m_sModel = BindModel(m_acFilename[m_eType], true);
+	
 	SetDest();
 
 	//透明の敵だったら
@@ -191,38 +183,38 @@ void C3DEnemy::Update(void)
 		//まだゲームが終わっていなければ
 		if (CManager::GetScene()->GetGame()->GetGame()->GetState() == CGame::STATE_NONE)
 		{
-			//m_pPlayer = CScene::GetGame()->Get3DPlayer();
-			////<***********************************
-			////それぞれの情報の取得
-			////<***********************************
-			//m_pos = GetPosition();
-			//m_rot = GetRotation();
-			//m_move = GetMove();
+			m_pPlayer = CScene::GetGame()->Get3DPlayer();
+			//<***********************************
+			//それぞれの情報の取得
+			//<***********************************
+			m_pos = GetPosition();
+			m_rot = GetRotation();
+			m_move = GetMove();
 
-			////加算していく
-			//m_pos += m_move;
+			//加算していく
+			m_pos += m_move;
 
-			////CManager::GetDebugProc()->Print("[位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_pos.x, m_pos.y, m_pos.z);
-			////CManager::GetDebugProc()->Print("[距離]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_rDis.x, m_rDis.y, m_rDis.z);
-			////CManager::GetDebugProc()->Print("[目的の位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_rDestPos.x, m_rDestPos.y, m_rDestPos.z);
-			////CManager::GetDebugProc()->Print("[前目的の位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_fFrontDest.x, m_fFrontDest.y, m_fFrontDest.z);
-			////CManager::GetDebugProc()->Print("[あと目的の位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_fBackDest.x, m_fBackDest.y, m_fBackDest.z);
+			//CManager::GetDebugProc()->Print("[位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_pos.x, m_pos.y, m_pos.z);
+			//CManager::GetDebugProc()->Print("[距離]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_rDis.x, m_rDis.y, m_rDis.z);
+			//CManager::GetDebugProc()->Print("[目的の位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_rDestPos.x, m_rDestPos.y, m_rDestPos.z);
+			//CManager::GetDebugProc()->Print("[前目的の位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_fFrontDest.x, m_fFrontDest.y, m_fFrontDest.z);
+			//CManager::GetDebugProc()->Print("[あと目的の位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_fBackDest.x, m_fBackDest.y, m_fBackDest.z);
 
-			////CManager::GetDebugProc()->Print("[今のインターバル]：%d\n", m_nInterval);
-			////CManager::GetDebugProc()->Print("[今のランダムインターバル]：%d\n", m_nRandInter);
-			////CManager::GetDebugProc()->Print("[今のステート]：%d\n", m_sState);
-			//CManager::GetDebugProc()->Print("[敵タイプ]：%d\n", m_eType);
-			////CManager::GetDebugProc()->Print("[バッファ]：%d\n", m_sModel.pBuffMat);
+			//CManager::GetDebugProc()->Print("[今のインターバル]：%d\n", m_nInterval);
+			//CManager::GetDebugProc()->Print("[今のランダムインターバル]：%d\n", m_nRandInter);
+			//CManager::GetDebugProc()->Print("[今のステート]：%d\n", m_sState);
+			CManager::GetDebugProc()->Print("[敵タイプ]：%d\n", m_eType);
+			//CManager::GetDebugProc()->Print("[バッファ]：%d\n", m_sModel.pBuffMat);
 
-			//MoveMent();
+			MoveMent();
 
-			//ChangeRot();
+			ChangeRot();
 
-			//m_move.x += (0.0f - m_move.x) *0.1f;
-			//m_move.z += (0.0f - m_move.z) *0.1f;
+			m_move.x += (0.0f - m_move.x) *0.1f;
+			m_move.z += (0.0f - m_move.z) *0.1f;
 
-			////ベクトルの三要素の設定
-			//SetVector3(m_pos, m_rot, m_move);
+			//ベクトルの三要素の設定
+			SetVector3(m_pos, m_rot, m_move);
 		}
 	}
 	else
@@ -719,7 +711,7 @@ C3DEnemy *C3DEnemy::RandCreate(C3DEnemy *apEnemy[MAX_OBJECT])
 
 		apEnemy[nCnt]->Init();
 
-		rRandPos = D3DXVECTOR3(Calculate::CalculateRandfloat(2500, -4000), 0.0f, Calculate::CalculateRandfloat(4000, -4000));
+		rRandPos = D3DXVECTOR3(Calculate::CalculateRandfloat(4000, -4000), 0.0f, Calculate::CalculateRandfloat(2500, -4000));
 
 		//位置を代入
 		apEnemy[nCnt]->SetPosition(rRandPos);
