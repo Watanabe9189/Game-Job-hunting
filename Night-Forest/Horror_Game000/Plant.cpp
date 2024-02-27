@@ -15,6 +15,9 @@ const char*			CPlant::m_acFilename[TYPE::TYPE_MAX] =
 
 int CPlant::m_nNumAll = INITIAL_INT;
 
+//<********************************************
+//
+//<********************************************
 namespace
 {
 	const D3DXVECTOR3 GRASS_SIZE = D3DXVECTOR3(75.0f, 75.0f,0.0f);
@@ -22,6 +25,9 @@ namespace
 	const float GRASS_POSY = 25.0f;
 	const float TREE_POSY = TREE_SIZE.y/2.0f;
 }
+//<============================================
+//
+//<============================================
 CPlant::CPlant(int nPriority)
 {
 	//値のクリア
@@ -34,14 +40,23 @@ CPlant::CPlant(int nPriority)
 
 	m_fMove = INITIAL_FLOAT;
 }
+//<============================================
+//
+//<============================================
 CPlant::~CPlant()
 {
 	m_nNumAll--;
 }
+//<============================================
+//
+//<============================================
 void CPlant::Swaying(void)
 {
 
 }
+//<============================================
+//
+//<============================================
 CPlant *CPlant::RandCreate(CPlant *apPlant[MAX_OBJECT], const int nNum)
 {
 	//ここでしか使わない変数の宣言
@@ -74,7 +89,9 @@ CPlant *CPlant::RandCreate(CPlant *apPlant[MAX_OBJECT], const int nNum)
 
 	return *apPlant;
 }
-
+//<============================================
+//
+//<============================================
 HRESULT CPlant::Init(void)
 {
 	if (m_eType == TYPE::TYPE_GRASS)
@@ -104,6 +121,9 @@ HRESULT CPlant::Init(void)
 
 	return S_OK;
 }
+//<============================================
+//
+//<============================================
 void CPlant::Update(void)	
 {
 	CObject3D::SetVtx();

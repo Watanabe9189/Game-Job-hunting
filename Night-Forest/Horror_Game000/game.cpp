@@ -80,14 +80,14 @@ HRESULT CGame::Init(void)
 	//ライト生成
 	m_pLight = CLight::Create(CLight::MODE::MODE_DIRECTIONAL);
 
-	//プレイヤー生成
-	m_p3DPlayer = C3DPlayer::Create(PLAYER_POS);
-
 	//フォグ生成
 	m_pFog = CFog::Create(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), D3DFOGMODE::D3DFOG_LINEAR, CFog::TYPE::TYPE_PIXEL,0.002f);
 
 	//地面生成
 	CField::ReadCreate(m_apField);
+
+	//プレイヤー生成
+	m_p3DPlayer = C3DPlayer::Create(PLAYER_POS);
 
 	//建物生成
 	CBuilding::RandCreate(m_apBuilding, NUM_BUILDING);

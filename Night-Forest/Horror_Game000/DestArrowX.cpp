@@ -98,19 +98,20 @@ void CDestArrowX::RotateToDest(void)
 	{
 		if (!CManager::GetScene()->GetGame()->GetItem(nCnt)->bGetSealed())
 		{
-			//見つかっていて、見ているアイテムがゲットされていなければ
-			if (m_bFind == false && !CManager::GetScene()->GetGame()->GetItem(nCnt)->bGet())
+			//当たっていたら
+			if (Collision::CollidAll(CManager::GetScene()->GetGame()->Get3DPlayer()->GetPosition(),
+				D3DXVECTOR3(MAX_SERACH_RAD, MAX_SERACH_RAD, MAX_SERACH_RAD), CManager::GetScene()->GetGame()->GetItem(nCnt)->GetPosition(),
+				CManager::GetScene()->GetGame()->GetItem(nCnt)->GetModel().vtxMax, CManager::GetScene()->GetGame()->GetItem(nCnt)->GetModel().vtxMin))
 			{
-				//当たっていたら
-				if (Collision::CollidAll(CManager::GetScene()->GetGame()->Get3DPlayer()->GetPosition(),
-					D3DXVECTOR3(MAX_SERACH_RAD, MAX_SERACH_RAD, MAX_SERACH_RAD), CManager::GetScene()->GetGame()->GetItem(nCnt)->GetPosition(),
-					CManager::GetScene()->GetGame()->GetItem(nCnt)->GetModel().vtxMax, CManager::GetScene()->GetGame()->GetItem(nCnt)->GetModel().vtxMin))
-				{
-					//見つかっている状態にし、見つかったアイテムの番号を保存する
-					m_bFind = true;
-					m_nNum = nCnt;
-					break;
-				}
+				//見つかっている状態にし、見つかったアイテムの番号を保存する
+				m_bFind = true;
+				m_nNum = nCnt;
+				break;
+			}
+			//範囲内に入っていなければ
+			else
+			{
+				m_bFind = false;
 			}
 		}
 	}

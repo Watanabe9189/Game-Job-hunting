@@ -20,8 +20,8 @@ namespace
 	const float DOUBLE_VALUE			= 1.7f;		//”{‚É‚·‚é’l
 	const float ROTATE_VALUE			= 0.1f;		//‰ñ“]’l
 
-	const float RADIUSE_VALUE_NORMAL	= 800.0f;	//’ÊíŒ^‚Ì”¼Œa‚Ì’l
-	const float RADIUSE_VALUE_INVISIBLE = 700.0f;	//“§–¾Œ^‚Ì”¼Œa‚Ì’l
+	const float RADIUSE_VALUE_NORMAL	= 750.0f;	//’ÊíŒ^‚Ì”¼Œa‚Ì’l
+	const float RADIUSE_VALUE_INVISIBLE = 650.0f;	//“§–¾Œ^‚Ì”¼Œa‚Ì’l
 
 	const int	MAX_INTERVAL			= 500;		//ŠÔŠu‚ÌÅ‘å’l
 
@@ -209,9 +209,6 @@ void C3DEnemy::Update(void)
 			MoveMent();
 
 			ChangeRot();
-
-			m_move.x += (0.0f - m_move.x) *0.1f;
-			m_move.z += (0.0f - m_move.z) *0.1f;
 
 			//ƒxƒNƒgƒ‹‚ÌŽO—v‘f‚ÌÝ’è
 			SetVector3(m_pos, m_rot, m_move);
@@ -545,7 +542,7 @@ void C3DEnemy::Search(void)
 		//“§–¾Œ^‚¾‚Á‚½‚ç
 		if (m_eType == TYPE::TYPE_ENEMY_INVISIBLE)
 		{
-			m_sModel.pMat = Color::AlphaChangeMaterial(m_sModel.pMat, -ALPHA_VALUE, m_sModel.dwNumMat);
+			m_sModel.pMat = Color::AlphaChangeMaterial(m_sModel.pMat, -ALPHA_VALUE_HIGH, m_sModel.dwNumMat);
 		}
 	}
 }
@@ -600,25 +597,27 @@ void C3DEnemy::SetSound(const CSound::LABEL Label, const int nMaxCount, const D3
 void C3DEnemy::SerachRot(const D3DXVECTOR3 rRandPos)
 {
 	m_fMoveValue = 0.0f;
+
 	if (m_nInterval >= 500)
 	{
 		m_sState = STATE_SEARCH;
 		SetDest(rRandPos);
 		m_nInterval = 0;
 	}
-	if (m_nInterval >= 150
-		&& !(m_nInterval >= 350))
-	{
-		m_rot.y = Calculate::RotateToDest(m_rot.y, D3DXVECTOR3(0.0f, 1.56f, 0.0f), 0.045f);
-	}
-	if (!(m_nInterval >= 150)
-		&& m_nInterval >= 350)
-	{
-		m_rot.y = Calculate::RotateToDest(m_rot.y, D3DXVECTOR3(0.0f, 3.14f, 0.0f), 0.045f);
-	}
-	if (!(m_nInterval >= 500))
+	//
+	else
 	{
 		m_nInterval++;
+
+		if (m_nInterval >= 150
+			&& !(m_nInterval >= 350))
+		{
+			m_rot.y += 0.045f;
+		}
+		else if (m_nInterval >= 350)
+		{
+			m_rot.y -= 0.045f;
+		}
 	}
 }
 //<=======================================
