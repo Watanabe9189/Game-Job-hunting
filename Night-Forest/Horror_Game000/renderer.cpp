@@ -411,7 +411,7 @@ void CRenderer::ScreenShot(const char *cName)
 			pSurface = nullptr;
 		}
 	}
-
+	
 	//サーフェイスの破棄
 	if (pSurface != nullptr)
 	{

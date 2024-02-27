@@ -5,6 +5,8 @@
 #include "manager.h"
 #include "Object3D.h"
 
+#define MAX_GRASS	(2)	//ëêÇÃç≈ëÂêî
+
 class CPlant : public CObject3D
 {
 public:
@@ -23,9 +25,9 @@ public:
 	static CPlant *RandCreate(CPlant *apPlant[MAX_OBJECT],const int nNum);
 
 	HRESULT Init(void)	override;
-	void Uninit(void)	override { CObject3D::Uninit(); }
+	void Uninit(void)	override;
 	void Update(void)	override;
-	void Draw(void)		override { CObject3D::Draw(); }
+	void Draw(void)		override {}
 	void SetVtx(void)	override {}
 
 	static int GetNum(void) { return m_nNumAll; }
@@ -47,6 +49,8 @@ private:
 	float m_fMove;
 
 	TYPE m_eType;
+
+	CObject3D *m_apGrass[MAX_GRASS];
 
 };
 #endif

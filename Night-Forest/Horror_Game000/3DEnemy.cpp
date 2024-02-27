@@ -598,7 +598,7 @@ void C3DEnemy::SerachRot(const D3DXVECTOR3 rRandPos)
 {
 	m_fMoveValue = 0.0f;
 
-	if (m_nInterval >= 500)
+	if (m_nInterval >= MAX_INTERVAL)
 	{
 		m_sState = STATE_SEARCH;
 		SetDest(rRandPos);

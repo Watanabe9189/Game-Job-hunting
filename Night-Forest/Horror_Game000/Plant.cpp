@@ -39,6 +39,9 @@ CPlant::CPlant(int nPriority)
 	m_rCol = INIT_COL;
 
 	m_fMove = INITIAL_FLOAT;
+
+	//初期化
+	memset(&m_apGrass[0], 0, sizeof(m_apGrass));
 }
 //<============================================
 //
@@ -46,13 +49,6 @@ CPlant::CPlant(int nPriority)
 CPlant::~CPlant()
 {
 	m_nNumAll--;
-}
-//<============================================
-//
-//<============================================
-void CPlant::Swaying(void)
-{
-
 }
 //<============================================
 //
@@ -116,25 +112,81 @@ HRESULT CPlant::Init(void)
 			}
 		}
 	}
+	if (m_eType == TYPE::TYPE_TREE)
+	{
+		m_apGrass[0] = CObject3D::Create(m_rPos, m_rSize,INIT_VECTOR, m_rCol,
+			CObject3D::TYPE::TYPE_PLANE_Y, m_apTexture[m_eType]);
+	}
+	else if(m_eType == TYPE::TYPE_GRASS)
+	{
+		//草の最大数分繰り返し
+		for (int nCnt = 0; nCnt < MAX_GRASS; nCnt++)
+		{
+			switch (nCnt)
+			{
+			case 0:
 
-	CObject3D::InitWith(m_rPos, m_rSize, INIT_VECTOR, m_rCol, CObject3D::TYPE::TYPE_PLANE_Y, m_apTexture[m_eType]);
+				m_apGrass[nCnt] = CObject3D::Create(m_rPos, m_rSize, D3DXVECTOR3(0.0f,0.45f,0.0f), m_rCol,
+					CObject3D::TYPE::TYPE_PLANE_Y, m_apTexture[m_eType]);
+
+				break;
+
+			case 1:
+
+				m_apGrass[nCnt] = CObject3D::Create(m_rPos, m_rSize, D3DXVECTOR3(0.0f, -0.45f, 0.0f), m_rCol,
+					CObject3D::TYPE::TYPE_PLANE_Y, m_apTexture[m_eType]);
+
+				break;
+			}
+		}
+	}
 
 	return S_OK;
 }
 //<============================================
 //
 //<============================================
+void CPlant::Uninit(void)
+{
+	for (int nCnt = 0; nCnt < MAX_GRASS; nCnt++)
+	{
+		if (m_apGrass[nCnt] != nullptr)
+		{
+			m_apGrass[nCnt]->Uninit();
+			m_apGrass[nCnt] = nullptr;
+		}
+	}
+}
+//<============================================
+//
+//<============================================
 void CPlant::Update(void)	
 {
-	CObject3D::SetVtx();
+	//数ぶん回す
+	for (int nCnt = 0; nCnt < MAX_GRASS; nCnt++)
+	{
+		//中身チェック
+		if (m_apGrass[nCnt] != nullptr)
+		{
+			m_apGrass[nCnt]->SetVtx();
 
-	//情報の取得
-	m_rPos = GetPosition();
-	m_rSize = GetSize();
+			//情報の取得
+			m_rPos = m_apGrass[nCnt]->GetPosition();
+			m_rSize = m_apGrass[nCnt]->GetSize();
 
-	//情報の設定
-	SetPosition(m_rPos);
-	SetSize(m_rSize);
+			//情報の設定
+			m_apGrass[nCnt]->SetPosition(m_rPos);
+			m_apGrass[nCnt]->SetSize(m_rSize);
+		}
+	}
+
 	/*CManager::GetDebugProc()->Print("[植物位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_rPos.x, m_rPos.y, m_rPos.z);*/
 	//CManager::GetDebugProc()->Print("[植物タイプ]：%d\n", m_eType);
+}
+//<============================================
+//
+//<============================================
+void CPlant::Swaying(void)
+{
+
 }
