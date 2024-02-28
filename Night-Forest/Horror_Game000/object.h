@@ -195,7 +195,13 @@ public:
 	void SetPrio(const int nPrio) { m_nPriority = nPrio; }
 
 	//描画するかどうか
-	void SetbDraw(void){m_bDraw == false ? m_bDraw = true : m_bDraw = false;}
+	void SetUpdatefalse(void) { m_bUpdate = false; }	//描画のオンオフ
+	void SetUpdatetrue(void) { m_bUpdate = true; }	//描画のオンオフ
+	bool GetbUpdate(void) { return m_bUpdate; }
+
+	//描画するかどうか
+	void SetDrawfalse(void) { m_bDraw = false; }	//描画のオンオフ
+	void SetDrawtrue(void) { m_bDraw = true; }	//描画のオンオフ
 	bool GetbDraw(void) { return m_bDraw; }
 
 	//<=======================================
@@ -279,6 +285,7 @@ private:
 	TYPE_2D m_2DTYpe;							//2Dオブジェクトのタイプ
 	TYPE_3D m_3DType;							//3Dオブジェクトのタイプ
 	bool m_bDraw;
+	bool m_bUpdate;
 
 	CStencil *m_pStencil;
 

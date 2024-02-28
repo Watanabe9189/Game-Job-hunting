@@ -147,8 +147,6 @@ void CFade::SetFadeIn(void)
 		{
 			//モードを設定する
 			CManager::SetMode(m_ModeNext);
-
-			m_pObject2D->SetDrawfalse();
 		}
 
 		//色を減らしていく
@@ -161,6 +159,8 @@ void CFade::SetFadeIn(void)
 			m_Col.a = 0.0f;
 
 			m_eType = TYPE_FADE_NONE;
+
+			m_pObject2D->SetDrawfalse();
 		}
 	}
 }
@@ -178,5 +178,7 @@ void CFade::SetFade(CScene::MODE modeNext)
 		m_nWaitTime = Fade::MAX_WAIT;	//待機時間を最大値にする
 		m_ModeNext = modeNext;			//次のモードを設定する
 		m_eType = TYPE_FADE_OUT;		//フェードアウト状態にする
+
+		m_pObject2D->SetDrawtrue();
 	}
 }

@@ -56,10 +56,6 @@ public:
 	void SetLength(const float& fLength)		{ m_aObj.fLength = fLength; }	//対角線の長さ設定
 	void SetAngle(const float& fAngle)		{ m_aObj.fAngle = fAngle; }		//対角線の向き設定
 	void SetColor(const D3DXCOLOR& rCol)		{ m_aObj.Col = rCol; }			//色の設定
-	void SetDrawfalse(void) { m_bDraw = false; }	//描画のオンオフ
-	void SetDrawtrue(void) { m_bDraw = true; }	//描画のオンオフ
-
-	bool GetDraw(void) { return m_bDraw; }
 
 	//<=======================================================
 	//メンバ関数(Get系)
@@ -79,7 +75,6 @@ private:
 
 	Object2D m_aObj;					//2Dオブジェクトの情報	
 	int m_nNumTex;
-	bool m_bDraw;
 
 	LPDIRECT3DTEXTURE9 m_pTexture;		//テクスチャのポインタ
 	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;	//頂点バッファ

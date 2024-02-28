@@ -23,7 +23,6 @@ CObject3D::CObject3D(int nPriority) : CObject(nPriority)
 	m_Size	=	INIT_VECTOR;
 	m_rCol = INIT_COL;
 	m_eType = TYPE::TYPE_MAX;
-	m_bDraw = true;
 }
 //<=================================
 //3Dオブジェクトのデストラクタ
@@ -129,39 +128,37 @@ void CObject3D::Update(void)
 //<=================================
 void CObject3D::Draw(void)
 {
-	if (m_bDraw)
-	{
-		D3DXMATRIX mtxRot, mtxTrans;	//計算用マトリックス(この変数はグローバル変数には入れない)
+	
+	D3DXMATRIX mtxRot, mtxTrans;	//計算用マトリックス(この変数はグローバル変数には入れない)
 
-		//ワールドマトリックスの初期化
-		D3DXMatrixIdentity(&m_mtxWorld);
+	//ワールドマトリックスの初期化
+	D3DXMatrixIdentity(&m_mtxWorld);
 
-		//向きを反映させる
-		D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);//この順番は重要である
+	//向きを反映させる
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);//この順番は重要である
 
-																		   //ワールドマトリックスを掛ける(乗算)
-		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
+																	   //ワールドマトリックスを掛ける(乗算)
+	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
 
-		//位置を反映させる
-		D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
+	//位置を反映させる
+	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
 
-		//ワールドマトリックスを掛ける(乗算)
-		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
+	//ワールドマトリックスを掛ける(乗算)
+	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
 
-		//ワールドマトリックスの設定
-		CManager::GetRenderer()->GetDevice()->SetTransform(D3DTS_WORLD, &m_mtxWorld);
+	//ワールドマトリックスの設定
+	CManager::GetRenderer()->GetDevice()->SetTransform(D3DTS_WORLD, &m_mtxWorld);
 
-		//頂点バッファをデータストリームに設定
-		CManager::GetRenderer()->GetDevice()->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_3D));
+	//頂点バッファをデータストリームに設定
+	CManager::GetRenderer()->GetDevice()->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_3D));
 
-		//頂点フォーマットの設定
-		CManager::GetRenderer()->GetDevice()->SetFVF(FVF_VERTEX_3D);
+	//頂点フォーマットの設定
+	CManager::GetRenderer()->GetDevice()->SetFVF(FVF_VERTEX_3D);
 
-		//テクスチャの設定
-		CManager::GetRenderer()->GetDevice()->SetTexture(0, m_pTexture);
+	//テクスチャの設定
+	CManager::GetRenderer()->GetDevice()->SetTexture(0, m_pTexture);
 
-		CManager::GetRenderer()->GetDevice()->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
-	}
+	CManager::GetRenderer()->GetDevice()->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 }
 //<=================================
 //3Dオブジェクトの頂点設定処理

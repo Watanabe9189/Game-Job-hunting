@@ -32,8 +32,6 @@ CObject2D::CObject2D(int nPriority) : CObject(nPriority)
 
 	m_pTexture = NULL;							//テクスチャへのポインタ
 	m_pVtxBuff = NULL;							//頂点バッファ
-
-	m_bDraw = true;
 }
 //<==================================================================================
 //オブジェクト2Dのデストラクタ
@@ -144,27 +142,23 @@ void CObject2D::Update(void)
 //<==================================================================================
 void CObject2D::Draw(void)
 {
-	//描画する判定なら
-	if (m_bDraw)
-	{
-		//<======================================================
-		//頂点バッファをデータストリームに登録
-		//<======================================================
-		CManager::GetRenderer()->GetDevice()->SetStreamSource(0,
-			m_pVtxBuff,
-			0,
-			sizeof(VERTEX_2D));
+	//<======================================================
+	//頂点バッファをデータストリームに登録
+	//<======================================================
+	CManager::GetRenderer()->GetDevice()->SetStreamSource(0,
+		m_pVtxBuff,
+		0,
+		sizeof(VERTEX_2D));
 
-		//頂点フォーマットの設定
-		CManager::GetRenderer()->GetDevice()->SetFVF(FVF_VERTEX_2D);
+	//頂点フォーマットの設定
+	CManager::GetRenderer()->GetDevice()->SetFVF(FVF_VERTEX_2D);
 
-		//テクスチャの設定
-		CManager::GetRenderer()->GetDevice()->SetTexture(0, m_pTexture);
-		//<======================================================
-		//描画方法を指定
-		//<======================================================
-		CManager::GetRenderer()->GetDevice()->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
-	}
+	//テクスチャの設定
+	CManager::GetRenderer()->GetDevice()->SetTexture(0, m_pTexture);
+	//<======================================================
+	//描画方法を指定
+	//<======================================================
+	CManager::GetRenderer()->GetDevice()->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 }
 //<==================================================================================
 //2Dオブジェクトの頂点座標設定処理

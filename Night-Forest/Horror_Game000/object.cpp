@@ -105,6 +105,7 @@ CObject::CObject(int nPriority)
 	m_nPriority = nPriority;
 	m_3DType = TYPE_3D::TYPE_NONE;
 	m_2DTYpe = TYPE_2D::TYPE_MAX;
+	m_bUpdate = true;
 	m_bDraw = true;
 	m_pStencil = CStencil::Create(true, STENCIL_VALUE::STENCIL_FAIL);
 
@@ -249,7 +250,10 @@ void CObject::UpdateAll(void)
 				if (pObj->m_bDestru != true
 					&& !(pObj->m_bDestru > true))
 				{
-					pObj->Update();
+					if (pObj->m_bUpdate)
+					{
+						pObj->Update();
+					}
 				}
 			}
 		}
@@ -379,8 +383,11 @@ void CObject::DrawAll(void)
 				//•`‰æ‚·‚é‚æ‚¤‚É‚È‚Á‚Ä‚¢‚½‚ç
 				if (!(pObj->m_nPriority >= NEED_PRIORITY))
 				{
-					pObj->m_pStencil->DrawStencilTest();
-					pObj->Draw();
+					if (pObj->m_bDraw)
+					{
+						pObj->m_pStencil->DrawStencilTest();
+						pObj->Draw();
+					}
 				}
 				else
 				{

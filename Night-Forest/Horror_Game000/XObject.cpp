@@ -24,7 +24,6 @@ CXObject::CXObject(int nPriority) : CObject(nPriority)
 	m_rot		=	INIT_VECTOR;
 	m_move		=	INIT_VECTOR;
 
-	m_bDraw = true;
 	m_pMat = nullptr;
 
 	m_asModel = {};
@@ -59,42 +58,38 @@ void CXObject::Draw(void)
 	D3DXMATRIX			mtxRot = {}, mtxTrans = {};		//計算用マトリックス宣言
 	D3DMATERIAL9		matDef = {};					//現在のマテリアル保存用変数
 
-	//描画するなら
-	if (m_bDraw)
+	//ワールドマトリックスの初期化
+	D3DXMatrixIdentity(&m_mtxWorld);
+
+	//向きを反映する
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
+	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
+
+	//位置を反映する
+	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
+	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
+
+	//ワールドマトリックスの設定
+	CManager::GetRenderer()->GetDevice()->SetTransform(D3DTS_WORLD, &m_mtxWorld);
+
+	//現在のマテリアルを取得
+	CManager::GetRenderer()->GetDevice()->GetMaterial(&matDef);
+	
+	//頂点数分繰り返し
+	for (DWORD nCntMat = 0; nCntMat < m_asModel.dwNumMat; nCntMat++)
 	{
-		//ワールドマトリックスの初期化
-		D3DXMatrixIdentity(&m_mtxWorld);
+		//マテリアルの設定
+		CManager::GetRenderer()->GetDevice()->SetMaterial(&m_asModel.pMat[nCntMat].MatD3D);
 
-		//向きを反映する
-		D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
-		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
+		//テクスチャの設定
+		CManager::GetRenderer()->GetDevice()->SetTexture(0, m_asModel.apTexture[nCntMat]);
 
-		//位置を反映する
-		D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
-		D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
-
-		//ワールドマトリックスの設定
-		CManager::GetRenderer()->GetDevice()->SetTransform(D3DTS_WORLD, &m_mtxWorld);
-
-		//現在のマテリアルを取得
-		CManager::GetRenderer()->GetDevice()->GetMaterial(&matDef);
-		
-		//頂点数分繰り返し
-		for (DWORD nCntMat = 0; nCntMat < m_asModel.dwNumMat; nCntMat++)
-		{
-			//マテリアルの設定
-			CManager::GetRenderer()->GetDevice()->SetMaterial(&m_asModel.pMat[nCntMat].MatD3D);
-
-			//テクスチャの設定
-			CManager::GetRenderer()->GetDevice()->SetTexture(0, m_asModel.apTexture[nCntMat]);
-
-			//モデルの描画
-			m_asModel.pMesh->DrawSubset(nCntMat);
-		}
-
-		//保存していたマテリアルを戻す
-		CManager::GetRenderer()->GetDevice()->SetMaterial(&matDef);
+		//モデルの描画
+		m_asModel.pMesh->DrawSubset(nCntMat);
 	}
+
+	//保存していたマテリアルを戻す
+	CManager::GetRenderer()->GetDevice()->SetMaterial(&matDef);
 }
 //<====================================
 //

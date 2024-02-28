@@ -20,7 +20,6 @@
 //<================================================
 //静的メンバ変数宣言
 //<================================================
-int CGame::m_nWaitTime = INITIAL_INT;
 //<*****************************************
 //3D関連
 //<*****************************************
@@ -54,7 +53,9 @@ namespace
 //<====================================
 CGame::CGame()
 {
-	
+	//値のクリア
+	m_nWaitTime = INITIAL_INT;
+	m_bMoved = false;
 }
 //<====================================
 //ゲーム画面のデストラクタ
@@ -70,6 +71,7 @@ HRESULT CGame::Init(void)
 {
 	m_sState = STATE_NONE;
 	m_nWaitTime = INITIAL_INT;
+	m_bMoved = false;
 	CManager::GetRenderer()->SetBoolPix(FALSE);
 	CManager::GetSound()->PlaySound(CSound::LABEL_BGM_GAME);
 	//<******************************************
@@ -91,9 +93,6 @@ HRESULT CGame::Init(void)
 
 	//建物生成
 	CBuilding::RandCreate(m_apBuilding, NUM_BUILDING);
-
-	//敵生成
-	C3DEnemy::RandCreate(m_ap3DEnemy);
 
 	//アイテム生成
 	CItem::RandCreate(m_apItem, NUM_ITEM);
@@ -308,6 +307,16 @@ void CGame::Update(void)
 	m_pLight->Update();
 	m_pCamera->Update();
 
+	//動いていれば
+	if (Bool::bMove(m_p3DPlayer->GetMove())
+		&& !m_bMoved)
+	{
+		//敵生成
+		C3DEnemy::RandCreate(m_ap3DEnemy);
+
+		//フラグを立て、二回目の生成がないようにする
+		m_bMoved = true;
+	}
 	//死亡状態だったら
 	if (m_p3DPlayer->GetState() == C3DPlayer::STATE::STATE_DEATH)
 	{

@@ -70,10 +70,6 @@ public:
 	void SetLength(const float& fLength) { m_fLength = fLength; }	//対角線の長さ設定
 	void SetAngle(const float& fAngle) { m_fAngle = fAngle; }		//対角線の向き設定
 
-	void SetDrawfalse(void) { m_bDraw = false; }	//描画のオンオフ
-	void SetDrawtrue(void) { m_bDraw = true; }	//描画のオンオフ
-
-
 	//<==========================================
 	//Get系のメンバ関数
 	//<==========================================
@@ -105,7 +101,5 @@ private:
 
 	float m_fAngle;
 	float m_fLength;
-
-	bool m_bDraw;
 };
 #endif

@@ -103,10 +103,6 @@ public:
 
 	DataModel BindModel(const char *pFileName, const bool bMatChange = false);
 	void LoadModel(void);
-
-	void SetDrawfalse(void) { m_bDraw = false; }	//描画のオンオフ
-	void SetDrawtrue(void) { m_bDraw = true; }	//描画のオンオフ
-
 	//<==========================================
 	//Get系のメンバ関数
 	//<==========================================
@@ -137,7 +133,6 @@ private:
 	D3DXVECTOR3			m_move;						//移動量
 
 	static int m_nNumAll;
-	bool m_bDraw;
 };
 
 #endif
