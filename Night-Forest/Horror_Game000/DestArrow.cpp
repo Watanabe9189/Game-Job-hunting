@@ -6,7 +6,7 @@ LPDIRECT3DTEXTURE9	CDestArrow::m_pTexture = NULL;	//テクスチャ情報
 																	//<==========================================
 																	//ファイル名指定
 																	//<==========================================
-const char		*CDestArrow::m_pFilename = "data/TEXTURE/DestArrow000.png";		//敵２
+const char		*CDestArrow::m_pFilename = "data/TEXTURE/DestArrow001.png";		//敵２
 
 namespace
 {
@@ -72,7 +72,7 @@ HRESULT CDestArrow::Init(void)
 	CObject3D::InitWith(D3DXVECTOR3(CManager::GetScene()->GetGame()->Get3DPlayer()->GetPosition().x,
 		CManager::GetScene()->GetGame()->Get3DPlayer()->GetPosition().y,
 		CManager::GetScene()->GetGame()->Get3DPlayer()->GetPosition().z)
-		, D3DXVECTOR3(25.0f, 25.0f, 25.0f), INIT_VECTOR, INIT_COL, CObject3D::TYPE::TYPE_PLANE, m_pTexture);
+		, D3DXVECTOR3(25.0f, 40.0f, 25.0f), INIT_VECTOR, INIT_COL, CObject3D::TYPE::TYPE_PLANE, m_pTexture);
 
 	return S_OK;
 }

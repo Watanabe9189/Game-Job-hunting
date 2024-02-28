@@ -106,36 +106,31 @@ CXObject::DataModel CXObject::BindModel(const char *pFileName, const bool bMatCh
 			//もし保存されたファイル名と引数のファイル名が一緒だったら
 			if (strcmp(m_apFileName[nCnt], pFileName) == 0)
 			{
+				//<==========================================
+				//色変えのためにもう一度モデルを読み込む
+				//(pBuffMat以外はすでに保存されているデータを使用)
+				//<==========================================
+				if (FAILED(D3DXLoadMeshFromX(m_apFileName[nCnt],
+					D3DXMESH_SYSTEMMEM,
+					CManager::GetRenderer()->GetDevice(),
+					NULL,
+					&m_asaveModel[nCnt].pBuffMat,			//ここだけ変更するモデルの引数にする
+					NULL,
+					&m_asaveModel[nCnt].dwNumMat,
+					&m_asaveModel[nCnt].pMesh)))
+				{
+					return{};
+				}
 				//その番号を返し、すでに登録されているテクスチャ
 				m_asModel = m_asaveModel[nCnt];
 
-				//もしマテリアルを変更したい場合
-				if (bMatChange)
-				{
-					//<==========================================
-					//色変えのためにもう一度モデルを読み込む
-					//(pBuffMat以外はすでに保存されているデータを使用)
-					//<==========================================
-					if (FAILED(D3DXLoadMeshFromX(m_apFileName[nCnt],
-						D3DXMESH_SYSTEMMEM,
-						CManager::GetRenderer()->GetDevice(),
-						NULL,
-						&m_asModel.pBuffMat,			//ここだけ変更するモデルの引数にする
-						NULL,
-						&m_asaveModel[nCnt].dwNumMat,
-						&m_asaveModel[nCnt].pMesh)))
-					{
-						return{};
-					}
+				assert((m_asModel.pMat =
+					(D3DXMATERIAL*)m_asaveModel[nCnt].pBuffMat->GetBufferPointer()) != nullptr);
 
-					assert((m_asModel.pMat =
-						(D3DXMATERIAL*)m_asModel.pBuffMat->GetBufferPointer()) != nullptr);
-
-					m_asModel.pOriginMat = m_asaveModel[nCnt].pOriginMat;
-					//<==========================================
-					//
-					//<==========================================
-				}
+				m_asModel.pOriginMat = m_asaveModel[nCnt].pOriginMat;
+				//<==========================================
+				//
+				//<==========================================
 				m_nModelId = nCnt;
 				return m_asModel;
 			}
