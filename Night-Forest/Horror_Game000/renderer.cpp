@@ -204,7 +204,7 @@ void CRenderer::Uninit(void)
 //<==================================================================================
 void CRenderer::Update(void)
 {
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	//Iボタンが押されていたら
 	if (CManager::GetKeyboard()->bGetTrigger(DIK_I))
 	{
@@ -226,7 +226,7 @@ void CRenderer::Update(void)
 		//画面にウィンドウを合わせる
 		MoveWindow(m_hWnd, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, TRUE);
 	}
-#endif
+//#endif
 	CObject::UpdateAll();
 }
 //<==================================================================================
