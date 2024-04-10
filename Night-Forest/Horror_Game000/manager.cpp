@@ -206,11 +206,11 @@ void CManager::Update(void)
 
 	m_pDebug->Update();
 
-	////Pキーが押されたら
-	//if (m_pKeyboard->bGetTrigger(DIK_0) == true)
-	//{
-	//	SetD_SPEED();
-	//}
+	//Pキーが押されたら
+	if (m_pKeyboard->bGetTrigger(DIK_0) == true)
+	{
+		m_pRenderer->ChangeScreen();
+	}
 	////Pキーが押されたら
 	//if (m_pKeyboard->bGetTrigger(DIK_9) == true)
 	//{

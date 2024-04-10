@@ -17,8 +17,13 @@ CRenderer::CRenderer()
 	m_pD3DDevice = NULL;	//Direct3Dデバイスへのポインタ
 	m_pPixShade = nullptr;
 	m_bUsePix = false;
+	m_bFullScreen = false;
 	m_lpBackBuffer = nullptr;
 	m_nStencil = INITIAL_INT;
+
+	m_pEffect = nullptr;
+	m_hTechnique = nullptr;
+	m_hmWVP = nullptr;
 }
 //<==================================================================================
 //レンダラーのデストラクタ
@@ -206,7 +211,7 @@ void CRenderer::Update(void)
 {
 //#ifdef _DEBUG
 	//Iボタンが押されていたら
-	if (CManager::GetKeyboard()->bGetTrigger(DIK_I))
+	if (m_bFullScreen)
 	{
 		//フルスクリーンに移動する
 		SetWindowLong(m_hWnd, GWL_STYLE, WS_VISIBLE | WS_POPUP);
@@ -218,7 +223,7 @@ void CRenderer::Update(void)
 			GetSystemMetrics(SM_CYVIRTUALSCREEN), TRUE);
 	}
 	//Iボタンが押されていたら
-	else if (CManager::GetKeyboard()->bGetTrigger(DIK_O))
+	else
 	{
 		//フルスクリーンに移動する
 		SetWindowLong(m_hWnd, GWL_STYLE, WS_VISIBLE | WS_OVERLAPPEDWINDOW);
@@ -425,4 +430,11 @@ void CRenderer::ScreenShot(const char *cName)
 void CRenderer::SetBoolPix(const BOOL bBool)
 {
 	m_bUsePix = Change::Changebool(m_bUsePix, bBool); 
+}
+//<==================================================
+//
+//<==================================================
+void InitHLSL(void)
+{
+
 }

@@ -90,15 +90,6 @@ CPlant *CPlant::RandCreate(CPlant *apPlant[MAX_OBJECT], const int nNum)
 //<============================================
 HRESULT CPlant::Init(void)
 {
-	if (m_eType == TYPE::TYPE_GRASS)
-	{
-		m_rSize = GRASS_SIZE;
-	}
-	else if (m_eType == TYPE::TYPE_TREE)
-	{
-		m_rSize = TREE_SIZE;
-	}
-
 	//テクスチャの初期化
 	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); nCnt++)
 	{
@@ -112,13 +103,10 @@ HRESULT CPlant::Init(void)
 			}
 		}
 	}
-	if (m_eType == TYPE::TYPE_TREE)
+	if (m_eType == TYPE::TYPE_GRASS)
 	{
-		m_apGrass[0] = CObject3D::Create(m_rPos, m_rSize,INIT_VECTOR, m_rCol,
-			CObject3D::TYPE::TYPE_PLANE_Y, m_apTexture[m_eType]);
-	}
-	else if(m_eType == TYPE::TYPE_GRASS)
-	{
+		m_rSize = GRASS_SIZE;
+
 		//草の最大数分繰り返し
 		for (int nCnt = 0; nCnt < MAX_GRASS; nCnt++)
 		{
@@ -126,7 +114,7 @@ HRESULT CPlant::Init(void)
 			{
 			case 0:
 
-				m_apGrass[nCnt] = CObject3D::Create(m_rPos, m_rSize, D3DXVECTOR3(0.0f,0.45f,0.0f), m_rCol,
+				m_apGrass[nCnt] = CObject3D::Create(m_rPos, m_rSize, D3DXVECTOR3(0.0f, 0.45f, 0.0f), m_rCol,
 					CObject3D::TYPE::TYPE_PLANE_Y, m_apTexture[m_eType]);
 
 				break;
@@ -139,6 +127,13 @@ HRESULT CPlant::Init(void)
 				break;
 			}
 		}
+	}
+	else if (m_eType == TYPE::TYPE_TREE)
+	{
+		m_rSize = TREE_SIZE;
+
+		m_apGrass[0] = CObject3D::Create(m_rPos, m_rSize, INIT_VECTOR, m_rCol,
+			CObject3D::TYPE::TYPE_PLANE_Y, m_apTexture[m_eType]);
 	}
 
 	return S_OK;
@@ -182,11 +177,4 @@ void CPlant::Update(void)
 
 	/*CManager::GetDebugProc()->Print("[植物位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_rPos.x, m_rPos.y, m_rPos.z);*/
 	//CManager::GetDebugProc()->Print("[植物タイプ]：%d\n", m_eType);
-}
-//<============================================
-//
-//<============================================
-void CPlant::Swaying(void)
-{
-
 }

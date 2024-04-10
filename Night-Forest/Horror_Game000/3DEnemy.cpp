@@ -208,8 +208,6 @@ void C3DEnemy::Update(void)
 
 			MoveMent();
 
-			ChangeRot();
-
 			//ベクトルの三要素の設定
 			SetVector3(m_pos, m_rot, m_move);
 		}

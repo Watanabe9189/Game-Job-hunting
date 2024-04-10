@@ -37,13 +37,14 @@ public:
 	void SetBoolPix(const BOOL bBool);
 
 	void SetStencil(const int nStencil) { m_nStencil = nStencil; }
+	void ChangeScreen(void) {m_bFullScreen == false ? m_bFullScreen = true : m_bFullScreen = false;}
 
 private:
 
+	void InitHLSL(void);
+
 	void CheckPixShade(void);
 	LPDIRECT3DPIXELSHADER9 LoadPixShade(void);
-
-	void DrawStancil(void);
 
 	//<==================================
 	//ƒƒ“ƒo•Ï”
@@ -55,8 +56,13 @@ private:
 	LPDIRECT3DPIXELSHADER9 m_pPixShade;
 	bool m_bUsePix;
 	bool m_bUseStancil;
+	bool m_bFullScreen;
 	int m_nStencil;
 	LPDIRECT3DSURFACE9  m_lpBackBuffer;
+
+	LPD3DXEFFECT    m_pEffect; 
+	D3DXHANDLE      m_hTechnique;
+	D3DXHANDLE      m_hmWVP;
 };
 
 #endif

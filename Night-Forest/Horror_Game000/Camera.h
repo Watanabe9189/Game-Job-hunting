@@ -73,6 +73,8 @@ public:
 	bool m_bFollow;			//’Ç”ö‚·‚é‚©‚Ç‚¤‚©
 	int m_nShakeCount;
 
+	void Shake(void);
+
 	//‚±‚ÌŠÖ”ŒÀ’è‚Ìƒƒ“ƒo•Ï”
 private:
 
