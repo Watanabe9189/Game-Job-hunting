@@ -78,13 +78,12 @@ public:
 	STATE GetState(void) { return m_sState; }
 	TYPE GetType(void) { return m_eType; }
 
-	/*bool CollisionDestroy(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 *pMove, D3DXVECTOR3 *vtxMin, D3DXVECTOR3 *vtxMax, bool bJump, TYPE_3D Type3D);*/
+	void HighSpeedMove(void);
 
 private:
 
 
 	//ÉÅÉìÉoä÷êî
-	void ChangeRot(void);
 	void MoveMent(void);
 	void SetSound(const CSound::LABEL Label, const int nMaxCount, const D3DXVECTOR3 rTargetPos);
 	void SetDest(void);

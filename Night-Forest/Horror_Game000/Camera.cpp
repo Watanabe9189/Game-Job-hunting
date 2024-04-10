@@ -7,6 +7,8 @@
 #include "manager.h"
 #include "input.h"
 #include "DebugProc.h"
+#include "3DPlayer.h"
+#include "game.h"
 
 //<**************************************************
 //名前宣言
@@ -129,9 +131,21 @@ void Ccamera::Update(void)
 	//CManager::GetDebugProc()->Print("追従の切り替え[Mキー]\n");
 	//CManager::GetDebugProc()->Print("投影方法の切り替え[LSHIFT]\n");
 
-	//ゲーム画面だったら
-	if (CManager::GetMode() == CScene::MODE_GAME)
+	switch (CManager::GetMode())
 	{
+		//タイトルだった場合
+	case CScene::MODE_TITLE:
+
+		//回転する
+		m_rot.y += 0.005f;
+		SetRot();
+		SetV();
+
+		break;
+
+		//ゲームだった場合
+	case CScene::MODE_GAME:
+
 		//ジャンプしていれば
 		if (m_bFollow == true)
 		{
@@ -145,18 +159,12 @@ void Ccamera::Update(void)
 
 			MoveVR();
 		}
-	}
-	//ゲーム画面だったら
-	if (CManager::GetMode() == CScene::MODE_TITLE)
-	{
-		//回転する
-		m_rot.y += 0.005f;
-		SetRot();
-		SetV();
-	}
-	//ゲーム画面だったら
-	if (CManager::GetMode() == CScene::MODE_RESULT)
-	{
+
+		break;
+
+		//リザルトだった場合
+	case CScene::MODE_RESULT:
+
 		//リザルトが失敗状態だったら
 		if (CScene::GetRes() == CScene::TYPE_RESULT_FAILED)
 		{
@@ -174,6 +182,23 @@ void Ccamera::Update(void)
 			m_fDistance = 121.0f;
 		}
 		//ControllMouse();
+
+		break;
+	}
+
+	//ゲーム画面だったら
+	if (CManager::GetMode() == CScene::MODE_GAME)
+	{
+		
+	}
+	//ゲーム画面だったら
+	if (CManager::GetMode() == CScene::MODE_TITLE)
+	{
+		
+	}
+	//ゲーム画面だったら
+	if (CManager::GetMode() == CScene::MODE_RESULT)
+	{
 	}
 
 #ifdef _DEBUG
@@ -419,7 +444,9 @@ void Ccamera::MoveVR(void)
 	m_move.y = 0.0f;
 	m_move.z = 0.0f;
 }
+//<=================================
 //
+//<=================================
 void Ccamera::Shake(void)
 {
 	if (m_nShakeCount < 4)
@@ -561,7 +588,14 @@ void Ccamera::SetFollow(const D3DXVECTOR3 rTargetPos, const D3DXVECTOR3 rTargetR
 		//視点の代入処理
 		m_posVDest.x = (rTargetPos.x + sinf(D3DX_PI + m_rot.y));
 
-		m_posVDest.y = PosY + DIS_Y + sinf(m_rot.z);
+		if (CScene::GetGame()->Get3DPlayer()->GetState() == C3DPlayer::STATE_HIDE)
+		{
+			m_posVDest.y = PosY + DIS_Y + sinf(m_rot.z)-100.0f;
+		}
+		else
+		{
+			m_posVDest.y = PosY + DIS_Y + sinf(m_rot.z);
+		}
 
 		m_posVDest.z = (rTargetPos.z + cosf(D3DX_PI + m_rot.y));
 

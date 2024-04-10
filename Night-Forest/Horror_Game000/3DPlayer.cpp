@@ -109,7 +109,7 @@ HRESULT C3DPlayer::Init(void)
 void C3DPlayer::Update(void)
 {
 	//まだゲームが終わっていなければ
-	if (CManager::GetScene()->GetGame()->GetGame()->GetState() == CGame::STATE_NONE)
+	if (CManager::GetScene()->GetGame()->GetState() == CGame::STATE_NONE)
 	{
 		//前回の位置を保存
 		m_posOld = m_pos;
