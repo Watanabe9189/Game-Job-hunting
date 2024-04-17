@@ -26,7 +26,6 @@
 #include "Camera.h"
 #include "BilB.h"
 #include "XObject.h"
-#include "Pause.h"
 
 //<*********************************************
 // 静的メンバ変数宣言
@@ -44,7 +43,6 @@ CDebug *CManager::m_pDebug = nullptr;
 CSound *CManager::m_pSound = nullptr;
 
 CFade *CManager::m_pFade = nullptr;
-CPause *CManager::m_pPause = nullptr;
 
 //画面遷移関連
 #ifdef _DEBUG
@@ -130,10 +128,6 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	//生成する
 	m_pFade = CFade::Create();
 
-	m_pPause = new CPause;
-
-	m_pPause->Init();
-
 	//カーソルを表示させなくする
 	ShowCursor(FALSE);
 
@@ -186,12 +180,6 @@ void CManager::Uninit(void)
 		delete m_pFade;
 		m_pFade = nullptr;
 	}
-	if (m_pPause != nullptr)
-	{
-		m_pPause->Uninit();
-		delete m_pPause;
-		m_pPause = nullptr;
-	}
 	
 	//入力機器の終了処理
 	UninitInput();
@@ -211,11 +199,6 @@ void CManager::Update(void)
 	{
 		m_pRenderer->ChangeScreen();
 	}
-	////Pキーが押されたら
-	//if (m_pKeyboard->bGetTrigger(DIK_9) == true)
-	//{
-	//	SetS_SPEED();
-	//}
 
 	//もしポーズされていなければ
 	if (!m_bPause&&m_pScene != nullptr)
@@ -249,7 +232,7 @@ void CManager::Update(void)
 //<==================================================================================
 void CManager::Draw(void)
 {
-	
+	//
 	if (m_pScene != nullptr)
 	{
 		//レンダラーの描画処理

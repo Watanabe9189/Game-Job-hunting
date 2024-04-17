@@ -157,17 +157,14 @@ CXObject::DataModel CXObject::BindModel(const char *pFileName, const bool bMatCh
 void CXObject::LoadModel(void)
 {
 	//Xƒtƒ@ƒCƒ‹‚Ì“Ç‚Ýž‚Ý
-	if (FAILED(D3DXLoadMeshFromX(m_apFileName[m_nNumAll],
+	(D3DXLoadMeshFromX(m_apFileName[m_nNumAll],
 		D3DXMESH_SYSTEMMEM,
 		CManager::GetRenderer()->GetDevice(),
 		NULL,
 		&m_asaveModel[m_nNumAll].pBuffMat,
 		NULL,
 		&m_asaveModel[m_nNumAll].dwNumMat,
-		&m_asaveModel[m_nNumAll].pMesh)))
-	{
-		
-	}
+		&m_asaveModel[m_nNumAll].pMesh));
 
 	assert((m_asaveModel[m_nNumAll].pMat =
 		(D3DXMATERIAL*)m_asaveModel[m_nNumAll].pBuffMat->GetBufferPointer()) != nullptr);

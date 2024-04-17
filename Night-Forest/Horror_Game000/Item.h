@@ -54,6 +54,8 @@ public:
 	static CItem *Create(const D3DXVECTOR3 pos = INIT_VECTOR,const TYPE eType = TYPE::TYPE_ITEM0);
 	static CItem *RandCreate(CItem *apItem[MAX_OBJECT], int nNum);
 
+	void RandSet(void);
+
 	bool GetAppro(void) { return m_bAppro; }
 	bool bGet(void) { return m_bGet; }
 	bool bGetSealed(void) { return m_bSealed; }

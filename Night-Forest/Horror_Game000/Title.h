@@ -23,6 +23,14 @@ class CTitle : public CScene
 {
 
 public:
+
+	enum STATE
+	{
+		STATE_TITLE = 0,
+		STATE_APPEARED,
+		STATE_MAX
+	};
+
 	enum SELECT
 	{
 		SELECT_START = 0,
@@ -41,6 +49,8 @@ public:
 
 private:
 
+	void SetAppear(void);
+
 	static C2DChar *m_ap2DChar[INT_VALUE::MAX_SIZE];
 
 	static LPDIRECT3DTEXTURE9	m_apTexture[INT_VALUE::MAX_TEX];		//テクスチャへのポインタ
@@ -49,6 +59,9 @@ private:
 	static CLight *m_pLight;					//
 	static CField *m_pField;
 	static CFog *m_pFog;
+
+	D3DXCOLOR m_rTitleCol;
+	STATE m_sState;
 	
 	static Ccamera *m_pCamera;					//
 	static C3DEnemy *m_ap3DEnemy[INT_VALUE::MAX_SIZE];

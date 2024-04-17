@@ -159,6 +159,8 @@ CItem *CItem::RandCreate(CItem *apItem[MAX_OBJECT], int nNum)
 //<==========================================================
 void CItem::Update(void)
 {
+	CManager::GetDebugProc()->Print("[アイテム位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_pos.x, m_pos.y, m_pos.z);
+
 	//ゲットしていない状態だったら
 	if (!m_bGet)
 	{
@@ -245,4 +247,36 @@ void CItem::Collid(void)
 	{
 		m_bAppro = false;
 	}
+}
+//<==========================================================
+//
+//<==========================================================
+void CItem::RandSet(void)
+{
+	D3DXVECTOR3 rPos = INIT_VECTOR;
+
+	//<******************************************
+	//壁の破棄
+	//<******************************************
+	for (int nCntBuild = 0; nCntBuild < CBuilding::GetNum(); nCntBuild++)
+	{
+		//中身があれば
+		if (CManager::GetScene()->GetGame()->GetBuil(nCntBuild) != nullptr)
+		{
+			//
+			if (Collision::CollidAll(CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetPosition(),
+				CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetModel().rSize,
+				m_pos, m_sModel.vtxMax, m_sModel.vtxMin) == true)
+			{
+				//重ならないように位置を変える
+				rPos = D3DXVECTOR3(Calculate::CalculteRandVec3(D3DXVECTOR3(4000.0f, 0.0f, 4000.0f), D3DXVECTOR3(-4000.0f, 0.0f, -4000.0f), false));
+				SetPosition(rPos);
+				return;
+			}
+		}
+	}
+
+	//重ならないように位置を変える
+	rPos = D3DXVECTOR3(Calculate::CalculteRandVec3(D3DXVECTOR3(4000.0f, 0.0f, 4000.0f), D3DXVECTOR3(-4000.0f, 0.0f, -4000.0f), false));
+	SetPosition(rPos);
 }

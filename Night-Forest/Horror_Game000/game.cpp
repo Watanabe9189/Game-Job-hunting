@@ -16,7 +16,6 @@
 #include "3DParticle.h"
 #include "Sound.h"
 #include "BillBIcon.h"
-#include "Pause.h"
 //<================================================
 //静的メンバ変数宣言
 //<================================================
@@ -47,6 +46,8 @@ namespace
 	const int NUM_PLANT = 35;
 	const D3DXVECTOR3 PLAYER_POS = D3DXVECTOR3(-4000.0f, 0.0f, 3640.0f);
 	const D3DXVECTOR2 GAUGE_POS = D3DXVECTOR2(720.0f,660.0f);
+
+	const int MAX_TIME = 3500;
 }
 //<====================================
 //ゲーム画面のコンストラクタ
@@ -55,6 +56,7 @@ CGame::CGame()
 {
 	//値のクリア
 	m_nWaitTime = INITIAL_INT;
+	m_nTime = INITIAL_INT;
 	m_bMoved = false;
 }
 //<====================================
@@ -304,8 +306,11 @@ void CGame::Update(void)
 {
 #define MAX_WAIT	(100)	//待機時間の最大値
 
+	m_nTime++;
 	m_pLight->Update();
 	m_pCamera->Update();
+
+	CManager::GetDebugProc()->Print("[今のタイム]：{%d}\n",m_nTime);
 
 	//動いていれば
 	if (Bool::bMove(m_p3DPlayer->GetMove())
@@ -420,6 +425,23 @@ void CGame::Draw(void)
 //<====================================
 void CGame::ItemUpdate(void)
 {
+	//一定時間に到達していたら
+	if (m_nTime >= MAX_TIME)
+	{
+		//アイテムの数分回す
+		for (int nCnt = 0; nCnt < CItem::GetNum(); nCnt++)
+		{
+			//ゲットしていなかったら
+			if (!m_apItem[nCnt]->bGet())
+			{
+				m_apItem[nCnt]->RandSet();
+			}
+		}
+
+		//初期化
+		m_nTime = INITIAL_INT;
+	}
+
 	//アイテムの数分回す
 	for (int nCnt = 0; nCnt < CItem::GetNum(); nCnt++)
 	{

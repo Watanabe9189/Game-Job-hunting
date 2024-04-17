@@ -102,6 +102,7 @@ private:
 	static Ccamera *m_pCamera;					//
 
 	int m_nWaitTime;
+	int m_nTime;
 	bool m_bMoved;
 	STATE m_sState;
 };

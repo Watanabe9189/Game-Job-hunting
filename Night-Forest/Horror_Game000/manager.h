@@ -19,7 +19,6 @@
 //<*********************************************
 class CRenderer;
 class CFade;
-class CPause;
 
 //入力関連
 class CKeyboard;
@@ -37,6 +36,8 @@ class CTutorial;
 class CGame;
 class CResult;
 class COption;
+
+class CPause;
 //<*********************************************
 //クラスの定義
 //<*********************************************
@@ -157,7 +158,6 @@ public:
 	static CScene *GetScene(void) { return m_pScene; }
 	static void SetFade(const CScene::MODE modeNext);
 	static bool GetPause(void) { return m_bPause; }
-	static CPause *GetPpause(void) { return m_pPause; }
 	static HINSTANCE GetInstance(void) { return m_hInstance; }
 	
 
@@ -179,7 +179,6 @@ private:
 	static CScene *m_pScene;					
 	static CScene::MODE m_NowMode;
 	static bool m_bPause;
-	static CPause *m_pPause;
 
 	static HINSTANCE m_hInstance;
 

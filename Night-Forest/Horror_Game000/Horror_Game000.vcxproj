@@ -188,7 +188,6 @@
     <ClCompile Include="object2D.cpp" />
     <ClCompile Include="Object3D.cpp" />
     <ClCompile Include="Option.cpp" />
-    <ClCompile Include="Pause.cpp" />
     <ClCompile Include="Plant.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="Result.cpp" />
@@ -238,7 +237,6 @@
     <ClInclude Include="object2D.h" />
     <ClInclude Include="Object3D.h" />
     <ClInclude Include="Option.h" />
-    <ClInclude Include="Pause.h" />
     <ClInclude Include="Plant.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="Result.h" />

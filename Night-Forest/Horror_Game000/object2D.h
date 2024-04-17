@@ -28,8 +28,6 @@ public:
 		D3DXCOLOR Col;		//色
 		float fAngle;		//角度
 		float fLength;		//長さ
-
-
 	};
 
 	CObject2D(int nPriority = FIX_PRIORITY);
@@ -79,7 +77,4 @@ private:
 	LPDIRECT3DTEXTURE9 m_pTexture;		//テクスチャのポインタ
 	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;	//頂点バッファ
 };
-
-
-
 #endif

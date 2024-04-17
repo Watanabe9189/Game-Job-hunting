@@ -1,7 +1,7 @@
 //<======================================================================================
+//A•¨ŠÖ˜A‚Ìˆ—(Plant.cpp)
 //
-//
-//
+//Author:kazuki watanabe
 //<======================================================================================
 #include "Plant.h"
 
@@ -103,6 +103,7 @@ HRESULT CPlant::Init(void)
 			}
 		}
 	}
+	//‘‚¾‚Á‚½‚ç
 	if (m_eType == TYPE::TYPE_GRASS)
 	{
 		m_rSize = GRASS_SIZE;
@@ -128,6 +129,7 @@ HRESULT CPlant::Init(void)
 			}
 		}
 	}
+	//–Ø‚¾‚Á‚½‚ç
 	else if (m_eType == TYPE::TYPE_TREE)
 	{
 		m_rSize = TREE_SIZE;

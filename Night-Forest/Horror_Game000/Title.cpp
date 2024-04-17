@@ -32,7 +32,9 @@ namespace
 	const D3DXVECTOR2	SELECT_POS		= D3DXVECTOR2(250.0f, 500.0f);			//位置
 	const D3DXVECTOR2	SELECT_SIZE		= D3DXVECTOR2(150.0f, 150.0f);			//サイズ
 	const D3DXCOLOR		SELECT_COL		= D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.3f);	//選択されている時の色
-	const int MAX_COLCOUNT = 50;
+	const int			MAX_COLCOUNT = 50;
+
+	const float			ALPHA_VALUE = 0.009f;
 }
 
 CLight *CTitle::m_pLight = nullptr;
@@ -50,7 +52,8 @@ C2DSelect *CTitle::m_pSelect = nullptr;
 //<====================================
 CTitle::CTitle()
 {
-
+	m_rTitleCol = D3DXCOLOR(1.0f,1.0f,1.0f,0.0f);
+	m_sState = STATE::STATE_TITLE;
 }
 //<====================================
 //タイトルのデストラクタ
@@ -74,16 +77,30 @@ HRESULT CTitle::Init(void)
 
 	//地面生成
 	CField::ReadCreate(&m_pField);
+	m_pField->SetDrawfalse();
 
 	//フォグ生成
-	m_pFog = CFog::Create(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), D3DFOGMODE::D3DFOG_LINEAR, CFog::TYPE::TYPE_PIXEL,0.001f);
+	m_pFog = CFog::Create(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), D3DFOGMODE::D3DFOG_LINEAR, CFog::TYPE::TYPE_PIXEL, 0.001f);
 
 	C3DEnemy::ReadCreate(m_ap3DEnemy);
 
+	//フォントの数分繰り返す
+	for (int nCnt = 0; nCnt < C3DEnemy::GetNum(); nCnt++)
+	{
+		//中身チェック
+		if (m_ap3DEnemy[nCnt] != nullptr)
+		{
+			m_ap3DEnemy[nCnt]->SetDrawfalse();
+		}
+
+	}
+
 	//2D文字を生成
 	m_ap2DChar[0] = C2DChar::Create(D3DXVECTOR2(625.0f, 150.0f), D3DXVECTOR2(350.0f, 100.0f), C2DChar::CHAR_TYPE_TITLE);
+	m_ap2DChar[0]->SetColor(m_rTitleCol);
 
 	m_pSelect = C2DSelect::Create(SELECT_POS, SELECT_MAX);
+	m_pSelect->SetUpdatefalse();
 
 	//m_pMeshPolygon = CMeshPolygon::Create(NULL, D3DXVECTOR3(0.0f, 10.0f, 0.0f), 50.0f, 50);
 
@@ -173,11 +190,13 @@ void CTitle::Uninit(void)
 //<====================================
 void CTitle::Update(void)
 {
-	m_pCamera->Update();
+	SetAppear();
 
 	//フェード状態が何もしていない状態だったら
-	if (CManager::GetFade()->GetType() == CFade::TYPE_FADE_NONE)
+	if (m_sState == STATE::STATE_APPEARED&&
+		CManager::GetFade()->GetType() == CFade::TYPE_FADE_NONE)
 	{
+		m_pCamera->Update();
 		//<========================================================
 		//操作タイプ変更処理
 		//<========================================================
@@ -226,4 +245,49 @@ void CTitle::Update(void)
 void CTitle::Draw(void)
 {
 	m_pCamera->SetCamera();
+}
+//<====================================
+//タイトルの描画処理
+//<====================================
+void CTitle::SetAppear(void)
+{
+	if (CManager::GetFade()->GetType() == CFade::TYPE_FADE_NONE)
+	{
+
+		if (CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_B, 0)
+			|| CManager::GetKeyboard()->bGetTrigger(DIK_RETURN))
+		{
+			m_rTitleCol.a = 1.0f;
+		}
+
+		//タイトルステート
+		if (m_sState == STATE::STATE_TITLE)
+		{
+			m_rTitleCol.a += ALPHA_VALUE;
+
+			//透明度の上限に達していたら
+			if (m_ap2DChar[0]->GetColor().a >= 1.0f)
+			{
+				m_sState = STATE_APPEARED;
+
+				//<***************************************************
+				//見えていない部分のオブジェクトの表示をする
+				//フォントの数分繰り返す
+				for (int nCnt = 0; nCnt < C3DEnemy::GetNum(); nCnt++)
+				{
+					//中身チェック
+					if (m_ap3DEnemy[nCnt] != nullptr)
+					{
+						m_ap3DEnemy[nCnt]->SetDrawtrue();
+					}
+				}
+				m_pField->SetDrawtrue();
+				m_pSelect->SetUpdatetrue();
+				//<***************************************************
+
+			}
+
+			m_ap2DChar[0]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, m_rTitleCol.a));
+		}
+	}
 }

@@ -12,24 +12,16 @@
 //<**************************************************************
 namespace
 {
-	const float SEARCH_MOVE = 0.0045f;	//探索している時の移動量
-	const float CHASE_VALUE = 0.012f;	//追跡している時の移動値
-	const float FACE_VALUE = 0.075f;	//高速移動の時の移動量
 	const float ALPHA_VALUE = 0.08f;	//透明度の値
 	const float ALPHA_VALUE_HIGH = 0.005f;	//高速型の透明度の値
-	const float DOUBLE_VALUE = 1.7f;		//倍にする値
 	const float ROTATE_VALUE = 0.1f;		//回転値
 
-	const float RADIUSE_VALUE_NORMAL = 750.0f;	//通常型の半径の値
-	const float RADIUSE_VALUE_INVISIBLE = 650.0f;	//透明型の半径の値
-
-	const int	MAX_INTERVAL = 500;		//間隔の最大値
+	const int	MAX_INTERVAL = 1000;		//間隔の最大値
 
 	const int	DEFAULT_NUM_SET = 3;		//敵の数のデフォルト値
 	const int	MAX_NUM_SET = 9;		//敵の数のデフォルト値
 	const int	MIN_NUM_SET = 1;		//敵の数のデフォルト値
 }
-
 //<*******************************************
 //静的メンバ変数の宣言
 //<*******************************************
@@ -86,6 +78,8 @@ C3DEnemy::C3DEnemy(int nPriority)
 	m_rTelportPos = INIT_VECTOR;
 	m_sModel = {};
 
+	m_bStartMove = false;
+
 	m_pPlayer = nullptr;
 	m_pSound = nullptr;
 }
@@ -108,25 +102,16 @@ C3DEnemy *C3DEnemy::Create(const D3DXVECTOR3 pos, const int nLife, const int nTy
 //<=======================================
 HRESULT C3DEnemy::Init(void)
 {
+	const float RADIUSE_VALUE = 500.0f;	//半径の値
+
 	m_sModel = BindModel(m_acFilename[m_eType], true);
 
 	SetDest();
 
-	//透明の敵だったら
-	if (m_eType == TYPE::TYPE_ENEMY_INVISIBLE)
-	{
-		//透明型の半径にする
-		m_fSearchRad = RADIUSE_VALUE_INVISIBLE;
-	}
-	//通常型だったら
-	else if (m_eType == TYPE::TYPE_ENEMY_NORMAL)
-	{
-		//通常型の半径にする
-		m_fSearchRad = RADIUSE_VALUE_NORMAL;
-	}
-
 	m_nRandInter = Calculate::CalculeteRandInt(3500, 1000);
 	m_nSoundMax = Calculate::CalculeteRandInt(200, 100);
+
+	m_fSearchRad = RADIUSE_VALUE;
 
 	//モードがゲームの時のみ
 	if (CManager::GetMode() == CScene::MODE_GAME)
@@ -200,6 +185,8 @@ void C3DEnemy::Update(void)
 			//CManager::GetDebugProc()->Print("[前目的の位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_fFrontDest.x, m_fFrontDest.y, m_fFrontDest.z);
 			//CManager::GetDebugProc()->Print("[あと目的の位置]：{X軸:%f},{Y軸:%f},{Z軸:%f}\n", m_fBackDest.x, m_fBackDest.y, m_fBackDest.z);
 
+			CManager::GetDebugProc()->Print("[移動値]：%f\n", m_fMoveValue);
+
 			//CManager::GetDebugProc()->Print("[今のインターバル]：%d\n", m_nInterval);
 			//CManager::GetDebugProc()->Print("[今のランダムインターバル]：%d\n", m_nRandInter);
 			//CManager::GetDebugProc()->Print("[今のステート]：%d\n", m_sState);
@@ -240,10 +227,26 @@ void C3DEnemy::Draw(void)
 //<=======================================
 void C3DEnemy::MoveMent(void)
 {
+	//移動する
+	m_move.x = (m_rDestPos.x - m_pos.x - m_move.x)*m_fMoveValue;//X軸
+	m_move.z = (m_rDestPos.z - m_pos.z - m_move.z)*m_fMoveValue;//Z軸
+
 	//高速型だったら
 	if (m_eType == TYPE::TYPE_ENEMY_HIGHSPEED)
 	{
-		HighSpeedMove();
+		//アイテム収集数が0以上だったら
+		if (CItem::GetNumCollect() > 0)
+		{
+			HighSpeedMove();
+		}
+
+		//一個目をゲットしていたら
+		if (CItem::GetNumCollect() == 1
+			&&!m_bStartMove)
+		{
+			m_bStartMove = true;
+			m_nInterval = m_nRandInter;
+		}
 	}
 	//それ以外の種類だったら
 	else
@@ -263,7 +266,7 @@ void C3DEnemy::MoveMent(void)
 	{
 		m_nInterval = m_nRandInter;
 	}
-
+	
 #endif
 }
 //<=======================================
@@ -271,6 +274,10 @@ void C3DEnemy::MoveMent(void)
 //<=======================================
 void C3DEnemy::HighSpeedMove(void)
 {
+	const float HIGHSPEED_VALUE = 0.085f;							//高速型の移動量
+	const int nFixedInter = MAX_INTERVAL / CItem::GetNumCollect();	//固定インターバル
+
+	//目的向き
 	D3DXVECTOR3 rRotDest = Calculate::CalculateDest(m_pos, m_rDestPos);
 
 	//高速型のステートによって行動を変化させる
@@ -284,21 +291,17 @@ void C3DEnemy::HighSpeedMove(void)
 		//プレイヤーの位置を目的地とする
 		SetDest(m_pPlayer->GetPosition());
 
-		m_fMoveValue = 0.085f;
+		m_fMoveValue = HIGHSPEED_VALUE;
 
-		//移動する
-		m_move.x = (m_rDestPos.x - m_pos.x - m_move.x)*m_fMoveValue;//X軸
-		m_move.z = (m_rDestPos.z - m_pos.z - m_move.z)*m_fMoveValue;//Z軸
-
-																	//プレイヤーが隠れていれば
+		//プレイヤーが隠れていれば
 		if (m_pPlayer->GetState() == C3DPlayer::STATE_HIDE)
 		{
 			//間隔を設定する
-			m_nInterval = MAX_INTERVAL;
+			m_nInterval = nFixedInter;
 		}
 
 		//間隔が一定値を超えていたら
-		if (m_nInterval >= MAX_INTERVAL)
+		if (m_nInterval >= nFixedInter)
 		{
 			//行動ステートに移行させる
 			m_sFastState = FAST_STATE_WAIT;
@@ -338,7 +341,7 @@ void C3DEnemy::HighSpeedMove(void)
 		}
 
 		//間隔が一定値を超えていたら
-		if (m_nInterval >= MAX_INTERVAL)
+		if (m_nInterval >= nFixedInter)
 		{
 			//行動ステートに移行させる
 			m_sFastState = FAST_STATE_MOVE;
@@ -368,6 +371,7 @@ void C3DEnemy::HighSpeedMove(void)
 		//待機状態だったら
 	case FAST_STATE::FAST_STATE_WAIT:
 
+		m_fMoveValue = INITIAL_FLOAT;
 		CManager::GetSound()->StopSound(CSound::LABEL_BGM_APPROACH);
 
 		//間隔が一定値を超えていたら
@@ -416,22 +420,7 @@ void C3DEnemy::HighSpeedMove(void)
 			}
 		}
 
-		//頂点数分繰り返し
-		for (int nCntMaxMat = 0; nCntMaxMat < (int)m_sModel.dwNumMat; nCntMaxMat++)
-		{
-			if (m_sModel.pMat[nCntMaxMat].MatD3D.Diffuse.a <= COLOR_VALUE::ALPHA_CLEANNESS
-				&&m_sModel.pMat[nCntMaxMat].MatD3D.Ambient.a <= COLOR_VALUE::ALPHA_CLEANNESS)
-			{
-				m_sModel.pMat[nCntMaxMat].MatD3D.Diffuse.a = COLOR_VALUE::ALPHA_CLEANNESS;
-				m_sModel.pMat[nCntMaxMat].MatD3D.Ambient.a = COLOR_VALUE::ALPHA_CLEANNESS;
-			}
-			else
-			{
-				//赤色に変える
-				m_sModel.pMat[nCntMaxMat].MatD3D.Diffuse.a -= ALPHA_VALUE_HIGH;
-				m_sModel.pMat[nCntMaxMat].MatD3D.Ambient.a -= ALPHA_VALUE_HIGH;
-			}
-		}
+		m_sModel.pMat = Color::AlphaChangeMaterial(m_sModel.pMat, -ALPHA_VALUE_HIGH, m_sModel.dwNumMat);
 
 		break;
 	}
@@ -442,6 +431,9 @@ void C3DEnemy::HighSpeedMove(void)
 //<=======================================
 void C3DEnemy::Search(void)
 {
+	const float SEARCH_MOVE = 0.0045f/CItem::GetNumLeft();	//探索している時の移動量
+	const float CHASE_VALUE = 0.012f;	//追跡している時の移動値
+
 	D3DXVECTOR3 rRotDest = Calculate::CalculateDest(m_pos, m_rDestPos);
 
 	//距離を計算する(その位置-目的とする位置)
@@ -464,10 +456,6 @@ void C3DEnemy::Search(void)
 		//サウンドセット
 		SetSound(CSound::LABEL_SE_MOAN0, m_nSoundMax, m_pPlayer->GetPosition());
 	}
-
-	m_move.x = (m_rDestPos.x - m_pos.x - m_move.x) *m_fMoveValue;//X軸
-	m_move.z = (m_rDestPos.z - m_pos.z - m_move.z) *m_fMoveValue;//Z軸
-
 
 																 //追跡状態だったら
 	if (m_sState == STATE::STATE_CHASE)
@@ -599,27 +587,34 @@ void C3DEnemy::SetSound(const CSound::LABEL Label, const int nMaxCount, const D3
 //<=======================================
 void C3DEnemy::SerachRot(const D3DXVECTOR3 rRandPos)
 {
+	const int ROTATE_INTERVAL[2] = { 150,350 };		//方向を向くまでのインターバル
+	const float ROTATE_VALUE = 0.045f;				//向く速さ
+
 	m_fMoveValue = 0.0f;
 
+	//最大インターバルまで行っていたら
 	if (m_nInterval >= MAX_INTERVAL)
 	{
+		//捜索モードに移行させる
 		m_sState = STATE_SEARCH;
 		SetDest(rRandPos);
 		m_nInterval = 0;
 	}
-	//
+	//それ以外の場合
 	else
 	{
 		m_nInterval++;
 
-		if (m_nInterval >= 150
-			&& !(m_nInterval >= 350))
+		//一番目のインターバルを超えている&&二番目のインターバルを超えていない場合
+		if (m_nInterval >= ROTATE_INTERVAL[0]
+			&& !(m_nInterval >= ROTATE_INTERVAL[1]))
 		{
-			m_rot.y += 0.045f;
+			m_rot.y += ROTATE_VALUE;
 		}
-		else if (m_nInterval >= 350)
+		//二番目のインターバルを超えている場合
+		else if (m_nInterval >= ROTATE_INTERVAL[1])
 		{
-			m_rot.y -= 0.045f;
+			m_rot.y -= ROTATE_VALUE;
 		}
 	}
 }
@@ -712,8 +707,8 @@ C3DEnemy *C3DEnemy::ReadCreate(C3DEnemy *apEnemy[MAX_OBJECT])
 //<=================================================
 C3DEnemy *C3DEnemy::RandCreate(C3DEnemy *apEnemy[MAX_OBJECT])
 {
-	int nRandType = INITIAL_INT;
-	D3DXVECTOR3 rRandPos = INIT_VECTOR;
+	int nRandType = INITIAL_INT;			//ランダムタイプ
+	D3DXVECTOR3 rRandPos = INIT_VECTOR;		//ランダム位置
 
 	//セットする数分回す
 	for (int nCnt = 0; nCnt < m_nNumSet; nCnt++)

@@ -116,6 +116,10 @@ private:
 	int m_nInterval;
 	int m_nRandInter;
 
+	int m_nFixedInter;
+
+	bool m_bStartMove;
+
 	float m_fMoveValue;
 
 	D3DXVECTOR3 m_rRandDest;
