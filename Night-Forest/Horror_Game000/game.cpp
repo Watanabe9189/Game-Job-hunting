@@ -47,7 +47,8 @@ namespace
 	const D3DXVECTOR3 PLAYER_POS = D3DXVECTOR3(-4000.0f, 0.0f, 3640.0f);
 	const D3DXVECTOR2 GAUGE_POS = D3DXVECTOR2(720.0f,660.0f);
 
-	const int MAX_TIME = 3500;
+	const int MAX_TIME = 3500;				//アイテムテレポートまでの時間の最大値
+	const int MAX_SPAWNTIME = 5000;		//スポーンまでの時間の最大値
 }
 //<====================================
 //ゲーム画面のコンストラクタ
@@ -58,6 +59,7 @@ CGame::CGame()
 	m_nWaitTime = INITIAL_INT;
 	m_nTime = INITIAL_INT;
 	m_bMoved = false;
+	m_nSpawnTime = INITIAL_INT;
 }
 //<====================================
 //ゲーム画面のデストラクタ
@@ -71,9 +73,6 @@ CGame::~CGame()
 //<====================================
 HRESULT CGame::Init(void)
 {
-	m_sState = STATE_NONE;
-	m_nWaitTime = INITIAL_INT;
-	m_bMoved = false;
 	CManager::GetRenderer()->SetBoolPix(FALSE);
 	CManager::GetSound()->PlaySound(CSound::LABEL_BGM_GAME);
 	//<******************************************
@@ -310,7 +309,9 @@ void CGame::Update(void)
 	m_pLight->Update();
 	m_pCamera->Update();
 
-	CManager::GetDebugProc()->Print("[今のタイム]：{%d}\n",m_nTime);
+	CManager::GetDebugProc()->Print("[今のタイム]：{%d}\n", m_nTime);
+	CManager::GetDebugProc()->Print("[今のスポーンタイム]：{%d}\n", m_nSpawnTime);
+	CManager::GetDebugProc()->Print("[現在の敵の数]：{%d}\n", C3DEnemy::GetNum());
 
 	//動いていれば
 	if (Bool::bMove(m_p3DPlayer->GetMove())
@@ -321,6 +322,12 @@ void CGame::Update(void)
 
 		//フラグを立て、二回目の生成がないようにする
 		m_bMoved = true;
+	}
+	//
+	if (m_bMoved)
+	{
+		m_nSpawnTime++;
+		EnemySpawn();
 	}
 	//死亡状態だったら
 	if (m_p3DPlayer->GetState() == C3DPlayer::STATE::STATE_DEATH)
@@ -387,6 +394,7 @@ void CGame::Update(void)
 		}
 	}
 	ItemUpdate();
+
 #ifdef _DEBUG
 
 	//<========================================================
@@ -407,6 +415,7 @@ void CGame::Update(void)
 	{
 		m_pFog->ChangeUse();
 	}
+
 #endif
 }
 //<====================================
@@ -499,6 +508,30 @@ void CGame::ItemUpdate(void)
 		{
 			m_ap2DChar[CHAR2D_FOUND] = C2DChar::Create(D3DXVECTOR2(600.0f, 425.0f),
 				D3DXVECTOR2(200.0f, 200.0f), C2DChar::CHAR_TYPE::CHAR_TYPE_FOUND_INFO, C2DChar::MOVE_FROM_LEFT, true);
+		}
+	}
+}
+//<====================================
+//関連の更新処理
+//<====================================
+void CGame::EnemySpawn(void)
+{
+	//
+	if (m_nSpawnTime >= MAX_SPAWNTIME)
+	{
+		//<******************************************
+		//壁の破棄
+		//<******************************************
+		for (int nCnt = 0; nCnt < INT_VALUE::MAX_CHAR; nCnt++)
+		{
+			//中身がなければ
+			if (m_ap3DEnemy[nCnt] == nullptr)
+			{
+				//敵をスポーンさせる
+				m_ap3DEnemy[nCnt] = C3DEnemy::RandCreateWithNum(m_ap3DEnemy, 1);
+				m_nSpawnTime = INITIAL_INT;
+				return;
+			}
 		}
 	}
 }

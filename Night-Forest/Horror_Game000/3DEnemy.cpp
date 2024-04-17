@@ -19,7 +19,9 @@ namespace
 	const int	MAX_INTERVAL = 1000;		//間隔の最大値
 
 	const int	DEFAULT_NUM_SET = 3;		//敵の数のデフォルト値
-	const int	MAX_NUM_SET = 9;		//敵の数のデフォルト値
+
+	const int	MAX_NUM		= 9;		//設置する数
+	const int	MAX_NUM_SET = 15;		//敵の数のデフォルト値
 	const int	MIN_NUM_SET = 1;		//敵の数のデフォルト値
 }
 //<*******************************************
@@ -30,7 +32,7 @@ namespace
 int C3DEnemy::m_nNumAll = NULL;			//数
 #ifdef _DEBUG
 
-int C3DEnemy::m_nNumSet = MAX_NUM_SET;
+int C3DEnemy::m_nNumSet = MAX_NUM;
 
 #else
 
@@ -588,12 +590,13 @@ void C3DEnemy::SetSound(const CSound::LABEL Label, const int nMaxCount, const D3
 void C3DEnemy::SerachRot(const D3DXVECTOR3 rRandPos)
 {
 	const int ROTATE_INTERVAL[2] = { 150,350 };		//方向を向くまでのインターバル
+	const int INTER_MAX = 500;						//インターバルまでの時間の最大値
 	const float ROTATE_VALUE = 0.045f;				//向く速さ
 
 	m_fMoveValue = 0.0f;
 
 	//最大インターバルまで行っていたら
-	if (m_nInterval >= MAX_INTERVAL)
+	if (m_nInterval >= INTER_MAX)
 	{
 		//捜索モードに移行させる
 		m_sState = STATE_SEARCH;
@@ -747,6 +750,64 @@ C3DEnemy *C3DEnemy::RandCreate(C3DEnemy *apEnemy[MAX_OBJECT])
 	}
 
 	return *apEnemy;
+}
+//<=================================================
+//
+//<=================================================
+C3DEnemy *C3DEnemy::RandCreateWithNum(C3DEnemy *apEnemy[MAX_OBJECT], const int nNum)
+{
+	int nRandType = INITIAL_INT;			//ランダムタイプ
+	D3DXVECTOR3 rRandPos = INIT_VECTOR;		//ランダム位置
+
+	//セットする最大数を超えていなかったら
+	if (m_nNumAll < MAX_NUM_SET)
+	{
+		//セットする数分回す
+		for (int nCnt = 0; nCnt < nNum; nCnt++)
+		{
+			//
+			apEnemy[nCnt] = new C3DEnemy;
+
+			assert(apEnemy[nCnt] != nullptr);
+
+			nRandType = Calculate::CalculeteRandInt(TYPE::TYPE_ENEMY_INVISIBLE,
+				TYPE::TYPE_ENEMY_NORMAL);
+
+			//タイプに応じて出す効果音を変える
+			switch (nRandType)
+			{
+			case TYPE::TYPE_ENEMY_NORMAL:
+
+				CManager::GetSound()->PlaySound(CSound::LABEL_SE_NOTICED1);
+
+				break;
+
+			case TYPE::TYPE_ENEMY_INVISIBLE:
+
+				CManager::GetSound()->PlaySound(CSound::LABEL_SE_NOTICED2);
+
+				break;
+			}
+
+			apEnemy[nCnt]->m_eType = (TYPE)nRandType;
+
+			apEnemy[nCnt]->Init();
+
+			rRandPos = D3DXVECTOR3(Calculate::CalculateRandfloat(4000, -4000), 0.0f, Calculate::CalculateRandfloat(2500, -4000));
+
+			//位置を代入
+			apEnemy[nCnt]->SetPosition(rRandPos);
+
+			//前回の位置を保存しておく
+			apEnemy[nCnt]->m_OldPos = apEnemy[nCnt]->GetPosition();
+
+			//
+			apEnemy[nCnt]->SetType3D(TYPE_3D::TYPE_ENEMY3D);
+		}
+
+		return *apEnemy;
+	}
+	return nullptr;
 }
 //<================================================
 //

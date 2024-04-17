@@ -62,6 +62,7 @@ public:
 	static C3DEnemy *Create(const D3DXVECTOR3 pos, const int nLife, const int nType, const int CoolTime);
 	static C3DEnemy *ReadCreate(C3DEnemy *apEnemy[MAX_OBJECT]);
 	static C3DEnemy *RandCreate(C3DEnemy *apEnemy[MAX_OBJECT]);
+	static C3DEnemy *RandCreateWithNum(C3DEnemy *apEnemy[MAX_OBJECT],const int nNum);
 	void Search(void);
 	static int GetNum(void) { return m_nNumAll; }
 

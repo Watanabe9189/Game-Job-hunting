@@ -82,6 +82,7 @@ public:
 private:
 
 	void ItemUpdate(void);
+	void EnemySpawn(void);
 
 	static CLight *m_pLight;					//
 	static C3DPlayer *m_p3DPlayer;
@@ -103,6 +104,7 @@ private:
 
 	int m_nWaitTime;
 	int m_nTime;
+	int m_nSpawnTime;
 	bool m_bMoved;
 	STATE m_sState;
 };

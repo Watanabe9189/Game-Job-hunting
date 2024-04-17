@@ -30,6 +30,8 @@ namespace
 
 	const int MAX_COLCOUNT = 50;
 
+	const int	ENEMY_NUM = 9;
+
 }
 //<===================================
 //
@@ -209,9 +211,9 @@ void COption::Update(void)
 			{
 				m_nNumEnemy++;
 
-				if (m_nNumEnemy >= C3DEnemy::GetNumMax())
+				if (m_nNumEnemy >= ENEMY_NUM)
 				{
-					m_nNumEnemy = C3DEnemy::GetNumMax();
+					m_nNumEnemy = ENEMY_NUM;
 				}
 
 				m_pNumber->SetNum(&m_nNumEnemy);
