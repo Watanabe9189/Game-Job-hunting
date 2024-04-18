@@ -80,15 +80,14 @@ public:
 	TYPE GetType(void) { return m_eType; }
 
 	void HighSpeedMove(void);
+	void SetDest(const D3DXVECTOR3 rDestPos);
 
 private:
-
 
 	//ÉÅÉìÉoä÷êî
 	void MoveMent(void);
 	void SetSound(const CSound::LABEL Label, const int nMaxCount, const D3DXVECTOR3 rTargetPos);
 	void SetDest(void);
-	void SetDest(const D3DXVECTOR3 rDestPos);
 	void CollidPlayer(void);
 	void DeathSound(void);
 	void SerachRot(const D3DXVECTOR3 rRandPos);

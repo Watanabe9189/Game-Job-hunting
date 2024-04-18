@@ -47,8 +47,9 @@ namespace
 	const D3DXVECTOR3 PLAYER_POS = D3DXVECTOR3(-4000.0f, 0.0f, 3640.0f);
 	const D3DXVECTOR2 GAUGE_POS = D3DXVECTOR2(720.0f,660.0f);
 
-	const int MAX_TIME = 3500;				//アイテムテレポートまでの時間の最大値
-	const int MAX_SPAWNTIME = 5000;		//スポーンまでの時間の最大値
+	const int	MAX_TIME = 3500;				//アイテムテレポートまでの時間の最大値
+	const float MAX_DESTTiME = 4500;			//敵が目的地をプレイヤーの位置の周辺にするまでの時間の最大値
+	const int	MAX_SPAWNTIME = 6500;			//スポーンまでの時間の最大値
 }
 //<====================================
 //ゲーム画面のコンストラクタ
@@ -60,6 +61,7 @@ CGame::CGame()
 	m_nTime = INITIAL_INT;
 	m_bMoved = false;
 	m_nSpawnTime = INITIAL_INT;
+	m_nDestTime = INITIAL_INT;
 }
 //<====================================
 //ゲーム画面のデストラクタ
@@ -311,6 +313,7 @@ void CGame::Update(void)
 
 	CManager::GetDebugProc()->Print("[今のタイム]：{%d}\n", m_nTime);
 	CManager::GetDebugProc()->Print("[今のスポーンタイム]：{%d}\n", m_nSpawnTime);
+	CManager::GetDebugProc()->Print("[今の目的タイム]：{%d}\n", m_nDestTime);
 	CManager::GetDebugProc()->Print("[現在の敵の数]：{%d}\n", C3DEnemy::GetNum());
 
 	//動いていれば
@@ -323,76 +326,16 @@ void CGame::Update(void)
 		//フラグを立て、二回目の生成がないようにする
 		m_bMoved = true;
 	}
-	//
+	//動いた判定になっていたら
 	if (m_bMoved)
 	{
 		m_nSpawnTime++;
+		m_nDestTime++;
 		EnemySpawn();
+		DestToPlayer();
 	}
-	//死亡状態だったら
-	if (m_p3DPlayer->GetState() == C3DPlayer::STATE::STATE_DEATH)
-	{
-		//中身なしだったら
-		if (m_pCover == nullptr)
-		{
-			m_pCover = Ccover::Create(Ccover::TYPE::TYPE_BLOOD_COV);
-		}
-
-		CScene::SetResult(TYPE_RESULT_FAILED);
-
-		//終わっている状態にする
-		m_sState = STATE_END;
-
-		//待機時間の最大値を超えていたら
-		if (m_nWaitTime >= MAX_WAIT)
-		{
-			//リザルト画面を失敗モードにする
-			CManager::SetFade(CScene::MODE::MODE_RESULT);
-			m_nWaitTime = 0;
-		}
-		//いなければ
-		else
-		{
-			//加算していく
-			m_nWaitTime++;
-		}
-
-	}
-	//アイテムを拾い終えていたら
-	if (CItem::GetNumCollect() == CItem::GetMax())
-	{
-		//終了状態じゃない場合
-		if (m_sState != STATE_END)
-		{
-			//その他の音楽を止め、効果音を再生する
-			CManager::GetSound()->StopSound();
-			CManager::GetSound()->PlaySound(CSound::LABEL::LABEL_SE_ESCAPED);
-		}
-		CScene::SetResult(TYPE_RESULT::TYPE_RESULT_SUCCEEDED);
-
-		//中身なしだったら
-		if (m_pCover == nullptr)
-		{
-			m_pCover = Ccover::Create(Ccover::TYPE::TYPE_SAFE_COV);
-		}
-
-		//終わっている状態にする
-		m_sState = STATE_END;
-
-		//待機時間の最大値を超えていたら
-		if (m_nWaitTime >= MAX_WAIT)
-		{
-			//リザルト画面を成功モードにする
-			CManager::SetFade(CScene::MODE::MODE_RESULT);
-			m_nWaitTime = 0;
-		}
-		//いなければ
-		else
-		{
-			//加算していく
-			m_nWaitTime++;
-		}
-	}
+	
+	Fading();
 	ItemUpdate();
 
 #ifdef _DEBUG
@@ -428,6 +371,79 @@ void CGame::Draw(void)
 	//ここに処理を書く必要はない
 	//<***************************************************
 	m_pCamera->SetCamera();
+}
+//<====================================
+//フェード関連の更新処理
+//<====================================
+void CGame::Fading(void)
+{
+	//死亡状態だったら
+	if (m_p3DPlayer->GetState() == C3DPlayer::STATE::STATE_DEATH)
+	{
+		//中身なしだったら
+		if (m_pCover == nullptr)
+		{
+			m_pCover = Ccover::Create(Ccover::TYPE::TYPE_BLOOD_COV);
+		}
+
+		//リザルトタイプを失敗にする
+		CScene::SetResult(TYPE_RESULT_FAILED);
+
+		//終わっている状態にする
+		m_sState = STATE_END;
+
+		//待機時間の最大値を超えていたら
+		if (m_nWaitTime >= MAX_WAIT)
+		{
+			//リザルト画面を失敗モードにする
+			CManager::SetFade(CScene::MODE::MODE_RESULT);
+			m_nWaitTime = 0;
+		}
+		//いなければ
+		else
+		{
+			//加算していく
+			m_nWaitTime++;
+		}
+
+	}
+	//アイテムを拾い終えていたら
+	if (CItem::GetNumCollect() == CItem::GetMax())
+	{
+		//終了状態じゃない場合
+		if (m_sState != STATE_END)
+		{
+			//その他の音楽を止め、効果音を再生する
+			CManager::GetSound()->StopSound();
+			CManager::GetSound()->PlaySound(CSound::LABEL::LABEL_SE_ESCAPED);
+		}
+
+		//リザルトタイプを成功にする
+		CScene::SetResult(TYPE_RESULT::TYPE_RESULT_SUCCEEDED);
+
+		//中身なしだったら
+		if (m_pCover == nullptr)
+		{
+			m_pCover = Ccover::Create(Ccover::TYPE::TYPE_SAFE_COV);
+		}
+
+		//終わっている状態にする
+		m_sState = STATE_END;
+
+		//待機時間の最大値を超えていたら
+		if (m_nWaitTime >= MAX_WAIT)
+		{
+			//リザルト画面を成功モードにする
+			CManager::SetFade(CScene::MODE::MODE_RESULT);
+			m_nWaitTime = 0;
+		}
+		//いなければ
+		else
+		{
+			//加算していく
+			m_nWaitTime++;
+		}
+	}
 }
 //<====================================
 //アイテム関連の更新処理
@@ -512,16 +528,13 @@ void CGame::ItemUpdate(void)
 	}
 }
 //<====================================
-//関連の更新処理
+//敵スポーン関連の更新処理
 //<====================================
 void CGame::EnemySpawn(void)
 {
-	//
+	//既定値にいっていたら
 	if (m_nSpawnTime >= MAX_SPAWNTIME)
 	{
-		//<******************************************
-		//壁の破棄
-		//<******************************************
 		for (int nCnt = 0; nCnt < INT_VALUE::MAX_CHAR; nCnt++)
 		{
 			//中身がなければ
@@ -531,6 +544,41 @@ void CGame::EnemySpawn(void)
 				m_ap3DEnemy[nCnt] = C3DEnemy::RandCreateWithNum(m_ap3DEnemy, 1);
 				m_nSpawnTime = INITIAL_INT;
 				return;
+			}
+		}
+	}
+}
+//<====================================
+//目的関連の更新処理
+//<====================================
+void CGame::DestToPlayer(void)
+{
+	int nRand = INITIAL_INT;			//乱数をするための変数
+	const float DISTANCE_POS = 350.0f;	//プレイヤーの位置から離れる距離
+
+	//基底の時間になったら
+	if (m_nDestTime >= MAX_DESTTiME)
+	{
+		for(int nCnt =0;nCnt < C3DEnemy::GetNum();nCnt++)
+		{
+
+			//高速型ではなければ
+			if (m_ap3DEnemy[nCnt] != nullptr&&
+				m_ap3DEnemy[nCnt]->GetType() != C3DEnemy::TYPE::TYPE_ENEMY_HIGHSPEED)
+			{
+				//0から2までの数をランダムで決める
+				nRand = Calculate::CalculeteRandInt(5, 0);
+
+				//当てはまったら
+				if (nRand == 3)
+				{
+					//プレイヤーの方向に移動する
+					m_ap3DEnemy[nCnt]->SetDest(D3DXVECTOR3(m_p3DPlayer->GetPosition().x + DISTANCE_POS,
+						0.0f, m_p3DPlayer->GetPosition().z + DISTANCE_POS));
+
+					m_nDestTime = INITIAL_INT;
+					return;
+				}
 			}
 		}
 	}

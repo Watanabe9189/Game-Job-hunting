@@ -34,7 +34,7 @@ namespace
 	const D3DXCOLOR		SELECT_COL		= D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.3f);	//‘I‘ğ‚³‚ê‚Ä‚¢‚é‚ÌF
 	const int			MAX_COLCOUNT = 50;
 
-	const float			ALPHA_VALUE = 0.009f;
+	const float			ALPHA_VALUE = 0.007f;
 }
 
 CLight *CTitle::m_pLight = nullptr;

@@ -104,7 +104,7 @@ C3DEnemy *C3DEnemy::Create(const D3DXVECTOR3 pos, const int nLife, const int nTy
 //<=======================================
 HRESULT C3DEnemy::Init(void)
 {
-	const float RADIUSE_VALUE = 500.0f;	//”¼Œa‚Ì’l
+	const float RADIUSE_VALUE = 650.0f;	//”¼Œa‚Ì’l
 
 	m_sModel = BindModel(m_acFilename[m_eType], true);
 
@@ -433,7 +433,7 @@ void C3DEnemy::HighSpeedMove(void)
 //<=======================================
 void C3DEnemy::Search(void)
 {
-	const float SEARCH_MOVE = 0.0045f/CItem::GetNumLeft();	//’Tõ‚µ‚Ä‚¢‚éŽž‚ÌˆÚ“®—Ê
+	const float SEARCH_MOVE = 0.0045f;	//’Tõ‚µ‚Ä‚¢‚éŽž‚ÌˆÚ“®—Ê
 	const float CHASE_VALUE = 0.012f;	//’ÇÕ‚µ‚Ä‚¢‚éŽž‚ÌˆÚ“®’l
 
 	D3DXVECTOR3 rRotDest = Calculate::CalculateDest(m_pos, m_rDestPos);
