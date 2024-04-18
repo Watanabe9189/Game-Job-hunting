@@ -47,9 +47,9 @@ namespace
 	const D3DXVECTOR3 PLAYER_POS = D3DXVECTOR3(-4000.0f, 0.0f, 3640.0f);
 	const D3DXVECTOR2 GAUGE_POS = D3DXVECTOR2(720.0f,660.0f);
 
-	const int	MAX_TIME = 3500;				//アイテムテレポートまでの時間の最大値
-	const float MAX_DESTTiME = 4500;			//敵が目的地をプレイヤーの位置の周辺にするまでの時間の最大値
-	const int	MAX_SPAWNTIME = 6500;			//スポーンまでの時間の最大値
+	const int	MAX_TIME = 4500;				//アイテムテレポートまでの時間の最大値
+	const float MAX_DESTTiME = 7500;			//敵が目的地をプレイヤーの位置の周辺にするまでの時間の最大値
+	const int	MAX_SPAWNTIME = 10000;			//スポーンまでの時間の最大値
 }
 //<====================================
 //ゲーム画面のコンストラクタ
