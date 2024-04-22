@@ -58,7 +58,6 @@ CGame::CGame()
 {
 	//値のクリア
 	m_nWaitTime = INITIAL_INT;
-	m_nTime = INITIAL_INT;
 	m_bMoved = false;
 	m_nSpawnTime = INITIAL_INT;
 	m_nDestTime = INITIAL_INT;
@@ -307,7 +306,6 @@ void CGame::Update(void)
 {
 #define MAX_WAIT	(100)	//待機時間の最大値
 
-	m_nTime++;
 	m_pLight->Update();
 	m_pCamera->Update();
 
@@ -450,45 +448,28 @@ void CGame::Fading(void)
 //<====================================
 void CGame::ItemUpdate(void)
 {
-	//一定時間に到達していたら
-	if (m_nTime >= MAX_TIME)
-	{
-		//アイテムの数分回す
-		for (int nCnt = 0; nCnt < CItem::GetNum(); nCnt++)
-		{
-			//ゲットしていなかったら
-			if (!m_apItem[nCnt]->bGet())
-			{
-				m_apItem[nCnt]->RandSet();
-			}
-		}
-
-		//初期化
-		m_nTime = INITIAL_INT;
-	}
-
 	//アイテムの数分回す
 	for (int nCnt = 0; nCnt < CItem::GetNum(); nCnt++)
 	{
 		//アイテムを取得していなければ
 		if (!m_apItem[nCnt]->bGet())
 		{
-			//近づいていたら
-			if (m_apItem[nCnt]->GetAppro())
+			//近づいていたら&&封印されていたら
+			if (m_apItem[nCnt]->GetAppro()
+				&& m_apItem[nCnt]->bGetSealed())
 			{
-				//近づいていたら
-				if (m_apItem[nCnt]->bGetSealed())
-				{
-					//表示をさせ、処理から抜ける
-					m_ap2DChar[CHAR2D_SEALED]->SetDrawtrue();
-					break;
-				}
-				else
-				{
-					//表示をさせ、処理から抜ける
-					m_ap2DChar[CHAR2D_PICKUP]->SetDrawtrue();
-					break;
-				}
+				//表示をさせ、処理から抜ける
+				m_ap2DChar[CHAR2D_SEALED]->SetDrawtrue();
+				break;
+
+			}
+			//封印されていなければ
+			else if(m_apItem[nCnt]->GetAppro()
+				&& !m_apItem[nCnt]->bGetSealed())
+			{
+				//表示をさせ、処理から抜ける
+				m_ap2DChar[CHAR2D_PICKUP]->SetDrawtrue();
+				break;
 			}
 			//離れていたら
 			else if (!m_apItem[nCnt]->GetAppro())

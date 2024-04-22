@@ -105,7 +105,6 @@ private:
 	static Ccamera *m_pCamera;					//
 
 	int m_nWaitTime;
-	int m_nTime;			//アイテムがテレポートするまでの時間
 	int m_nSpawnTime;		//敵が新たにスポーンするまでの時間
 	int m_nDestTime;		//敵が目的地をプレイヤーの位置の周辺にするまでの時間
 	bool m_bMoved;
