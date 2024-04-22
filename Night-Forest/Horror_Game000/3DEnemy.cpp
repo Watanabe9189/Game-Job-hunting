@@ -122,7 +122,8 @@ HRESULT C3DEnemy::Init(void)
 		for (int nCntMaxMat = 0; nCntMaxMat < (int)m_sModel.dwNumMat; nCntMaxMat++)
 		{
 			//“§–¾‚Ì“G‚¾‚Á‚½‚ç
-			if (m_eType == TYPE::TYPE_ENEMY_INVISIBLE)
+			if (m_eType == TYPE::TYPE_ENEMY_INVISIBLE
+				||m_eType == TYPE::TYPE_ENEMY_HIGHSPEED)
 			{
 				//‰Šú‚Ì“§–¾“x‚ð“§–¾F‚É‚·‚é
 				m_sModel.pMat[nCntMaxMat].MatD3D.Diffuse.a = COLOR_VALUE::ALPHA_CLEANNESS;
@@ -421,7 +422,6 @@ void C3DEnemy::HighSpeedMove(void)
 				m_nInterval++;
 			}
 		}
-
 		m_sModel.pMat = Color::AlphaChangeMaterial(m_sModel.pMat, -ALPHA_VALUE_HIGH, m_sModel.dwNumMat);
 
 		break;
@@ -778,13 +778,13 @@ C3DEnemy *C3DEnemy::RandCreateWithNum(C3DEnemy *apEnemy[MAX_OBJECT], const int n
 			{
 			case TYPE::TYPE_ENEMY_NORMAL:
 
-				CManager::GetSound()->PlaySound(CSound::LABEL_SE_NOTICED1);
+				CManager::GetSound()->PlaySoundWithVolume(CSound::LABEL_SE_NOTICED1,2.0f);
 
 				break;
 
 			case TYPE::TYPE_ENEMY_INVISIBLE:
 
-				CManager::GetSound()->PlaySound(CSound::LABEL_SE_NOTICED2);
+				CManager::GetSound()->PlaySoundWithVolume(CSound::LABEL_SE_NOTICED2,2.0f);
 
 				break;
 			}
