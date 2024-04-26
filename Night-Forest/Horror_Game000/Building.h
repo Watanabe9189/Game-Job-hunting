@@ -30,7 +30,15 @@ public:
 	HRESULT Init(void);
 	void Uninit(void) { CXObject::Uninit(); }
 	void Update(void);
-	void Draw(void) { CXObject::Draw(); }
+	void Draw(void) 
+	{ 
+		//âBÇÍÇƒÇ¢ÇΩÇÁ
+		if (!m_bHided)
+		{
+			CXObject::Draw();
+		}
+	
+	}
 
 	static CBuilding *Create(const D3DXVECTOR3 pos,const TYPE eType);
 	static CBuilding *ReadCreate(CBuilding *apBuilding[MAX_OBJECT]);
@@ -40,6 +48,8 @@ public:
 	static int GetNum(void) { return m_nNumAll; }
 
 	IMPORTANCE GetImportance(void) { return m_eImportance; }
+
+	void SetHide(void){ m_bHided == false ? m_bHided = true : m_bHided = false; }
 
 private:
 
@@ -53,6 +63,7 @@ private:
 	static int m_nNumAll;	//ëçêî
 
 	static const char*			m_acFilename[TYPE::TYPE_MAX];				//ÉtÉ@ÉCÉãñº
+	bool m_bHided;															//âBÇÍÇƒÇ¢ÇÈÇ©
 
 	D3DXVECTOR3 m_rHideRad;
 

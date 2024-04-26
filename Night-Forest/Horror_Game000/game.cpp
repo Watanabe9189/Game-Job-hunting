@@ -309,7 +309,6 @@ void CGame::Update(void)
 	m_pLight->Update();
 	m_pCamera->Update();
 
-	CManager::GetDebugProc()->Print("[今のタイム]：{%d}\n", m_nTime);
 	CManager::GetDebugProc()->Print("[今のスポーンタイム]：{%d}\n", m_nSpawnTime);
 	CManager::GetDebugProc()->Print("[今の目的タイム]：{%d}\n", m_nDestTime);
 	CManager::GetDebugProc()->Print("[現在の敵の数]：{%d}\n", C3DEnemy::GetNum());

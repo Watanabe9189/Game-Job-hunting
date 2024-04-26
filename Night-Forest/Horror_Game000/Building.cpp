@@ -39,6 +39,8 @@ CBuilding::CBuilding()
 	m_sModel = {};
 	m_eImportance = IMPORTANCE_NONE;
 
+	m_bHided = false;
+
 }
 //<==========================================
 //デストラクタ
@@ -74,7 +76,8 @@ void CBuilding::Update(void)
 	m_rot = GetRotation();
 
 	//フラグがたっていたら
-	if (CItem::bGetFlag()&&m_eImportance == IMPORTANCE_HIGH&&!CScene::GetGame()->Get3DPlayer()->GetUnsealed())
+	if (CItem::bGetFlag()&&m_eImportance == IMPORTANCE_HIGH
+		&&!CScene::GetGame()->Get3DPlayer()->GetUnsealed())
 	{
 		//頂点数分繰り返し
 		for (int nCntMaxMat = 0; nCntMaxMat < (int)m_sModel.dwNumMat; nCntMaxMat++)

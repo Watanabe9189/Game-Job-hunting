@@ -21,7 +21,7 @@ namespace
 	const int	DEFAULT_NUM_SET = 3;		//敵の数のデフォルト値
 
 	const int	MAX_NUM		= 9;		//設置する数
-	const int	MAX_NUM_SET = 15;		//敵の数のデフォルト値
+	const int	MAX_NUM_SET = 30;		//敵の数のデフォルト値
 	const int	MIN_NUM_SET = 1;		//敵の数のデフォルト値
 }
 //<*******************************************
@@ -32,7 +32,7 @@ namespace
 int C3DEnemy::m_nNumAll = NULL;			//数
 #ifdef _DEBUG
 
-int C3DEnemy::m_nNumSet = MAX_NUM;
+int C3DEnemy::m_nNumSet = MAX_NUM_SET;
 
 #else
 

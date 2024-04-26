@@ -291,6 +291,10 @@ void C3DPlayer::Hide(void)
 
 				//•\Ž¦‚ð‚³‚¹‚È‚¢
 				CManager::GetScene()->GetGame()->Get2DChar(CGame::CHAR2D_HIDE)->SetDrawfalse();
+
+				//’Ç]ˆ—
+				CManager::GetScene()->GetGame()->GetCamera()->SetFollow(
+					CManager::GetScene()->GetGame()->GetBuil(nCnt)->GetPosition(), m_rot, Ccamera::VISIBILITY_FPV);
 			}
 			//‰B‚êó‘Ô‚Å‚Í–³‚¯‚ê‚Î
 			else if (m_sState == STATE_NONE)
@@ -309,6 +313,7 @@ void C3DPlayer::Hide(void)
 				//ƒXƒe[ƒg‚ª‰½‚à‚È‚µ‚È‚ç‰B‚êó‘Ô‚É‚È‚èA‰B‚êó‘Ô‚È‚ç‰½‚à‚È‚µ‚É‚·‚é
 				m_sState == STATE_NONE ? m_sState = STATE_HIDE : m_sState = STATE_NONE;
 				CManager::GetSound()->PlaySound(CSound::LABEL_SE_HIDE);
+				CManager::GetScene()->GetGame()->GetBuil(nCnt)->SetHide();
 
 				if (CManager::GetScene()->GetGame()->GetBuil(nCnt)->
 					GetImportance()==CBuilding::IMPORTANCE_HIGH&&!m_bUnsealed)
