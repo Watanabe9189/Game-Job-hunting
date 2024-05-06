@@ -20,7 +20,6 @@
 #include "Camera.h"
 #include "Light.h"
 #include "3DPlayer.h"
-#include "2DEffect.h"
 #include "Field.h"
 #include "fog.h"
 #include "Building.h"

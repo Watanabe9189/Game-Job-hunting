@@ -8,6 +8,9 @@
 #include "manager.h"
 #include "game.h"
 
+//<***************************************************************
+//Ã“Iƒƒ“ƒo•Ï”éŒ¾
+//<***************************************************************
 int C2DChar::m_nNumAll = INITIAL_INT;
 
 LPDIRECT3DTEXTURE9 C2DChar::m_apTexture[INT_VALUE::MAX_TEX] = {};

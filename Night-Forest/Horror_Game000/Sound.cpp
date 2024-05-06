@@ -202,15 +202,12 @@ HRESULT CSound::Init(HWND hWnd)
 
 		m_apDataAudio[nCntSound] = (BYTE*)malloc(m_aSizeAudio[nCntSound]);
 
-		if (m_apDataAudio[nCntSound] != nullptr)
+		if (FAILED(hr = ReadChunkData(hFile, m_apDataAudio[nCntSound], m_aSizeAudio[nCntSound], dwChunkPosition)))
 		{
-			if (FAILED(hr = ReadChunkData(hFile, m_apDataAudio[nCntSound], m_aSizeAudio[nCntSound], dwChunkPosition)))
-			{
-				MessageBox(hWnd, "オーディオデータ読み込みに失敗！(2)", "警告！", MB_ICONWARNING);
-				return S_FALSE;
-			}
-
+			MessageBox(hWnd, "オーディオデータ読み込みに失敗！(2)", "警告！", MB_ICONWARNING);
+			return S_FALSE;
 		}
+
 		// ソースボイスの生成
 		hr = m_pXAudio2->CreateSourceVoice(&m_apSourceVoice[nCntSound], &(wfx.Format));
 		if (FAILED(hr))

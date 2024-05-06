@@ -12,8 +12,6 @@
 #include "DebugProc.h"
 #include "input.h"
 #include "fade.h"
-#include "2DParticle.h"
-#include "3DParticle.h"
 #include "Sound.h"
 #include "BillBIcon.h"
 //<================================================
