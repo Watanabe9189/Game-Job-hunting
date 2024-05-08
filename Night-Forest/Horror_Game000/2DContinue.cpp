@@ -55,6 +55,7 @@ C2DContinue::C2DContinue(int nPriority)
 	m_rSize = D3DXVECTOR2(0.0f, 0.0f);
 	m_rCol = INIT_COL;
 	m_bUpdate = false;
+	m_pChangeCol = nullptr;
 }
 //<======================================================================
 //
@@ -81,6 +82,10 @@ C2DContinue *C2DContinue::Create(void)
 //<======================================================================
 HRESULT C2DContinue::Init(void)
 {
+	m_pChangeCol = ChangeCol::Create();
+
+	assert(m_pChangeCol != nullptr);
+
 	//テクスチャの初期化
 	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); nCnt++)
 	{
@@ -125,10 +130,11 @@ HRESULT C2DContinue::Init(void)
 		m_rPos = YESNO_POS;
 
 		//生成する
-		m_apSelect[nCnt] = CObject2D::Create(D3DXVECTOR2(m_rPos.x + DISTANCE_VALUE *nCnt, m_rPos.y), m_rSize, m_rCol, m_apTexture[nCnt+2]);
+		m_apSelect[nCnt] = CObject2D::Create(D3DXVECTOR2(m_rPos.x + DISTANCE_VALUE *nCnt, m_rPos.y), m_rSize, m_pChangeCol->GetColor(), m_apTexture[nCnt+2]);
 
 		assert(m_apSelect[nCnt] != nullptr);
 	}
+
 	return S_OK;
 }
 //<======================================================================
@@ -151,6 +157,11 @@ void C2DContinue::Uninit(void)
 			m_apSelect[nCnt]->Uninit();
 			m_apSelect[nCnt] = nullptr;
 		}
+	}
+	if (m_pChangeCol)
+	{
+		delete m_pChangeCol;
+		m_pChangeCol = nullptr;
 	}
 	Release();
 }
@@ -216,8 +227,7 @@ void C2DContinue::SelectUpdate(void)
 	//前回の選択を保存する
 	m_nOldSelect = m_nSelect;
 
-	//色を変える
-	m_rCol = Change::ChangeColInter(m_rCol, 1.0f, 0.3f, 0.025f);
+	m_pChangeCol->ChangeColAdd();
 
 	//左キーが押されていたら
 	if (CManager::GetKeyboard()->bGetTrigger(DIK_LEFTARROW)
@@ -225,7 +235,7 @@ void C2DContinue::SelectUpdate(void)
 	{
 		CManager::GetSound()->PlaySound(CSound::LABEL_SE_SELECT);
 		m_nSelect = (m_nSelect + (SELECT::SELECT_MAX - 1)) % SELECT::SELECT_MAX;
-		m_rCol.a = 1.0f;
+		m_pChangeCol->SetColor(INIT_COL);
 	}
 	//右キーが押されていたら
 	else if (CManager::GetKeyboard()->bGetTrigger(DIK_RIGHTARROW)
@@ -233,10 +243,10 @@ void C2DContinue::SelectUpdate(void)
 	{
 		CManager::GetSound()->PlaySound(CSound::LABEL_SE_SELECT);
 		m_nSelect = (m_nSelect + 1) % SELECT::SELECT_MAX;
-		m_rCol.a = 1.0f;
+		m_pChangeCol->SetColor(INIT_COL);
 	}
 
 	//カラーを設定する
-	m_apSelect[m_nOldSelect]->SetColor(INIT_COL);
-	m_apSelect[m_nSelect]->SetColor(m_rCol);
+	m_apObject2D[m_nOldSelect]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, m_pChangeCol->GetMinAlpha()));
+	m_apObject2D[m_nSelect]->SetColor(m_pChangeCol->GetColor());
 }

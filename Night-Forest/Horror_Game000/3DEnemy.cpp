@@ -21,7 +21,7 @@ namespace
 	const int	DEFAULT_NUM_SET = 3;		//敵の数のデフォルト値
 
 	const int	MAX_NUM		= 9;		//設置する数
-	const int	MAX_NUM_SET = 15;		//敵の数のデフォルト値
+	const int	MAX_NUM_SET = 30;		//敵の数のデフォルト値
 	const int	MIN_NUM_SET = 1;		//敵の数のデフォルト値
 }
 //<*******************************************
@@ -32,7 +32,7 @@ namespace
 int C3DEnemy::m_nNumAll = NULL;			//数
 #ifdef _DEBUG
 
-int C3DEnemy::m_nNumSet = DEFAULT_NUM_SET;
+int C3DEnemy::m_nNumSet = MAX_NUM_SET;
 
 #else
 
@@ -67,7 +67,7 @@ C3DEnemy::C3DEnemy(int nPriority)
 	m_fMoveValue = INITIAL_FLOAT;
 
 	m_sState = STATE::STATE_SEARCH;
-	m_sFastState = FAST_STATE::FAST_STATE_WAIT;
+	m_sFastState = FAST_STATE::FAST_STATE_NORMAL;
 
 	m_nSoundCount = INITIAL_INT;
 	m_nInterval = INITIAL_INT;
@@ -114,6 +114,7 @@ HRESULT C3DEnemy::Init(void)
 	m_nSoundMax = Calculate::CalculeteRandInt(200, 100);
 
 	m_fSearchRad = RADIUSE_VALUE;
+	m_sFastState = FAST_STATE::FAST_STATE_WAIT;
 
 	//モードがゲームの時のみ
 	if (CManager::GetMode() == CScene::MODE_GAME)

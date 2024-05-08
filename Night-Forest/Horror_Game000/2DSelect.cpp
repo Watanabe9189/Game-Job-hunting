@@ -1,7 +1,7 @@
 //<======================================================================
+//2Dでの選択肢処理(2DSelect.cpp)
 //
-//
-//
+//Author:kazuki watanabe
 //<======================================================================
 #include "2DSelect.h"
 #include "manager.h"
@@ -32,7 +32,7 @@ C2DSelect::C2DSelect(int nPriority)
 
 	m_rPos = D3DXVECTOR2(0.0f,0.0f);
 	m_rSize = D3DXVECTOR2(0.0f, 0.0f);
-	m_rCol = INIT_COL;
+	m_pChangeCol = nullptr;
 }
 //<======================================================================
 //
@@ -63,11 +63,15 @@ C2DSelect *C2DSelect::Create(const D3DXVECTOR2 rPos,const int nNumSelect)
 //<======================================================================
 HRESULT C2DSelect::Init(void)
 {
+	m_pChangeCol = ChangeCol::Create();
+
+	assert(m_pChangeCol != nullptr);
+
 	//セレクトの数分繰り返す
 	for (int nCnt = 0; nCnt < m_nNumSelect; nCnt++)
 	{
 		//生成する
-		m_apObject2D[nCnt] = CObject2D::Create(D3DXVECTOR2(m_rPos.x +m_fDistance *nCnt,m_rPos.y), D3DXVECTOR2(150.0f, 150.0f), m_rCol);
+		m_apObject2D[nCnt] = CObject2D::Create(D3DXVECTOR2(m_rPos.x +m_fDistance *nCnt,m_rPos.y), D3DXVECTOR2(150.0f, 150.0f),m_pChangeCol->GetColor());
 
 		assert(m_apObject2D[nCnt] != nullptr);
 	}
@@ -89,6 +93,14 @@ void C2DSelect::Uninit(void)
 			m_apObject2D[nCnt] = nullptr;
 		}
 	}
+
+	//
+	if (m_pChangeCol)
+	{
+		delete m_pChangeCol;
+		m_pChangeCol = nullptr;
+	}
+
 	Release();
 }
 //<======================================================================
@@ -133,8 +145,7 @@ void C2DSelect::SelectUpdate(void)
 	//前回の選択を保存する
 	m_nOldSelect = m_nSelect;
 
-	//色を変える
-	m_rCol = Change::ChangeColInter(m_rCol, 1.0f, 0.3f, 0.025f);
+	m_pChangeCol->ChangeColAdd();
 
 	//左キーが押されていたら
 	if (CManager::GetKeyboard()->bGetTrigger(DIK_LEFTARROW)
@@ -142,7 +153,7 @@ void C2DSelect::SelectUpdate(void)
 	{
 		CManager::GetSound()->PlaySound(CSound::LABEL_SE_SELECT);
 		m_nSelect = (m_nSelect + (m_nNumSelect - 1)) % m_nNumSelect;
-		m_rCol.a = 1.0f;
+		m_pChangeCol->SetColor(INIT_COL);
 	}
 	//右キーが押されていたら
 	else if (CManager::GetKeyboard()->bGetTrigger(DIK_RIGHTARROW)
@@ -150,12 +161,12 @@ void C2DSelect::SelectUpdate(void)
 	{
 		CManager::GetSound()->PlaySound(CSound::LABEL_SE_SELECT);
 		m_nSelect = (m_nSelect + 1) % m_nNumSelect;
-		m_rCol.a = 1.0f;
+		m_pChangeCol->SetColor(INIT_COL);
 	}
 
 	//カラーを設定する
-	m_apObject2D[m_nOldSelect]->SetColor(INIT_COL);
-	m_apObject2D[m_nSelect]->SetColor(m_rCol);
+	m_apObject2D[m_nOldSelect]->SetColor(D3DXCOLOR(1.0f,1.0f,1.0f, m_pChangeCol->GetMinAlpha()));
+	m_apObject2D[m_nSelect]->SetColor(m_pChangeCol->GetColor());
 }
 //<=============================================
 //

@@ -106,6 +106,8 @@ public:
 
 private:
 
+	HRESULT CheckChunkSound(const LABEL Label);
+
 	void SetDistance(const D3DXVECTOR3 Pos, const int nType, const LABEL Label);
 
 	IXAudio2 *m_pXAudio2 = NULL;								//XAudio2オブジェクトへのインターフェイス

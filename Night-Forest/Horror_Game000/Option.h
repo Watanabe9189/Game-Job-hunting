@@ -19,6 +19,8 @@
 #include "Number.h"
 #include "3DEnemy.h"
 
+#include "Useful.h"
+
 class COption : public CScene
 {
 
@@ -62,7 +64,7 @@ private:
 	int m_nNumEnemy;
 	int m_nSelect;
 	int m_nOldSelect;
-	D3DXCOLOR m_rCol;
+	ChangeCol *m_pChangeCol;
 };
 
 #endif

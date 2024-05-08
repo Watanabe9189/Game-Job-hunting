@@ -1,11 +1,17 @@
+//<======================================================================
+//2D‚Å‚Ì‘I‘ðŽˆˆ—(2DSelect.cpp)
+//
+//Author:kazuki watanabe
+//<======================================================================
 #ifndef _2DSELECT_H_
 #define _2DSELECT_H_
 
 #include "main.h"
 #include "object2D.h"
+#include "Useful.h"
 
 //<*************************************************
-//
+//ƒNƒ‰ƒXéŒ¾
 //<*************************************************
 class C2DSelect : public CObject
 {
@@ -33,7 +39,6 @@ private:
 
 	D3DXVECTOR2 m_rPos;
 	D3DXVECTOR2 m_rSize;
-	D3DXCOLOR m_rCol;
 
 	CObject2D *m_apObject2D[INT_VALUE::MAX_SIZE];
 	int m_nNumSelect;
@@ -46,6 +51,7 @@ private:
 
 	float m_fDistance;
 
+	ChangeCol *m_pChangeCol;
 };
 
 #endif

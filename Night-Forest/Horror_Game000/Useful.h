@@ -2,6 +2,17 @@
 #define _USEFUL_H_
 
 #include "main.h"
+
+//<************************************************************************************************************
+//
+//<************************************************************************************************************
+namespace InitChangerCol
+{
+	static const D3DXCOLOR	COLOR_INIT	= D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.3f);
+	static const float		MIN_INIT	= 0.3f;
+	static const float		CHANGE_INIT = 0.03f;
+	static const int		INTER_MAX	= 200;
+}
 //<============================================================================================================
 //コリジョン(当たり判定)関連の名前宣言
 //<============================================================================================================
@@ -106,6 +117,9 @@ namespace Bool
 {
 	bool bMove(const D3DXVECTOR3 rMove);
 }
+//<============================================================================================================
+//bool型判定関連の名前宣言
+//<============================================================================================================
 namespace Color
 {
 
@@ -113,4 +127,57 @@ namespace Color
 	D3DXMATERIAL *AlphaChangeMaterial(D3DXMATERIAL *pMat, const float fAlphaValue, const DWORD dwNumMat);
 
 }
+//<============================================================================================================
+//bool型判定関連の名前宣言
+//<============================================================================================================
+class ChangeCol
+{
+public:
+
+	ChangeCol();
+	~ChangeCol();
+
+	static ChangeCol* Create(const D3DXCOLOR pColor= InitChangerCol::COLOR_INIT, const float MAX_COLOR = INIT_COL.a,
+		const float MIN_COLOR= InitChangerCol::MIN_INIT, const float fValueChange = InitChangerCol::CHANGE_INIT,
+		const int nInter = InitChangerCol::INTER_MAX);
+
+	void ChangeColAdd(void);
+
+	D3DXCOLOR GetColor(void) { return m_rCol; }
+	float GetMaxAlpha(void) { return m_fMaxAlpha; }
+	float GetMinAlpha(void) { return m_fMinAlpha; }
+
+	void SetColor(const D3DXCOLOR rCol) 
+	{ 
+		//その色の値にする
+		m_rCol = rCol; 
+	
+		//最大値に到達していたら
+		if (m_rCol.a >= INIT_COL.a) 
+		{ 
+			m_rCol.a = INIT_COL.a;
+			m_bEnd = true; 
+		
+		}
+		//最小値に到達していたら
+		else if (m_rCol.a <= m_fMinAlpha)
+		{
+			m_rCol.a = m_fMinAlpha;
+			m_bEnd = false;
+		}
+	
+	}
+
+
+private:
+
+	D3DXCOLOR m_rCol;			//色
+	float m_fMaxAlpha;			//透明度の最大値
+	float m_fMinAlpha;			//透明度の最小値
+	float m_fChangeValue;		//変更値
+	int m_nInter;				//インターバル
+	int m_nCounter;				//カウンター
+	bool m_bEnd;				//色変えが終了しているかどうか
+
+};
 #endif

@@ -8,6 +8,7 @@
 
 #include "main.h"
 #include "object2D.h"
+#include "Useful.h"
 
 //<*************************************************
 //
@@ -74,6 +75,7 @@ private:
 	int m_nOldSelect;
 
 	bool m_bUpdate;
+	ChangeCol* m_pChangeCol;
 
 };
 

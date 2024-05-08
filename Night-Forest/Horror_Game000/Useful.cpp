@@ -1,3 +1,8 @@
+//<================================================
+//便利関数処理(Useful.cpp)
+//
+//Author:kazuki watanabe
+//<================================================
 #include "Useful.h"
 
 //<================================================
@@ -453,4 +458,106 @@ D3DXMATERIAL *Color::AlphaChangeMaterial(D3DXMATERIAL *pMat, const float fAlphaV
 	}
 
 	return Material;
+}
+//<================================================
+//
+//<================================================
+ChangeCol::ChangeCol()
+{
+	//値の初期化
+	m_bEnd = false;
+	m_fChangeValue = INITIAL_FLOAT;
+	m_fMaxAlpha = INITIAL_FLOAT;
+	m_fMinAlpha = INITIAL_FLOAT;
+	m_rCol = INIT_COL;
+	m_nCounter = INITIAL_INT;
+	m_nInter = INITIAL_INT;
+}
+//<================================================
+//
+//<================================================
+ChangeCol::~ChangeCol()
+{
+
+}
+//<================================================
+//
+//<================================================
+ChangeCol* ChangeCol::Create(const D3DXCOLOR pColor, const float MAX_COLOR,
+	const float MIN_COLOR, const float fValueChange, const int nInter)
+{
+	ChangeCol* pChangeCol = new ChangeCol;
+
+	pChangeCol->m_rCol = pColor;
+	pChangeCol->m_fMaxAlpha = MAX_COLOR;
+	pChangeCol->m_fMinAlpha = MIN_COLOR;
+	pChangeCol->m_fChangeValue = fValueChange;
+	pChangeCol->m_nInter = nInter;
+
+	return pChangeCol;
+}
+//<================================================
+//
+//<================================================
+void ChangeCol::ChangeColAdd(void)
+{
+	//もし色チェンジが終わっていなければ
+	if (!m_bEnd)
+	{
+		//最大色まで行っていたら
+		if (m_rCol.a >= m_fMaxAlpha)
+		{
+			//その値にする
+			m_rCol.a = m_fMaxAlpha;
+
+			//最大カウンターまで行っていたら
+			if (m_nCounter >= m_nInter)
+			{
+				m_nCounter = 0;
+				m_bEnd = true;
+			}
+			//行っていなかったら
+			else
+			{
+				//加算する
+				m_nCounter++;
+			}
+
+		}
+		//その色まで行っていなかったら
+		else
+		{
+			//色を加算する
+			m_rCol.a += m_fChangeValue;
+		}
+	}
+	//終わっていれば
+	else
+	{
+		//最小値の色まで行っていたら
+		if (m_rCol.a <= m_fMinAlpha)
+		{
+			//最小値の色にする
+			m_rCol.a = m_fMinAlpha;
+
+			//カウンターが最大値まで行っていたら
+			if (m_nCounter >= m_nInter / 10)
+			{
+				m_nCounter = 0;
+				m_bEnd = false;
+			}
+			//行っていなかったら
+			else
+			{
+				//加算する
+				m_nCounter++;
+			}
+		}
+		//まだ最小値まで行っていなければ
+		else
+		{
+			//減算する
+			m_rCol.a -= m_fChangeValue;
+		}
+	}
 }
