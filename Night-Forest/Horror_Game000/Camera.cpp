@@ -186,21 +186,6 @@ void Ccamera::Update(void)
 		break;
 	}
 
-	//ゲーム画面だったら
-	if (CManager::GetMode() == CScene::MODE_GAME)
-	{
-		
-	}
-	//ゲーム画面だったら
-	if (CManager::GetMode() == CScene::MODE_TITLE)
-	{
-		
-	}
-	//ゲーム画面だったら
-	if (CManager::GetMode() == CScene::MODE_RESULT)
-	{
-	}
-
 #ifdef _DEBUG
 	////<***************************
 	////投影方法のチェンジ

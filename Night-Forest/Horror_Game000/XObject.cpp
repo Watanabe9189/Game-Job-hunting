@@ -82,10 +82,10 @@ void CXObject::Draw(void)
 		CManager::GetRenderer()->GetDevice()->SetMaterial(&m_asModel.pMat[nCntMat].MatD3D);
 
 		//テクスチャの設定
-		CManager::GetRenderer()->GetDevice()->SetTexture(0, m_asModel.apTexture[nCntMat]);
+		CManager::GetRenderer()->GetDevice()->SetTexture(0, m_asaveModel[m_nModelId].apTexture[nCntMat]);
 
 		//モデルの描画
-		m_asModel.pMesh->DrawSubset(nCntMat);
+		m_asaveModel[m_nModelId].pMesh->DrawSubset(nCntMat);
 	}
 
 	//保存していたマテリアルを戻す

@@ -21,7 +21,7 @@ namespace
 	const int	DEFAULT_NUM_SET = 3;		//敵の数のデフォルト値
 
 	const int	MAX_NUM		= 9;		//設置する数
-	const int	MAX_NUM_SET = 30;		//敵の数のデフォルト値
+	const int	MAX_NUM_SET = 20;		//敵の数のデフォルト値
 	const int	MIN_NUM_SET = 1;		//敵の数のデフォルト値
 }
 //<*******************************************
@@ -32,7 +32,7 @@ namespace
 int C3DEnemy::m_nNumAll = NULL;			//数
 #ifdef _DEBUG
 
-int C3DEnemy::m_nNumSet = MAX_NUM_SET;
+int C3DEnemy::m_nNumSet = MAX_NUM;
 
 #else
 
@@ -105,7 +105,6 @@ C3DEnemy *C3DEnemy::Create(const D3DXVECTOR3 pos, const int nLife, const int nTy
 HRESULT C3DEnemy::Init(void)
 {
 	const float RADIUSE_VALUE = 650.0f;	//半径の値
-
 	m_sModel = BindModel(m_acFilename[m_eType], true);
 
 	SetDest();

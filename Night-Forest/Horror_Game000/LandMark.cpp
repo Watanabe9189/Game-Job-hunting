@@ -110,6 +110,7 @@ CLandMark *CLandMark::FixedCreate(CLandMark *apLandMark[MAX_OBJECT])
 HRESULT CLandMark::Init(void)
 {
 	m_sModel = BindModel(m_acFilename[m_eType]);
+
 	//‚à‚µ‰Šú‰»‚É¸”s‚µ‚½‚ç
 	if (FAILED(CXObject::Init()))
 	{
