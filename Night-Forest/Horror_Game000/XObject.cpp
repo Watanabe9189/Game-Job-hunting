@@ -76,7 +76,7 @@ void CXObject::Draw(void)
 	CManager::GetRenderer()->GetDevice()->GetMaterial(&matDef);
 	
 	//頂点数分繰り返し
-	for (DWORD nCntMat = 0; nCntMat < m_asModel.dwNumMat; nCntMat++)
+	for (DWORD nCntMat = 0; nCntMat < m_asaveModel[m_nModelId].dwNumMat; nCntMat++)
 	{
 		//マテリアルの設定
 		CManager::GetRenderer()->GetDevice()->SetMaterial(&m_asModel.pMat[nCntMat].MatD3D);

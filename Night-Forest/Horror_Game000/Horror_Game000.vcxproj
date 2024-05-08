@@ -157,7 +157,6 @@
     <ClCompile Include="2DInfo.cpp" />
     <ClCompile Include="2DSelect.cpp" />
     <ClCompile Include="3DEnemy.cpp" />
-    <ClCompile Include="3DFont.cpp" />
     <ClCompile Include="3DPlayer.cpp" />
     <ClCompile Include="BilB.cpp" />
     <ClCompile Include="BillBIcon.cpp" />
@@ -202,7 +201,6 @@
     <ClInclude Include="2DInfo.h" />
     <ClInclude Include="2DSelect.h" />
     <ClInclude Include="3DEnemy.h" />
-    <ClInclude Include="3DFont.h" />
     <ClInclude Include="3DPlayer.h" />
     <ClInclude Include="BilB.h" />
     <ClInclude Include="BillBIcon.h" />
