@@ -577,7 +577,7 @@ void CSound::SetDistance(const D3DXVECTOR3 Pos, const int nType, const LABEL Lab
 	}
 }
 //<=============================================================================
-//距離による音量調整
+//サウンド自体のチャンクチェック
 //<=============================================================================
 HRESULT CSound::CheckChunkSound(const LABEL Label)
 {
@@ -649,19 +649,16 @@ HRESULT CSound::CheckChunkSound(const LABEL Label)
 		return S_FALSE;
 	}
 
-	//
+	//<**********************************************
+	//二度目をやらないようにメモリ開放をする
 	if (m_apDataAudio[Label] != nullptr)
 	{
 		// オーディオデータの開放
 		free(m_apDataAudio[Label]);
-		m_apDataAudio[Label] = NULL;
+		m_apDataAudio[Label] = nullptr;
 	}
 	//
-	if (m_aSizeAudio[Label] != NULL)
-	{
-		m_aSizeAudio[Label] = NULL;
-	}
-	
+	//<**********************************************
 	m_apDataAudio[Label] = (BYTE*)malloc(m_aSizeAudio[Label]);
 
 	if (FAILED(hr = ReadChunkData(hFile, m_apDataAudio[Label], m_aSizeAudio[Label], dwChunkPosition)))
