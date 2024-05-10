@@ -1,16 +1,22 @@
+//<============================================
+//目印処理(LandMark.cpp)
+//
+//Author:kazuki watanabe
+//<============================================
 #include "LandMark.h"
 #include "game.h"
 
+//ファイル名指定
 const char*			CLandMark::m_acFilename[TYPE::TYPE_MAX]
 {
-	"data\\MODEL\\LandMark\\SignBoard000.x",
-	"data\\MODEL\\LandMark\\TrunkTable000.x",
-	"data\\MODEL\\LandMark\\Car000.x",
-	"data\\MODEL\\LandMark\\House001.x",
+	"data\\MODEL\\LandMark\\SignBoard000.x",		//看板
+	"data\\MODEL\\LandMark\\TrunkTable000.x",		//幹の机
+	"data\\MODEL\\LandMark\\Car000.x",				//車
+	"data\\MODEL\\LandMark\\House001.x",			//家(一軒家ではない)
 };
 int CLandMark::m_nNumAll = INITIAL_INT;
 //<================================================
-//
+//コンストラクタ
 //<================================================
 CLandMark::CLandMark(int nPriority)
 {
@@ -27,14 +33,14 @@ CLandMark::CLandMark(int nPriority)
 	m_sModel = {};
 }
 //<================================================
-//
+//デストラクタ
 //<================================================
 CLandMark::~CLandMark()
 {
 	m_nNumAll--;
 }
 //<================================================
-//
+//生成処理
 //<================================================
 CLandMark *CLandMark::FixedCreate(CLandMark *apLandMark[MAX_OBJECT])
 {
@@ -105,7 +111,7 @@ CLandMark *CLandMark::FixedCreate(CLandMark *apLandMark[MAX_OBJECT])
 	return *apLandMark;
 }
 //<================================================
-//
+//初期化処理
 //<================================================
 HRESULT CLandMark::Init(void)
 {
@@ -120,7 +126,7 @@ HRESULT CLandMark::Init(void)
 	return S_OK;
 }
 //<================================================
-//
+//更新処理
 //<================================================
 void CLandMark::Update(void)
 {
@@ -140,7 +146,7 @@ void CLandMark::Update(void)
 	SetVector3(m_pos, m_rot, m_move);
 }
 //<================================================
-//
+//当たり判定処理
 //<================================================
 void CLandMark::Collid(void)
 {

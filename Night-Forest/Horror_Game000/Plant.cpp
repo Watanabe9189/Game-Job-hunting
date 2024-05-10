@@ -8,25 +8,24 @@
 LPDIRECT3DTEXTURE9	CPlant::m_apTexture[TYPE::TYPE_MAX] = {};		//テクスチャへのポインタ
 const char*			CPlant::m_acFilename[TYPE::TYPE_MAX] =
 {
-
-	"data\\TEXTURE\\Grass.png",
-	"data\\TEXTURE\\Tree000.png",
+	"data\\TEXTURE\\Grass.png",				//草
+	"data\\TEXTURE\\Tree000.png",			//木
 };
 
 int CPlant::m_nNumAll = INITIAL_INT;
 
 //<********************************************
-//
+//名前宣言
 //<********************************************
 namespace
 {
-	const D3DXVECTOR3 GRASS_SIZE = D3DXVECTOR3(75.0f, 75.0f,0.0f);
-	const D3DXVECTOR3 TREE_SIZE = D3DXVECTOR3(75.0f, 125.0f, 0.0f);
-	const float GRASS_POSY = 25.0f;
-	const float TREE_POSY = TREE_SIZE.y/2.0f;
+	const D3DXVECTOR3 GRASS_SIZE = D3DXVECTOR3(75.0f, 75.0f,0.0f);		//草サイズ
+	const D3DXVECTOR3 TREE_SIZE = D3DXVECTOR3(75.0f, 125.0f, 0.0f);		//木サイズ
+	const float GRASS_POSY = 25.0f;										//補正用の草位置Y
+	const float TREE_POSY = TREE_SIZE.y/2.0f;							//補正用の木位置Y
 }
 //<============================================
-//
+//コンストラクタ
 //<============================================
 CPlant::CPlant(int nPriority)
 {
@@ -44,14 +43,14 @@ CPlant::CPlant(int nPriority)
 	memset(&m_apGrass[0], 0, sizeof(m_apGrass));
 }
 //<============================================
-//
+//デストラクタ
 //<============================================
 CPlant::~CPlant()
 {
 	m_nNumAll--;
 }
 //<============================================
-//
+//ランダム生成
 //<============================================
 CPlant *CPlant::RandCreate(CPlant *apPlant[MAX_OBJECT], const int nNum)
 {
@@ -86,7 +85,7 @@ CPlant *CPlant::RandCreate(CPlant *apPlant[MAX_OBJECT], const int nNum)
 	return *apPlant;
 }
 //<============================================
-//
+//初期化処理
 //<============================================
 HRESULT CPlant::Init(void)
 {
@@ -141,7 +140,7 @@ HRESULT CPlant::Init(void)
 	return S_OK;
 }
 //<============================================
-//
+//終了処理
 //<============================================
 void CPlant::Uninit(void)
 {
@@ -155,7 +154,7 @@ void CPlant::Uninit(void)
 	}
 }
 //<============================================
-//
+//更新処理
 //<============================================
 void CPlant::Update(void)	
 {

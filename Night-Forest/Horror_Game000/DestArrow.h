@@ -1,3 +1,8 @@
+//<==================================
+//–Ú“I–îˆóˆ—(DestArrow.h)
+//
+//Author:kazuki watanabe
+//<==================================
 #ifndef _DESTARROW_H_
 #define _DESTARROW_H_
 
@@ -5,6 +10,9 @@
 #include "3DPlayer.h"
 #include "Item.h"
 
+//<********************************************
+//ƒNƒ‰ƒXéŒ¾
+//<********************************************
 class CDestArrow : public CObject3D
 {
 public:

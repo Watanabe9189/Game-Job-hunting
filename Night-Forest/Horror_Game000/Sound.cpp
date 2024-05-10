@@ -22,34 +22,34 @@ namespace
 //<********************************
 CSound::INFO CSound::m_aSoundInfo[LABEL_MAX] =
 {
-	{ "data/SE/walk_on_ground-OneLoop.wav",LABEL::LABEL_SE_HIDE,TYPE_SE },//プレイヤーの弾発射音
-	{ "data/BGM/Title-BGM.wav",LABEL::LABEL_BGM_TITLE,TYPE_BGM },//プレイヤーの弾発射音
-	{ "data/BGM/Option-BGM.wav",LABEL::LABEL_BGM_OPTION,TYPE_BGM },//プレイヤーの弾発射音
-	{ "data/BGM/Night-Forest.wav",LABEL::LABEL_BGM_GAME,TYPE_BGM },//プレイヤーの弾発射音
-	{ "data/BGM/Clear-BGM.wav",LABEL::LABEL_BGM_CLEAR,TYPE_BGM },//プレイヤーの弾発射音
-	{ "data/BGM/GameOver.wav",LABEL::LABEL_BGM_GAMEOVER,TYPE_BGM },//プレイヤーの弾発射音
-	{ "data/BGM/Approch-BGM.wav",LABEL::LABEL_BGM_APPROACH,TYPE_BGM },//プレイヤーの弾発射音
-	{ "data/SE/3_zon_warau.wav",LABEL::LABEL_SE_MOAN0,TYPE_SE },//プレイヤーの弾発射音
-	{ "data/SE/mamono_kaibutu1.wav",LABEL::LABEL_SE_MOAN1,TYPE_SE },//プレイヤーの弾発射音
-	{ "data/SE/monster_groan3.wav",LABEL::LABLE_SE_MOAN2,TYPE_SE },//プレイヤーの弾発射音
-	{ "data/SE/3_zon_hoeru.wav",LABEL::LABEL_SE_DEATH0,TYPE_SE },//プレイヤーの弾発射音
-	{ "data/SE/kaibutu_gaaa.wav",LABEL::LABEL_SE_DEATE1,TYPE_SE },//プレイヤーの弾発射音
-	{ "data/SE/Death002.wav",LABEL::LABEL_SE_DEATE2,TYPE_SE },//プレイヤーの弾発射音
-	{ "data/SE/ItemGet000.wav",LABEL::LABEL_SE_ITEMGET,TYPE_SE },//プレイヤーの弾発射音
-	{ "data/SE/Select.wav",LABEL::LABEL_SE_SELECT,TYPE_SE },//プレイヤーの弾発射音
-	{ "data/SE/Selected.wav",LABEL::LABEL_SE_SELECTED,TYPE_SE },//プレイヤーの弾発射音
-	{ "data/SE/Aura000.wav",LABEL::LABEL_SE_ESCAPED,TYPE_SE },//プレイヤーの弾発射音
-	{ "data/SE/crude_laughter.wav",LABEL::LABEL_SE_NOTICED1,TYPE_SE },//プレイヤーの弾発射音
-	{ "data/SE/wind_monster3.wav",LABEL::LABEL_SE_NOTICED2,TYPE_SE },//プレイヤーの弾発射音
-	{ "data/SE/se_mysterious.wav",LABEL::LABEL_SE_NOTICED3,TYPE_SE },//プレイヤーの弾発射音
-	{ "data/SE/se_mysterious2.wav",LABEL::LABEL_SE_FOUND,TYPE_SE },//プレイヤーの弾発射音
-	{ "data/SE/se_mysterious3.wav",LABEL::LABEL_SE_UNSEALED,TYPE_SE },//プレイヤーの弾発射音
+	{ "data/SE/walk_on_ground-OneLoop.wav",LABEL::LABEL_SE_HIDE,TYPE_SE },	//隠れる音
+	{ "data/BGM/Title-BGM.wav",LABEL::LABEL_BGM_TITLE,TYPE_BGM },			//タイトルBGM
+	{ "data/BGM/Option-BGM.wav",LABEL::LABEL_BGM_OPTION,TYPE_BGM },			//オプションBGM
+	{ "data/BGM/Night-Forest.wav",LABEL::LABEL_BGM_GAME,TYPE_BGM },			//環境音
+	{ "data/BGM/Clear-BGM.wav",LABEL::LABEL_BGM_CLEAR,TYPE_BGM },			//クリア音
+	{ "data/BGM/GameOver.wav",LABEL::LABEL_BGM_GAMEOVER,TYPE_BGM },			//ゲームオーバー音
+	{ "data/BGM/Approch-BGM.wav",LABEL::LABEL_BGM_APPROACH,TYPE_BGM },		//近づいてくる音
+	{ "data/SE/3_zon_warau.wav",LABEL::LABEL_SE_MOAN0,TYPE_SE },			//うめき声１
+	{ "data/SE/mamono_kaibutu1.wav",LABEL::LABEL_SE_MOAN1,TYPE_SE },		//うめき声２
+	{ "data/SE/monster_groan3.wav",LABEL::LABLE_SE_MOAN2,TYPE_SE },			//うめき声３
+	{ "data/SE/3_zon_hoeru.wav",LABEL::LABEL_SE_DEATH0,TYPE_SE },			//死んだときの音１
+	{ "data/SE/kaibutu_gaaa.wav",LABEL::LABEL_SE_DEATE1,TYPE_SE },			//死んだときの音２
+	{ "data/SE/Death002.wav",LABEL::LABEL_SE_DEATE2,TYPE_SE },				//死んだときの音３
+	{ "data/SE/ItemGet000.wav",LABEL::LABEL_SE_ITEMGET,TYPE_SE },			//アイテム取得音
+	{ "data/SE/Select.wav",LABEL::LABEL_SE_SELECT,TYPE_SE },				//選択音
+	{ "data/SE/Selected.wav",LABEL::LABEL_SE_SELECTED,TYPE_SE },			//選択された音
+	{ "data/SE/Aura000.wav",LABEL::LABEL_SE_ESCAPED,TYPE_SE },				//アイテムがすべて集まった時の音
+	{ "data/SE/crude_laughter.wav",LABEL::LABEL_SE_NOTICED1,TYPE_SE },		//こちらに気づいた１
+	{ "data/SE/wind_monster3.wav",LABEL::LABEL_SE_NOTICED2,TYPE_SE },		//こちらに気づいた２
+	{ "data/SE/se_mysterious.wav",LABEL::LABEL_SE_NOTICED3,TYPE_SE },		//こちらに気づいた３
+	{ "data/SE/se_mysterious2.wav",LABEL::LABEL_SE_FOUND,TYPE_SE },			//封印されている光の玉が見つかった時の音
+	{ "data/SE/se_mysterious3.wav",LABEL::LABEL_SE_UNSEALED,TYPE_SE },		//封印されている光の玉が解呪されたときの音
 };
 
 float CSound::m_fMasterVolume = START_VOL_BGM;
 
 //<=============================================================================
-//
+//生成処理
 //<=============================================================================
 CSound *CSound::Create(void)
 {
@@ -132,14 +132,11 @@ HRESULT CSound::Init(HWND hWnd)
 		return E_FAIL;
 	}
 
-	CheckChunkSound(LABEL::LABEL_BGM_APPROACH);
-
-
 	return S_OK;
 }
-//=============================================================================
-// 終了処理
-//=============================================================================
+//<=============================================================================
+//終了処理
+//<=============================================================================
 void CSound::Uninit(void)
 {
 	// 一時停止
@@ -175,9 +172,9 @@ void CSound::Uninit(void)
 	CoUninitialize();
 }
 
-//=============================================================================
-// セグメント再生(再生中なら停止)
-//=============================================================================
+//<=============================================================================
+//セグメント再生(再生中なら停止)
+//<=============================================================================
 HRESULT CSound::PlaySound(LABEL label)
 {
 	CheckChunkSound(label);

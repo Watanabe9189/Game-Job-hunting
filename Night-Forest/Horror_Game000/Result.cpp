@@ -13,8 +13,8 @@
 LPDIRECT3DTEXTURE9	CResult::m_apTexture[CScene::TYPE_RESULT_MAX] = {};
 const char*			CResult::m_acFilename[CScene::TYPE_RESULT_MAX]= 
 {
-	"data\\TEXTURE\\GameClear000.png",
-	"data\\TEXTURE\\GameOver000.png",
+	"data\\TEXTURE\\GameClear000.png",		//ゲームクリア文字
+	"data\\TEXTURE\\GameOver000.png",		//ゲームオーバー文字
 };
 const char*			CResult::m_EnemyName = "data\\MODEL\\Monster002.x";
 namespace

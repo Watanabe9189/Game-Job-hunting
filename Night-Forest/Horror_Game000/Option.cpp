@@ -1,6 +1,13 @@
+//<===========================================
+//オプション画面の処理(Option.cpp)
+//
+//Author:kazuki watanabe
+//<===========================================
 #include "Option.h"
 
-
+//<***************************************************************
+//静的メンバ変数宣言
+//<***************************************************************
 C2DGauge *COption::m_p2DGauge = nullptr;
 CNumber  *COption::m_pNumber = nullptr;
 Ccamera *COption::m_pCamera = nullptr;
@@ -11,13 +18,16 @@ LPDIRECT3DTEXTURE9	COption::m_apTexture[INT_VALUE::MAX_TEX] = {};
 //テクスチャへのポインタ
 const char*			COption::m_acFilename[] =
 {
-	"data\\TEXTURE\\HORROR-OPTION001.png",
-	"data\\TEXTURE\\HORROR-OPTION002.png",
-	"data\\TEXTURE\\HORROR-SELECT002.png",
-	"data\\TEXTURE\\number_02.png"
+	"data\\TEXTURE\\HORROR-OPTION001.png",		//オプション１
+	"data\\TEXTURE\\HORROR-OPTION002.png",		//オプション２
+	"data\\TEXTURE\\HORROR-SELECT002.png",		//オプション３
+	"data\\TEXTURE\\number_02.png"				//番号
 
 };				//ファイル名
 
+//<***************************************************************
+//名前宣言
+//<***************************************************************
 namespace
 {
 	const float			DISTANCE_Y = 250.0f;								//Y軸の距離
@@ -34,7 +44,7 @@ namespace
 
 }
 //<===================================
-//
+//コンストラクタ
 //<===================================
 COption::COption()
 {
@@ -53,14 +63,14 @@ COption::COption()
 	m_pChangeCol = nullptr;
 }
 //<===================================
-//
+//デストラクタ
 //<===================================
 COption::~COption()
 {
 
 }
 //<===================================
-//
+//初期化処理
 //<===================================
 HRESULT COption::Init(void)
 {
@@ -117,7 +127,7 @@ HRESULT COption::Init(void)
 	return S_OK;
 }
 //<===================================
-//
+//終了処理
 //<===================================
 void COption::Uninit(void)
 {
@@ -154,7 +164,7 @@ void COption::Uninit(void)
 	Release();
 }
 //<===================================
-//
+//更新処理
 //<===================================
 void COption::Update(void)
 {
@@ -241,7 +251,7 @@ void COption::Update(void)
 	}
 }
 //<===================================
-//
+//描画処理
 //<===================================
 void COption::Draw(void)
 {
@@ -252,7 +262,7 @@ void COption::Draw(void)
 	}
 }
 //<===================================
-//
+//選択処理
 //<===================================
 void COption::Select(void)
 {

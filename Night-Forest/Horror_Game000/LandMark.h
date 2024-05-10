@@ -1,3 +1,8 @@
+//<============================================
+//目印処理(LandMark.h)
+//
+//Author:kazuki watanabe
+//<============================================
 #ifndef _LANDMARK_H_
 #define _LANDMARK_H_
 
@@ -5,7 +10,7 @@
 #include "BillBIcon.h"
 
 //<************************************************
-//
+//クラス宣言
 //<************************************************
 class CLandMark :public CXObject
 {
@@ -16,10 +21,10 @@ public:
 	//<****************************************
 	enum TYPE
 	{
-		TYPE_FIRST = 0,
-		TYPE_SECOND,
-		TYPE_THIRD,
-		TYPE_FOURTH,
+		TYPE_FIRST = 0,		//一番目
+		TYPE_SECOND,		//二番目
+		TYPE_THIRD,			//三番目
+		TYPE_FOURTH,		//四番目
 		TYPE_MAX
 	};
 

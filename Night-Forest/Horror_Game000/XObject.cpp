@@ -92,7 +92,7 @@ void CXObject::Draw(void)
 	CManager::GetRenderer()->GetDevice()->SetMaterial(&matDef);
 }
 //<====================================
-//
+//モデル割り当て
 //<====================================
 CXObject::DataModel CXObject::BindModel(const char *pFileName, const bool bMatChange)
 {
@@ -152,7 +152,7 @@ CXObject::DataModel CXObject::BindModel(const char *pFileName, const bool bMatCh
 	return m_asModel;
 }
 //<====================================
-//サイズの設定
+//新たに読み込むモデル
 //<====================================
 void CXObject::LoadModel(void)
 {
@@ -186,7 +186,7 @@ void CXObject::LoadModel(void)
 	}
 }
 //<====================================
-//サイズの設定
+//頂点情報チェック
 //<====================================
 void CXObject::CheckVtxNo(void)
 {
@@ -268,7 +268,7 @@ void CXObject::CheckVtxNo(void)
 	m_asaveModel[m_nNumAll].rSizeZ.x = m_asaveModel[m_nNumAll].rSizeZ.x / 2.1f;
 }
 //<====================================
-//サイズの設定
+//単体生成処理
 //<====================================
 CXObject *CXObject::Create(const D3DXVECTOR3 rPos, const D3DXVECTOR3 rRot, const char *pFileName)
 {

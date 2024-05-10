@@ -7,6 +7,14 @@
 #define _SOUND_H_
 
 #include "main.h"
+
+//サウンドに必要なインクルードファイル
+#include "xaudio2.h"					//サウンド処理に必要
+#include <dsound.h>						//ダイレクトサウンド
+
+//ライブラリファイル
+#pragma comment(lib, "dsound.lib")		//サウンドに必要
+
 //*****************************************************************************
 // プロトタイプ宣言
 //*****************************************************************************
@@ -28,7 +36,7 @@ public:
 	//*****************************************************************************
 	enum LABEL
 	{
-		LABEL_SE_HIDE = 0,		//ジャンプ音
+		LABEL_SE_HIDE = 0,		//隠れる音
 		LABEL_BGM_TITLE,		//タイトルBGM
 		LABEL_BGM_OPTION,		//オプションBGM
 		LABEL_BGM_GAME,			//環境音
@@ -38,18 +46,18 @@ public:
 		LABEL_SE_MOAN0,			//うめき声１
 		LABEL_SE_MOAN1,			//うめき声２
 		LABLE_SE_MOAN2,			//うめき声３
-		LABEL_SE_DEATH0,			//
-		LABEL_SE_DEATE1,			//
-		LABEL_SE_DEATE2,			//
-		LABEL_SE_ITEMGET,
-		LABEL_SE_SELECT,
-		LABEL_SE_SELECTED,
-		LABEL_SE_ESCAPED,
-		LABEL_SE_NOTICED1,
-		LABEL_SE_NOTICED2,
-		LABEL_SE_NOTICED3,
-		LABEL_SE_FOUND,
-		LABEL_SE_UNSEALED,
+		LABEL_SE_DEATH0,		//死んだときの音１
+		LABEL_SE_DEATE1,		//死んだときの音２
+		LABEL_SE_DEATE2,		//死んだときの音３
+		LABEL_SE_ITEMGET,		//アイテム取得音
+		LABEL_SE_SELECT,		//選択音
+		LABEL_SE_SELECTED,		//選択された音
+		LABEL_SE_ESCAPED,		//アイテムがすべて集まった時の音
+		LABEL_SE_NOTICED1,		//こちらに気づいた１
+		LABEL_SE_NOTICED2,		//こちらに気づいた２
+		LABEL_SE_NOTICED3,		//こちらに気づいた３
+		LABEL_SE_FOUND,			//封印されている光の玉が見つかった時の音
+		LABEL_SE_UNSEALED,		//封印されている光の玉が解呪されたときの音
 		LABEL_MAX,
 
 	};
@@ -85,9 +93,8 @@ public:
 	HRESULT PlaySoundWithDis(const LABEL label, const D3DXVECTOR3 rPos, const D3DXVECTOR3 rTargetPos);
 	void StopSound(LABEL label);
 	void StopSound(void);
-	
-	bool CheckSoundStop(const LABEL Label);
 
+	HRESULT CheckChunkSound(const LABEL Label);
 	HRESULT CheckChunk(HANDLE hFile, DWORD format, DWORD *pChunkSize, DWORD *pChunkDataPosition);
 	HRESULT ReadChunkData(HANDLE hFile, void *pBuffer, DWORD dwBuffersize, DWORD dwBufferoffset);
 
@@ -105,8 +112,6 @@ public:
 	XAUDIO2_VOICE_STATE GetXVoiceState(void) { return m_XVoiceState; }
 
 private:
-
-	HRESULT CheckChunkSound(const LABEL Label);
 
 	void SetDistance(const D3DXVECTOR3 Pos, const int nType, const LABEL Label);
 

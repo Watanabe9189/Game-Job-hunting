@@ -16,10 +16,6 @@
 #include "time.h"
 #include "d3dx9.h"						//描画処理に必要 
 #define DIRECTINPUT_VERSION	(0x0800)	//build時の警告用マクロ
-#include "dinput.h"						//入力処理に必要
-#include "Xinput.h"						//Xinput関連のヘッダー
-#include "xaudio2.h"					//サウンド処理に必要
-#include <dsound.h>
 #include <cstdlib>
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
@@ -37,9 +33,6 @@
 #pragma comment(lib, "d3dx9.lib")		//[d3d9.lib]の拡張ライブラリ
 #pragma comment(lib, "dxguid.lib")		//DirectXコンポネート(部品)使用に必要
 #pragma comment(lib, "winmm.lib")		//システム時刻取得に必要
-#pragma comment(lib, "dinput8.lib")		//入力処理に必要
-#pragma comment(lib, "dsound.lib")		//サウンドに必要
-#pragma comment(lib, "xinput.lib")		//コントローラーに必要
 
 //<***********************************************************
 //マクロ定義集

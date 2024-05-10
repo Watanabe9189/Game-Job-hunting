@@ -1,3 +1,8 @@
+//<==================================
+//目的矢印処理(DestArrow.cpp)
+//
+//Author:kazuki watanabe
+//<==================================
 #include "DestArrow.h"
 #include "game.h"
 
@@ -6,14 +11,14 @@ LPDIRECT3DTEXTURE9	CDestArrow::m_pTexture = NULL;	//テクスチャ情報
 																	//<==========================================
 																	//ファイル名指定
 																	//<==========================================
-const char		*CDestArrow::m_pFilename = "data/TEXTURE/DestArrow001.png";		//敵２
+const char		*CDestArrow::m_pFilename = "data/TEXTURE/DestArrow001.png";
 
 namespace
 {
 	const float MAX_SERACH_RAD = 1000.0f;		//捜索範囲の最大値
 }
 //<=============================
-//
+//コンストラクタ
 //<=============================
 CDestArrow::CDestArrow(int nPriority)
 {
@@ -40,14 +45,14 @@ CDestArrow::CDestArrow(int nPriority)
 	m_nNum = INITIAL_INT;
 }
 //<=============================
-//
+//デストラクタ
 //<=============================
 CDestArrow::~CDestArrow()
 {
 
 }
 //<=============================
-//
+//生成処理
 //<=============================
 CDestArrow *CDestArrow::Create(void)
 {
@@ -58,7 +63,7 @@ CDestArrow *CDestArrow::Create(void)
 	return pDestArrow;
 }
 //<=============================
-//
+//初期化処理
 //<=============================
 HRESULT CDestArrow::Init(void)	
 {
@@ -77,14 +82,14 @@ HRESULT CDestArrow::Init(void)
 	return S_OK;
 }
 //<=============================
-//
+//終了処理
 //<=============================
 void CDestArrow::Uninit(void)	
 {
 	CObject3D::Uninit();
 }
 //<=============================
-//
+//更新処理
 //<=============================
 void CDestArrow::Update(void)	
 {
@@ -112,10 +117,11 @@ void CDestArrow::Update(void)
 	
 }
 //<========================================
-//目的地
+//目的地の方向に向く処理
 //<========================================
 void CDestArrow::RotateToDest(void)
 {
+	//フラグがあったら
 	if (CItem::bGetFlag())
 	{
 		//建物の数分回す

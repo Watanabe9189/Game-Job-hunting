@@ -212,7 +212,7 @@ CBuilding *CBuilding::ReadCreate(CBuilding *apBuilding[MAX_OBJECT])
 	return *apBuilding;
 }
 //<==========================================
-//生成処理(Xファイルから)
+//生成処理ランダム
 //<==========================================
 CBuilding *CBuilding::RandCreate(CBuilding *apBuilding[MAX_OBJECT], const int nNum)
 {

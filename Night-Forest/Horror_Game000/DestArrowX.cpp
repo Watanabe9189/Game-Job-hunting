@@ -1,12 +1,20 @@
+//<==================================
+//Xファイルでの目的矢印処理(DestArrowX.cpp)
+//
+//Author:kazuki watanabe
+//<==================================
 #include "DestArrowX.h"
 #include "game.h"
 
+//<**************************************
+//名前宣言
+//<**************************************
 namespace
 {
 	const float MAX_SERACH_RAD = 750.0f;		//捜索範囲の最大値
 }
 //<=============================
-//
+//コンストラクタ
 //<=============================
 CDestArrowX::CDestArrowX(int nPriority)
 {
@@ -25,14 +33,14 @@ CDestArrowX::CDestArrowX(int nPriority)
 	m_nNum = INITIAL_INT;
 }
 //<=============================
-//
+//デストラクタ
 //<=============================
 CDestArrowX::~CDestArrowX()
 {
 
 }
 //<=============================
-//
+//生成処理
 //<=============================
 CDestArrowX *CDestArrowX::Create(void)
 {
@@ -43,7 +51,7 @@ CDestArrowX *CDestArrowX::Create(void)
 	return pDestArrow;
 }
 //<=============================
-//
+//初期化処理
 //<=============================
 HRESULT CDestArrowX::Init(void)
 {
@@ -54,14 +62,14 @@ HRESULT CDestArrowX::Init(void)
 	return S_OK;
 }
 //<=============================
-//
+//終了処理
 //<=============================
 void CDestArrowX::Uninit(void)
 {
 	CXObject::Uninit();
 }
 //<=============================
-//
+//更新処理
 //<=============================
 void CDestArrowX::Update(void)
 {
@@ -89,7 +97,7 @@ void CDestArrowX::Update(void)
 	SetRotation(m_rRot);
 }
 //<========================================
-//目的地
+//目的地の方向に向く処理
 //<========================================
 void CDestArrowX::RotateToDest(void)
 {

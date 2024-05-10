@@ -1,3 +1,8 @@
+//<==================================
+//Xファイルでの目的矢印処理(DestArrowX.h)
+//
+//Author:kazuki watanabe
+//<==================================
 #ifndef _DESTARROWX_H_
 #define _DESTARROWX_H_
 

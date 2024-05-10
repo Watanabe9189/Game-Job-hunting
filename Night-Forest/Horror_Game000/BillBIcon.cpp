@@ -1,5 +1,5 @@
 //<==============================================
-//ビルボード文字処理(BillB.h)
+//ビルボードアイコン処理(BillB.h)
 //
 //Author:kazuki watanabe
 //<==============================================
@@ -8,16 +8,18 @@
 #include "manager.h"
 
 LPDIRECT3DTEXTURE9 CBilBIcon::m_apTexture[BICON_MAX] = {};
+
+//ファイル名指定
 const char			*CBilBIcon::m_acFilename[BICON_MAX] =
 {
-	"data/TEXTURE/Explain001.png",
-	"data/TEXTURE/Memo/Memo000.png",
-	"data/TEXTURE/Memo/Memo001.png",
-	"data/TEXTURE/Memo/Memo002.png"	//弾
+	"data/TEXTURE/Explain001.png",		//説明
+	"data/TEXTURE/Memo/Memo000.png",	//メモ１
+	"data/TEXTURE/Memo/Memo001.png",	//メモ２
+	"data/TEXTURE/Memo/Memo002.png"		//メモ３
 };
 int CBilBIcon::m_nNumAll = INITIAL_INT;
 //<======================================================================
-//
+//コンストラクタ
 //<======================================================================
 CBilBIcon::CBilBIcon(int nPriority)
 {
@@ -29,14 +31,14 @@ CBilBIcon::CBilBIcon(int nPriority)
 	m_nIcon = BICON_MAX;
 }
 //<======================================================================
-//
+//デストラクタ
 //<======================================================================
 CBilBIcon::~CBilBIcon()
 {
 	m_nNumAll--;
 }
 //<======================================================================
-//
+//生成処理
 //<======================================================================
 CBilBIcon *CBilBIcon::Create(const D3DXVECTOR3 pos,const int nIcon)
 {
@@ -58,7 +60,7 @@ CBilBIcon *CBilBIcon::Create(const D3DXVECTOR3 pos,const int nIcon)
 	return pBilBIcon;
 }
 //<======================================================================
-//
+//初期化処理
 //<======================================================================
 HRESULT CBilBIcon::Init(void)
 {		
@@ -84,7 +86,7 @@ HRESULT CBilBIcon::Init(void)
 	return S_OK;
 }
 //<======================================================================
-//
+//更新処理
 //<======================================================================
 void CBilBIcon::Update(void)
 {

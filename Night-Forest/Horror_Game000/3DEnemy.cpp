@@ -12,7 +12,7 @@
 //<**************************************************************
 namespace
 {
-	const float ALPHA_VALUE = 0.08f;	//透明度の値
+	const float ALPHA_VALUE = 0.08f;		//透明度の値
 	const float ALPHA_VALUE_HIGH = 0.005f;	//高速型の透明度の値
 	const float ROTATE_VALUE = 0.1f;		//回転値
 
@@ -20,9 +20,9 @@ namespace
 
 	const int	DEFAULT_NUM_SET = 3;		//敵の数のデフォルト値
 
-	const int	MAX_NUM		= 9;		//設置する数
-	const int	MAX_NUM_SET = 30;		//敵の数のデフォルト値
-	const int	MIN_NUM_SET = 1;		//敵の数のデフォルト値
+	const int	MAX_NUM		= 9;			//設置する数
+	const int	MAX_NUM_SET = 30;			//敵の数のデフォルト値
+	const int	MIN_NUM_SET = 1;			//敵の数のデフォルト値
 }
 //<*******************************************
 //静的メンバ変数の宣言
@@ -93,13 +93,6 @@ C3DEnemy::~C3DEnemy()
 	m_nNumAll--;
 }
 //<=======================================
-//3Dエネミーの生成処理
-//<=======================================
-C3DEnemy *C3DEnemy::Create(const D3DXVECTOR3 pos, const int nLife, const int nType, const int CoolTime)
-{
-	return nullptr;
-}
-//<=======================================
 //3Dエネミーの初期化処理
 //<=======================================
 HRESULT C3DEnemy::Init(void)
@@ -139,6 +132,9 @@ HRESULT C3DEnemy::Init(void)
 		m_pSound = CSound::Create();
 
 		assert(m_pSound != nullptr);
+
+		//最初から使うので読み込む
+		m_pSound->CheckChunkSound(CSound::LABEL::LABEL_BGM_APPROACH);
 	}
 
 	return S_OK;
@@ -572,9 +568,10 @@ void C3DEnemy::SetDest(void)
 //<=======================================
 void C3DEnemy::SetSound(const CSound::LABEL Label, const int nMaxCount, const D3DXVECTOR3 rTargetPos)
 {
-	//
+	//最大カウントに行ったら
 	if (m_nSoundCount >= nMaxCount)
 	{
+		//サウンドを流す
 		m_pSound->PlaySoundWithDis(Label, m_pos, rTargetPos);
 		m_nSoundCount = 0;
 	}
@@ -585,7 +582,7 @@ void C3DEnemy::SetSound(const CSound::LABEL Label, const int nMaxCount, const D3
 	}
 }
 //<=======================================
-//ファイル読み込みを使用した生成処理
+//見失った時の見渡し処理
 //<=======================================
 void C3DEnemy::SerachRot(const D3DXVECTOR3 rRandPos)
 {
@@ -706,7 +703,7 @@ C3DEnemy *C3DEnemy::ReadCreate(C3DEnemy *apEnemy[MAX_OBJECT])
 	return *apEnemy;
 }
 //<=================================================
-//
+//ランダム生成
 //<=================================================
 C3DEnemy *C3DEnemy::RandCreate(C3DEnemy *apEnemy[MAX_OBJECT])
 {
@@ -752,7 +749,7 @@ C3DEnemy *C3DEnemy::RandCreate(C3DEnemy *apEnemy[MAX_OBJECT])
 	return *apEnemy;
 }
 //<=================================================
-//
+//数指定ランダム生成
 //<=================================================
 C3DEnemy *C3DEnemy::RandCreateWithNum(C3DEnemy *apEnemy[MAX_OBJECT], const int nNum)
 {
@@ -810,7 +807,7 @@ C3DEnemy *C3DEnemy::RandCreateWithNum(C3DEnemy *apEnemy[MAX_OBJECT], const int n
 	return nullptr;
 }
 //<================================================
-//
+//プレイヤーとの当たり判定
 //<================================================
 void C3DEnemy::CollidPlayer(void)
 {
@@ -826,7 +823,7 @@ void C3DEnemy::CollidPlayer(void)
 	}
 }
 //<================================================
-//
+//プレイヤーが死んだ際の音処理
 //<================================================
 void C3DEnemy::DeathSound(void)
 {
