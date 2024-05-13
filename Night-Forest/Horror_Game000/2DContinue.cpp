@@ -103,7 +103,7 @@ HRESULT C2DContinue::Init(void)
 	m_rPos = FRAME_POS;
 
 	//セレクトの数分繰り返す
-	for (int nCnt = 0; nCnt < SELECT::SELECT_MAX; nCnt++)
+	for (int nCnt = 0; nCnt < TYPE::TYPE_SELECT_YES; nCnt++)
 	{
 		//
 		if (nCnt == TYPE::TYPE_FRAME)
@@ -247,6 +247,6 @@ void C2DContinue::SelectUpdate(void)
 	}
 
 	//カラーを設定する
-	m_apObject2D[m_nOldSelect]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, m_pChangeCol->GetMinAlpha()));
-	m_apObject2D[m_nSelect]->SetColor(m_pChangeCol->GetColor());
+	m_apSelect[m_nOldSelect]->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, m_pChangeCol->GetMinAlpha()));
+	m_apSelect[m_nSelect]->SetColor(m_pChangeCol->GetColor());
 }
