@@ -129,7 +129,7 @@ CXObject::DataModel CXObject::BindModel(const char *pFileName, const bool bMatCh
 
 				m_asModel.pOriginMat = m_asaveModel[nCnt].pOriginMat;
 				//<==========================================
-				//
+				//ƒ‚ƒfƒ‹ID‚ð•Û‘¶
 				//<==========================================
 				m_nModelId = nCnt;
 				return m_asModel;

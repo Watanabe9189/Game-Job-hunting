@@ -132,9 +132,6 @@ HRESULT C3DEnemy::Init(void)
 		m_pSound = CSound::Create();
 
 		assert(m_pSound != nullptr);
-
-		//Å‰‚©‚çŽg‚¤‚Ì‚Å“Ç‚Ýž‚Þ
-		m_pSound->CheckChunkSound(CSound::LABEL::LABEL_BGM_APPROACH);
 	}
 
 	return S_OK;

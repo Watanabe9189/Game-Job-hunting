@@ -109,7 +109,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	m_pSound = new CSound;
 
 	//‚Ç‚¿‚ç‚à’B¬‚³‚ê‚Ä‚¢‚½‚ç
-	assert(m_pSound != nullptr && SUCCEEDED(m_pSound->Init(hWnd)));
+	assert(m_pSound != nullptr && SUCCEEDED(m_pSound->InitAll(hWnd)));
 
 	//“ü—Íˆ—ŠÖ˜A‚Ì‰Šú‰»
 	InitInput(hInstance, hWnd);

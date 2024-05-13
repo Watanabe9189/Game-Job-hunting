@@ -87,6 +87,7 @@ public:
 	static CSound *Create(void);
 
 	HRESULT Init(HWND hWnd);
+	HRESULT InitAll(HWND hWnd);
 	void Uninit(void);
 	HRESULT PlaySound(LABEL label);
 	HRESULT PlaySoundWithVolume(const LABEL label, const float fVolume);
@@ -131,6 +132,8 @@ private:
 
 	static INFO m_aSoundInfo[LABEL_MAX];
 	D3DXVECTOR3 m_rDistance;
+
+	int m_nNumSound;
 };
 
 #endif
