@@ -11,14 +11,14 @@
 #include "Useful.h"
 
 //<*************************************************
-//
+//クラス宣言
 //<*************************************************
 class C2DContinue : public CObject
 {
 public:
 
 	//<==================================
-	//
+	//タイプ
 	//<==================================
 	enum TYPE
 	{
@@ -30,7 +30,7 @@ public:
 	};
 
 	//<==================================
-	//
+	//選択肢
 	//<==================================
 	enum SELECT
 	{
@@ -47,7 +47,7 @@ public:
 	HRESULT Init(void)	override;
 	void Uninit(void)	override;
 	void Update(void)	override;
-	void Draw(void)		override;
+	void Draw(void)		override {}
 	void SetVtx(void)	override {}
 
 	//現在の選択肢

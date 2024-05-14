@@ -7,15 +7,15 @@
 #include "manager.h"
 
 //<*************************************************************************
-//
+//静的メンバ変数宣言
 //<*************************************************************************
 LPDIRECT3DTEXTURE9	C2DContinue::m_apTexture[TYPE::TYPE_MAX] = {};
 const char*			C2DContinue::m_acFilename[TYPE::TYPE_MAX] =
-{
-	NULL,
-	"data\\TEXTURE\\GameOver001.png",
-	"data\\TEXTURE\\GameOver-Yes.png",
-	"data\\TEXTURE\\GameOver-No.png",
+{	
+	NULL,								//フレーム
+	"data\\TEXTURE\\GameOver001.png",	//CONTINUE?
+	"data\\TEXTURE\\GameOver-Yes.png",	//YES
+	"data\\TEXTURE\\GameOver-No.png",	//NO
 };
 //<*************************************************************************
 //名前宣言
