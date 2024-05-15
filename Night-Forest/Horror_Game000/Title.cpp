@@ -253,7 +253,6 @@ void CTitle::SetAppear(void)
 {
 	if (CManager::GetFade()->GetType() == CFade::TYPE_FADE_NONE)
 	{
-
 		if (CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_B, 0)
 			|| CManager::GetKeyboard()->bGetTrigger(DIK_RETURN))
 		{

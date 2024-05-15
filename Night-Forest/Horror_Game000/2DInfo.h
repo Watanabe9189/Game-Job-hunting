@@ -10,7 +10,7 @@
 #include "Number.h"
 
 //<*******************************************
-//ƒNƒ‰ƒXéŒ¾
+//
 //<*******************************************
 class C2DInfo : public CObject
 {
@@ -21,9 +21,9 @@ public:
 	//<**********************
 	enum TYPE
 	{
-		TYPE_INFO_CHAR = 0,	//
-		TYPE_INFO_NUMBER,	//
-		TYPE_INFO_FIGURE,	//•¶š
+		TYPE_INFO_CHAR = 0,
+		TYPE_INFO_NUMBER,
+		TYPE_INFO_FIGURE,
 		TYPE_MAX
 	};
 	//<**********************

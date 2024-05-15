@@ -35,7 +35,7 @@ CDestArrow::CDestArrow(int nPriority)
 
 	m_bFind = false;
 
-	m_apItem[INT_VALUE::MAX_SIZE] = {};
+	memset(&m_apItem[0], NULL, sizeof(m_apItem));
 
 	m_p3DPlayer = nullptr;
 	m_nNum = INITIAL_INT;

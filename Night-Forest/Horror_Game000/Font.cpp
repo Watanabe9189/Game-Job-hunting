@@ -26,7 +26,7 @@ CFont::CFont(int nPriority)
 	//ílÇÃèâä˙âª
 	m_pFont = nullptr;
 	m_Rect = { NULL, NULL, NULL, NULL };
-	m_aStrDebug[MAX_STRING] = {};
+	memset(&m_aStrDebug[0], NULL, sizeof(m_aStrDebug));
 	m_nWeight = FW_DONTCARE;
 	m_Height = NULL;
 	m_Width = NULL;

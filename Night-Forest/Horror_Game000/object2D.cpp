@@ -168,58 +168,59 @@ void CObject2D::SetVtx(void)
 	// 頂点情報へのポインタ
 	VERTEX_2D *pVtx;
 
-	assert(m_pVtxBuff != NULL);
+	if (m_pVtxBuff != NULL)
+	{
+		//頂点バッファをロックし、頂点情報へのポインタを取得
+		m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-	//頂点バッファをロックし、頂点情報へのポインタを取得
-	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+		//それぞれの情報の取得
+		m_aObj.pos = GetPosition();
+		m_aObj.rot = GetRotation();
+		m_aObj.fAngle = GetAngle();
+		m_aObj.fLength = GetLength();
 
-	//それぞれの情報の取得
-	m_aObj.pos = GetPosition();
-	m_aObj.rot = GetRotation();
-	m_aObj.fAngle = GetAngle();
-	m_aObj.fLength = GetLength();
+		//左上
+		pVtx[0].pos.x = m_aObj.pos.x + sinf(m_aObj.rot.z - D3DX_PI + m_aObj.fAngle) * m_aObj.fLength;
+		pVtx[0].pos.y = m_aObj.pos.y + cosf(m_aObj.rot.z - D3DX_PI + m_aObj.fAngle) * m_aObj.fLength;
+		pVtx[0].pos.z = 0.0f;
 
-	//左上
-	pVtx[0].pos.x = m_aObj.pos.x + sinf(m_aObj.rot.z - D3DX_PI + m_aObj.fAngle) * m_aObj.fLength;
-	pVtx[0].pos.y = m_aObj.pos.y + cosf(m_aObj.rot.z - D3DX_PI + m_aObj.fAngle) * m_aObj.fLength;
-	pVtx[0].pos.z = 0.0f;
+		//右上
+		pVtx[1].pos.x = m_aObj.pos.x + sinf(m_aObj.rot.z + D3DX_PI - m_aObj.fAngle) * m_aObj.fLength;
+		pVtx[1].pos.y = m_aObj.pos.y + cosf(m_aObj.rot.z + D3DX_PI - m_aObj.fAngle) * m_aObj.fLength;
+		pVtx[1].pos.z = 0.0f;
 
-	//右上
-	pVtx[1].pos.x = m_aObj.pos.x + sinf(m_aObj.rot.z + D3DX_PI - m_aObj.fAngle) * m_aObj.fLength;
-	pVtx[1].pos.y = m_aObj.pos.y + cosf(m_aObj.rot.z + D3DX_PI - m_aObj.fAngle) * m_aObj.fLength;
-	pVtx[1].pos.z = 0.0f;
+		//左下
+		pVtx[2].pos.x = m_aObj.pos.x + sinf(m_aObj.rot.z - m_aObj.fAngle) * m_aObj.fLength;
+		pVtx[2].pos.y = m_aObj.pos.y + cosf(m_aObj.rot.z - m_aObj.fAngle) * m_aObj.fLength;
+		pVtx[2].pos.z = 0.0f;
 
-	//左下
-	pVtx[2].pos.x = m_aObj.pos.x + sinf(m_aObj.rot.z - m_aObj.fAngle) * m_aObj.fLength;
-	pVtx[2].pos.y = m_aObj.pos.y + cosf(m_aObj.rot.z - m_aObj.fAngle) * m_aObj.fLength;
-	pVtx[2].pos.z = 0.0f;
-
-	//右下
-	pVtx[3].pos.x = m_aObj.pos.x + sinf(m_aObj.rot.z + m_aObj.fAngle) * m_aObj.fLength;
-	pVtx[3].pos.y = m_aObj.pos.y + cosf(m_aObj.rot.z + m_aObj.fAngle) * m_aObj.fLength;
-	pVtx[3].pos.z = 0.0f;
+		//右下
+		pVtx[3].pos.x = m_aObj.pos.x + sinf(m_aObj.rot.z + m_aObj.fAngle) * m_aObj.fLength;
+		pVtx[3].pos.y = m_aObj.pos.y + cosf(m_aObj.rot.z + m_aObj.fAngle) * m_aObj.fLength;
+		pVtx[3].pos.z = 0.0f;
 
 
-	//rhwの設定
-	pVtx[0].rhw = 1.0f;
-	pVtx[1].rhw = 1.0f;
-	pVtx[2].rhw = 1.0f;
-	pVtx[3].rhw = 1.0f;
+		//rhwの設定
+		pVtx[0].rhw = 1.0f;
+		pVtx[1].rhw = 1.0f;
+		pVtx[2].rhw = 1.0f;
+		pVtx[3].rhw = 1.0f;
 
-	//頂点カラーの設定
-	pVtx[0].col = m_aObj.Col;
-	pVtx[1].col = m_aObj.Col;
-	pVtx[2].col = m_aObj.Col;
-	pVtx[3].col = m_aObj.Col;
+		//頂点カラーの設定
+		pVtx[0].col = m_aObj.Col;
+		pVtx[1].col = m_aObj.Col;
+		pVtx[2].col = m_aObj.Col;
+		pVtx[3].col = m_aObj.Col;
 
-	//テクスチャ座標の設定
-	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
+		//テクスチャ座標の設定
+		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
+		pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
+		pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+		pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
 
-	//頂点バッファをアンロック
-	m_pVtxBuff->Unlock();
+		//頂点バッファをアンロック
+		m_pVtxBuff->Unlock();
+	}
 }
 //<==========================================================================
 //サイズ設定

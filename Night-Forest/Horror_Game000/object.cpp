@@ -266,7 +266,7 @@ void CObject::UpdateAll(void)
 		//前のオブジェクト保存用
 		CObject *pPrev = nullptr;
 
-		if (m_apTop[nCntPri] )
+		if (m_apTop[nCntPri])
 		{
 			pPrev = m_apTop[nCntPri];
 

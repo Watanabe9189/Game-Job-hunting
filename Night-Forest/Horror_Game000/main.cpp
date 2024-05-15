@@ -86,7 +86,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hInstancePrev, LPSTR lpCmbLine
 	}
 
 	//もしメモリ確保に成功したら
-	if (pManager )
+	if (pManager)
 	{
 		//初期化処理が失敗したら
 		if (FAILED(pManager->Init(hInstance, hWnd, TRUE)))
@@ -182,7 +182,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hInstancePrev, LPSTR lpCmbLine
 				dwExecLastTime = dwCurrentTime;		//処理開始の時刻[現在時刻]を保存
 
 				//もしメモリ確保に成功したら
-				if (pManager )
+				if (pManager)
 				{
 					pManager->Update();				//更新処理
 

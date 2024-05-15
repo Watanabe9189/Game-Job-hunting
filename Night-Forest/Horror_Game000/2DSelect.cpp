@@ -11,11 +11,10 @@
 //<======================================================================
 C2DSelect::C2DSelect(int nPriority)
 {
-	//値のクリア
-	m_acFilename[INT_VALUE::MAX_TEX] = {};
-	m_apTexture[INT_VALUE::MAX_TEX] = {};
-	m_apObject2D[INT_VALUE::MAX_SIZE] = {};
+	memset(&m_acFilename[0], NULL, sizeof(m_acFilename));
+	memset(&m_apTexture[0], NULL, sizeof(m_apTexture));
 
+	memset(&m_apObject2D[0], NULL, sizeof(m_apObject2D));
 	m_nNumSelect = INITIAL_INT;
 	m_nSelect = INITIAL_INT;
 	m_nOldSelect = INITIAL_INT;
@@ -57,7 +56,7 @@ HRESULT C2DSelect::Init(void)
 {
 	m_pChangeCol = ChangeCol::Create();
 
-	assert(m_pChangeCol );
+	assert(m_pChangeCol);
 
 	//セレクトの数分繰り返す
 	for (int nCnt = 0; nCnt < m_nNumSelect; nCnt++)

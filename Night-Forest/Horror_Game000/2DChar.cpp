@@ -33,7 +33,7 @@ C2DChar::C2DChar(int nPriority)
 	m_nNumAll++;
 	m_pos = D3DXVECTOR2(0.0f,0.0f);
 
-	m_posDest[MAX_DEST] = {};
+	memset(&m_posDest[0], NULL, sizeof(m_posDest));
 
 	m_bArrived = false;
 
@@ -60,7 +60,7 @@ C2DChar *C2DChar::Create(const D3DXVECTOR2 pos, const D3DXVECTOR2 Size, const in
 {
 	C2DChar *p2DChar = new C2DChar;
 
-	assert(p2DChar );
+	assert(p2DChar);
 
 	assert(SUCCEEDED(p2DChar->Init()));
 

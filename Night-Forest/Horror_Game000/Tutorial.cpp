@@ -65,7 +65,7 @@ HRESULT CTutorial::Init(void)
 	}
 
 	//頂点バッファの生成
-	if (!m_pVtxBuff&&
+	if (m_pVtxBuff&&
 		CManager::GetRenderer()->GetDevice()->CreateVertexBuffer
 	(sizeof(VERTEX_2D) * INT_VALUE::MAX_TOP,
 		D3DUSAGE_WRITEONLY,

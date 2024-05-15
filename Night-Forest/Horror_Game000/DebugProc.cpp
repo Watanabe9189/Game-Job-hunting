@@ -33,7 +33,7 @@ const char *CDebug::m_acNowScreen[]
 //<==========================================================
 CDebug::CDebug()
 {
-	m_aStrDebug[MAX_DEBUGSTRING] = {};
+	memset(&m_aStrDebug[0], NULL, sizeof(m_aStrDebug));
 
 	m_bDispDebug = true;
 }

@@ -52,7 +52,7 @@ C2DGauge::C2DGauge(int nPriority)
 	m_nMax = INITIAL_INT;
 	m_eVer = VERTEX_MAX;
 
-	m_apObject2D[TYPE_MAX] = {};
+	memset(&m_apObject2D[0], NULL, sizeof(m_apObject2D));
 }
 //<===============================================================
 //

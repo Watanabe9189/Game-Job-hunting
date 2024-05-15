@@ -106,6 +106,8 @@ void CField::Update(void)
 void CField::Draw(void)
 {
 	//この関数でしか使わない変数宣言
+
+
 	D3DXMATRIX	mtxRot = {}, mtxTrans = {};		//計算用マトリックス宣言
 
 	//アルファテストの設定
@@ -163,7 +165,7 @@ void CField::Draw(void)
 //<==========================
 void CField::SetVtx(void)
 {
-	if (!m_pVtxBuff)
+	if (m_pVtxBuff == nullptr)
 	{
 		//頂点バッファの生成
 		CManager::GetRenderer()->GetDevice()->CreateVertexBuffer(sizeof(VERTEX_3D) * m_NumVtx,

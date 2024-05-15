@@ -541,7 +541,7 @@ void ChangeCol::ChangeColAdd(void)
 			m_rCol.a = m_fMinAlpha;
 
 			//カウンターが最大値まで行っていたら
-			if (m_nCounter >= m_nInter / 10)
+			if (m_nCounter >= m_nInter / 100)
 			{
 				m_nCounter = 0;
 				m_bEnd = false;
