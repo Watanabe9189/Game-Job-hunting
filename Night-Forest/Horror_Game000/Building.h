@@ -49,7 +49,7 @@ public:
 
 	IMPORTANCE GetImportance(void) { return m_eImportance; }
 
-	void SetHide(void){ m_bHided == false ? m_bHided = true : m_bHided = false; }
+	void SetHide(void){ !m_bHided ? m_bHided = true : m_bHided = false; }
 
 private:
 

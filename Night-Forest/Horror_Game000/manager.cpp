@@ -97,19 +97,19 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	m_pRenderer = new CRenderer;
 
 	//どちらも達成されていたら
-	assert(m_pRenderer != nullptr && SUCCEEDED(m_pRenderer->Init(hWnd, TRUE)));
+	assert(m_pRenderer  && SUCCEEDED(m_pRenderer->Init(hWnd, TRUE)));
 
 	//メモリ確保
 	m_pDebug = new CDebug;
 
 	//どちらも達成されていたら
-	assert(m_pDebug != nullptr && SUCCEEDED(m_pDebug->Init()));
+	assert(m_pDebug  && SUCCEEDED(m_pDebug->Init()));
 
 	//メモリ確保
 	m_pSound = new CSound;
 
 	//どちらも達成されていたら
-	assert(m_pSound != nullptr && SUCCEEDED(m_pSound->InitAll(hWnd)));
+	assert(m_pSound  && SUCCEEDED(m_pSound->InitAll(hWnd)));
 
 	//入力処理関連の初期化
 	InitInput(hInstance, hWnd);
@@ -118,7 +118,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	m_pTexture = new CTexture;
 
 	//どちらも達成されていたら
-	assert(m_pTexture != nullptr && SUCCEEDED(m_pTexture->Load()));
+	assert(m_pTexture  && SUCCEEDED(m_pTexture->Load()));
 
 #if 1
 
@@ -146,7 +146,7 @@ void CManager::Uninit(void)
 	m_pSound->StopSound();
 
 	//メモリ確保がされていたら
-	if (m_pRenderer != nullptr)
+	if (m_pRenderer )
 	{
 		//メモリの解放を行う
 		m_pRenderer->Uninit();
@@ -154,27 +154,27 @@ void CManager::Uninit(void)
 		m_pRenderer = nullptr;
 	}
 	//もしメモリ確保がされていたら
-	if (m_pTexture != nullptr)
+	if (m_pTexture )
 	{
 		m_pTexture->UnloadAll();
 		delete m_pTexture;
 		m_pTexture = nullptr;
 	}
 	//もしメモリ確保がされていたら
-	if (m_pDebug != nullptr)
+	if (m_pDebug )
 	{
 		m_pDebug->Uninit();
 		delete m_pDebug;
 		m_pDebug = nullptr;
 	}
 	//もしメモリ確保がされていたら
-	if (m_pSound != nullptr)
+	if (m_pSound )
 	{
 		m_pSound->Uninit();
 		delete m_pSound;
 		m_pSound = nullptr;
 	}
-	if (m_pFade != nullptr)
+	if (m_pFade )
 	{
 		m_pFade->Uninit();
 		delete m_pFade;
@@ -195,15 +195,15 @@ void CManager::Update(void)
 	m_pDebug->Update();
 
 	//Pキーが押されたら
-	if (m_pKeyboard->bGetTrigger(DIK_0) == true)
+	if (m_pKeyboard->bGetTrigger(DIK_0))
 	{
 		m_pRenderer->ChangeScreen();
 	}
 
 	//もしポーズされていなければ
-	if (!m_bPause&&m_pScene != nullptr)
+	if (!m_bPause&&m_pScene )
 	{
-		if (m_pFade != nullptr&&m_pFade->GetType() != CFade::TYPE_FADE_NONE)
+		if (m_pFade &&m_pFade->GetType() != CFade::TYPE_FADE_NONE)
 		{
 			m_pFade->Update();
 		}
@@ -215,14 +215,14 @@ void CManager::Update(void)
 	if (m_pScene->GetMode() == CScene::MODE::MODE_GAME)
 	{
 		//Pキーが押されたら
-		if (m_pKeyboard->bGetTrigger(DIK_P) == true)
+		if (m_pKeyboard->bGetTrigger(DIK_P))
 		{
 			//三項演算子でポーズ状態を切り替える
-			m_bPause == false ? m_bPause = true : m_bPause = false;
+			!m_bPause ? m_bPause = true : m_bPause = false;
 		}
 		/*m_pPause->Update();*/
 	}
-	if (m_pKeyboard->bGetTrigger(DIK_Y) == true)
+	if (m_pKeyboard->bGetTrigger(DIK_Y))
 	{
 		m_pRenderer->ScreenShot("data\\TEST.png");
 	}
@@ -233,7 +233,7 @@ void CManager::Update(void)
 void CManager::Draw(void)
 {
 	//
-	if (m_pScene != nullptr)
+	if (m_pScene )
 	{
 		//レンダラーの描画処理
 		m_pRenderer->Draw();
@@ -246,7 +246,7 @@ void CManager::Draw(void)
 void CManager::SetFade(const CScene::MODE modeNext)
 {
 	//もし中身があれば
-	if (m_pFade != nullptr)
+	if (m_pFade )
 	{
 		//フェードしていない状態の時のみ通るようにする
 		if (m_pFade->GetType() == CFade::TYPE_FADE_NONE)
@@ -260,7 +260,7 @@ void CManager::SetFade(const CScene::MODE modeNext)
 			m_pFade = CFade::Create();
 
 			//中身があることを確認
-			assert(m_pFade != nullptr);
+			assert(m_pFade );
 
 			//フェードを開始する
 			m_pFade->SetFade(modeNext);
@@ -273,12 +273,12 @@ void CManager::SetFade(const CScene::MODE modeNext)
 HRESULT CManager::InitInput(HINSTANCE hInstance, HWND hWnd)
 {
 	//もし中身が何もなければ
-	if (m_pKeyboard == nullptr)
+	if (!m_pKeyboard)
 	{
 		m_pKeyboard = new CKeyboard;
 
 		//メモリ確保が成功したかの確認をする
-		assert(m_pKeyboard != nullptr);
+		assert(m_pKeyboard );
 
 		//初期化処理に失敗したら
 		if (FAILED(m_pKeyboard->Init(hInstance, hWnd)))
@@ -287,12 +287,12 @@ HRESULT CManager::InitInput(HINSTANCE hInstance, HWND hWnd)
 		}
 	}
 	//もし中身が何もなければ
-	if (m_pJoyPad == nullptr)
+	if (!m_pJoyPad)
 	{
 		m_pJoyPad = new CJoyPad;
 
 		//メモリ確保が成功したかの確認をする
-		assert(m_pJoyPad != nullptr);
+		assert(m_pJoyPad );
 
 		//初期化処理に失敗したら
 		if (FAILED(m_pJoyPad->Init(hInstance, hWnd)))
@@ -302,12 +302,12 @@ HRESULT CManager::InitInput(HINSTANCE hInstance, HWND hWnd)
 	}
 
 	//もし中身が何もなければ
-	if (m_pMouse == nullptr)
+	if (!m_pMouse)
 	{
 		m_pMouse = new CMouse;
 
 		//メモリ確保が成功したかの確認をする
-		assert(m_pMouse != nullptr);
+		assert(m_pMouse );
 
 		//初期化処理に失敗したら
 		if (FAILED(m_pMouse->Init(hInstance, hWnd)))
@@ -324,7 +324,7 @@ HRESULT CManager::InitInput(HINSTANCE hInstance, HWND hWnd)
 void CManager::UninitInput(void)
 {
 	//メモリ確保がされていたら
-	if (m_pKeyboard != nullptr)
+	if (m_pKeyboard )
 	{
 		//メモリの解放を行う
 		m_pKeyboard->Uninit();
@@ -333,7 +333,7 @@ void CManager::UninitInput(void)
 	}
 
 	//メモリ確保がされていたら
-	if (m_pJoyPad != nullptr)
+	if (m_pJoyPad )
 	{
 		//メモリの解放を行う
 		m_pJoyPad->Uninit();
@@ -342,7 +342,7 @@ void CManager::UninitInput(void)
 	}
 
 	//メモリ確保がされていたら
-	if (m_pMouse != nullptr)
+	if (m_pMouse )
 	{
 		//メモリの解放を行う
 		m_pMouse->Uninit();
@@ -369,24 +369,24 @@ void CManager::SetMode(CScene::MODE Mode)
 	m_pSound->StopSound();
 
 	//現在のシーンの破棄をする
-	if (m_pScene != nullptr)
+	if (m_pScene )
 	{
 		m_pScene->Uninit();
 		m_pScene = nullptr;
 	}
 
 	//破棄されたかのチェックをする
-	assert(m_pScene == nullptr);
+	assert(!m_pScene);
 
 	//現在のシーンの破棄が成功したら
-	if (m_pScene == nullptr)
+	if (!m_pScene)
 	{
 		//生成を行う
 		m_pScene = CScene::Create(Mode);
 	}
 			
 	//破棄されたかのチェックをする
-	assert(m_pScene != nullptr);
+	assert(m_pScene );
 }
 //<==================================================================================
 //
@@ -425,7 +425,7 @@ CScene *CScene::Create(MODE Mode)
 	case MODE::MODE_TITLE:
 
 		//中身があったら
-		if (m_pTitle != nullptr)
+		if (m_pTitle )
 		{
 			//2週目以降に入った際の無効変数へのアクセスを防ぐ
 			delete m_pTitle;
@@ -433,13 +433,13 @@ CScene *CScene::Create(MODE Mode)
 		}
 
 		//nullptrだったら
-		if (m_pTitle == nullptr)
+		if (!m_pTitle)
 		{
 			//代入用のメモリ確保をする
 			m_pTitle = new CTitle;
 
 			//チェック
-			assert(m_pTitle != nullptr);
+			assert(m_pTitle );
 
 			//初期化処理
 			m_pTitle->Init();
@@ -454,7 +454,7 @@ CScene *CScene::Create(MODE Mode)
 	case MODE::MODE_OPTION:
 
 		//中身があったら
-		if (m_pOption != nullptr)
+		if (m_pOption )
 		{
 			//2週目以降に入った際の無効変数へのアクセスを防ぐ
 			delete m_pOption;
@@ -462,13 +462,13 @@ CScene *CScene::Create(MODE Mode)
 		}
 
 		//nullptrだったら
-		if (m_pOption == nullptr)
+		if (!m_pOption)
 		{
 			//代入用のメモリ確保をする
 			m_pOption = new COption;
 
 			//チェック
-			assert(m_pOption != nullptr);
+			assert(m_pOption );
 
 			//初期化処理
 			m_pOption->Init();
@@ -483,7 +483,7 @@ CScene *CScene::Create(MODE Mode)
 	case MODE::MODE_TUTORIAL:
 
 		//中身があったら
-		if (m_pTutorial != nullptr)
+		if (m_pTutorial )
 		{
 			//2週目以降に入った際の無効変数へのアクセスを防ぐ
 			delete m_pTutorial;
@@ -491,14 +491,14 @@ CScene *CScene::Create(MODE Mode)
 		}
 
 		//nullptrだったら
-		if (m_pTutorial == nullptr)
+		if (!m_pTutorial)
 		{
 			//代入用のメモリ確保をする
 			m_pTutorial = new CTutorial;
 		}
 
 		//中身があったら
-		if (m_pTutorial != nullptr)
+		if (m_pTutorial )
 		{
 			//今の生成用のオブジェクトに代入する
 			pScene = m_pTutorial;
@@ -515,7 +515,7 @@ CScene *CScene::Create(MODE Mode)
 	case MODE::MODE_GAME:
 
 		//中身があったら
-		if (m_pGame != nullptr)
+		if (m_pGame )
 		{
 			//2週目以降に入った際の無効変数へのアクセスを防ぐ
 			delete m_pGame;
@@ -523,13 +523,13 @@ CScene *CScene::Create(MODE Mode)
 		}
 
 		//nullptrだったら
-		if (m_pGame == nullptr)
+		if (!m_pGame)
 		{
 			//代入用のメモリ確保をする
 			m_pGame = new CGame;
 
 			//チェック
-			assert(m_pGame != nullptr);
+			assert(m_pGame );
 
 			//初期化
 			m_pGame->Init();
@@ -546,7 +546,7 @@ CScene *CScene::Create(MODE Mode)
 		m_nCount++;
 
 		//中身があったら
-		if (m_pResult != nullptr)
+		if (m_pResult )
 		{
 			//2週目以降に入った際の無効変数へのアクセスを防ぐ
 			delete m_pResult;
@@ -554,13 +554,13 @@ CScene *CScene::Create(MODE Mode)
 		}
 
 		//nullptrだったら
-		if (m_pResult == nullptr)
+		if (!m_pResult)
 		{
 			//代入用のメモリ確保をする
 			m_pResult = new CResult;
 
 			//チェック
-			assert(m_pResult != nullptr);
+			assert(m_pResult );
 
 			//初期化処理
 			m_pResult->Init();

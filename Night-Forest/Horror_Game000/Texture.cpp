@@ -47,16 +47,16 @@ void CTexture::UnloadAll(void)
 	for (int nCnt = 0; nCnt < INT_VALUE::MAX_TEX; nCnt++)
 	{
 		//全てのテクスチャの破棄
-		if (m_apTexture[nCnt] != nullptr)
+		if (m_apTexture[nCnt] )
 		{
 			m_apTexture[nCnt]->Release();
 			m_apTexture[nCnt] = nullptr;
 		}
-		if (m_apFileName[nCnt] != nullptr)
+		if (m_apFileName[nCnt] )
 		{
 			m_apFileName[nCnt] = nullptr;
 		}
-		else if (m_apFileName[nCnt] == nullptr&&m_apTexture[nCnt] == nullptr)
+		else if (!m_apFileName[nCnt]&&!m_apTexture[nCnt])
 		{
 			break;
 		}
@@ -133,7 +133,7 @@ int CTexture::Regist(const char *pTexName, LPDIRECT3DTEXTURE9 &pTex)
 	int nNum = m_nNumAll;
 
 	//テクスチャネームがある場合
-	if (pTexName != nullptr)
+	if (pTexName )
 	{
 		//<*********************************************
 		//テクスチャ要素のチェック
@@ -141,7 +141,7 @@ int CTexture::Regist(const char *pTexName, LPDIRECT3DTEXTURE9 &pTex)
 		//数分繰り返す
 		for (int nCnt = 0; nCnt < nNum; nCnt++)
 		{
-			if (m_apFileName[nCnt] != nullptr)
+			if (m_apFileName[nCnt] )
 			{
 				//もし保存されたファイル名と引数のファイル名が一緒だったら
 				if (strcmp(m_apFileName[nCnt], pTexName) == 0)
@@ -156,7 +156,7 @@ int CTexture::Regist(const char *pTexName, LPDIRECT3DTEXTURE9 &pTex)
 		m_apFileName[nNum] = pTexName;
 
 		//もしなければ
-		if (pTex == nullptr)
+		if (!pTex)
 		{
 			assert((D3DXCreateTextureFromFile(CManager::GetRenderer()->GetDevice(),
 				m_apFileName[nNum],

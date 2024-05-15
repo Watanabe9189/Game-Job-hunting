@@ -20,11 +20,7 @@ const char*			Ccover::m_acFilename[TYPE_MAX] =
 //<====================================================
 Ccover::Ccover(int nPriority)
 {
-	//
-	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++)
-	{
-		m_apObject2D[nCnt] = nullptr;
-	}
+	m_apObject2D[TYPE_MAX] = {};
 
 	 m_rPos = D3DXVECTOR2(0.0f, 0.0f);
 	 m_rSize = D3DXVECTOR2(0.0f, 0.0f);
@@ -46,7 +42,7 @@ Ccover *Ccover::Create(const TYPE eType)
 {
 	Ccover *pCover = new Ccover;
 
-	assert(pCover != nullptr);
+	assert(pCover );
 
 	pCover->m_eType = eType;
 
@@ -63,7 +59,7 @@ HRESULT Ccover::Init(void)
 	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); nCnt++)
 	{
 		//最初だけ読み込む
-		if (m_apTexture[nCnt] == nullptr)
+		if (!m_apTexture[nCnt])
 		{
 			//テクスチャの読み込み
 			if (CManager::GetTex()->Regist(m_acFilename[nCnt], m_apTexture[nCnt]) <= -1)
@@ -105,7 +101,7 @@ HRESULT Ccover::Init(void)
 			break;
 		}
 
-		assert(m_apObject2D != nullptr);
+		assert(m_apObject2D );
 
 	}
 	return S_OK;
@@ -119,7 +115,7 @@ void Ccover::Uninit(void)
 	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++)
 	{
 		//終了処理
-		if (m_apObject2D[nCnt] != nullptr)
+		if (m_apObject2D[nCnt] )
 		{
 			m_apObject2D[nCnt]->Uninit();
 			m_apObject2D[nCnt] = nullptr;
@@ -136,7 +132,7 @@ void Ccover::Update(void)
 	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++)
 	{
 		//中身があれば
-		if (m_apObject2D[nCnt] != nullptr)
+		if (m_apObject2D[nCnt] )
 		{
 			m_apObject2D[nCnt]->SetVtx();
 		}

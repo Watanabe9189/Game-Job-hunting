@@ -27,7 +27,7 @@ public:
 	void Update(void)	override;
 	void Draw(void)		override 
 	{ 
-		if (m_bFind == true)
+		if (m_bFind)
 		{
 			CObject3D::Draw();
 		}

@@ -336,7 +336,7 @@ void CRenderer::ScreenShot(const char *cName)
 	if (strstr(cName, ".png"))
 	{
 		////その文字列の中に".png"という文字列があるかのチェックをする
-		//assert(strstr(cName, ".png") != nullptr);
+		//assert(strstr(cName, ".png") );
 
 		//PNG形式にする
 		FileFormat = D3DXIFF_PNG;
@@ -348,7 +348,7 @@ void CRenderer::ScreenShot(const char *cName)
 	else if (strstr(cName, ".jpg"))
 	{
 		////その文字列の中に".jpg"という文字列があるかのチェックをする
-		//assert(strstr(cName, ".jpg") != nullptr);
+		//assert(strstr(cName, ".jpg") );
 
 		//JPG方式にする
 		FileFormat = D3DXIFF_JPG;
@@ -359,7 +359,7 @@ void CRenderer::ScreenShot(const char *cName)
 	}
 	
 	//もしファイルが開けていたら
-	if (pFile != nullptr)
+	if (pFile )
 	{
 		//ファイルを閉じる
 		fclose(pFile);
@@ -372,7 +372,7 @@ void CRenderer::ScreenShot(const char *cName)
 	if (FAILED(pdirect3d9->GetAdapterDisplayMode(D3DADAPTER_DEFAULT, &dmode)))
 	{
 		//IDirect3D9インターフェイスの破棄
-		if (pdirect3d9 != nullptr)
+		if (pdirect3d9 )
 		{
 			pdirect3d9->Release();
 			pdirect3d9 = nullptr;
@@ -380,7 +380,7 @@ void CRenderer::ScreenShot(const char *cName)
 	}
 
 	//IDirect3D9インターフェイスの破棄
-	if (pdirect3d9 != nullptr)
+	if (pdirect3d9 )
 	{
 		//これしないとメモリリークする
 		pdirect3d9->Release();
@@ -399,7 +399,7 @@ void CRenderer::ScreenShot(const char *cName)
 	if (FAILED(m_pD3DDevice->GetFrontBufferData(0, pSurface)))
 	{
 		//サーフェイスの破棄
-		if (pSurface != nullptr)
+		if (pSurface )
 		{
 			pSurface->Release();
 			pSurface = nullptr;
@@ -410,7 +410,7 @@ void CRenderer::ScreenShot(const char *cName)
 	if ((D3DXSaveSurfaceToFile(fileName, FileFormat, pSurface, NULL, NULL))!=D3D_OK)
 	{
 		//サーフェイスの破棄
-		if (pSurface != nullptr)
+		if (pSurface )
 		{
 			pSurface->Release();
 			pSurface = nullptr;
@@ -418,7 +418,7 @@ void CRenderer::ScreenShot(const char *cName)
 	}
 	
 	//サーフェイスの破棄
-	if (pSurface != nullptr)
+	if (pSurface )
 	{
 		pSurface->Release();
 		pSurface = nullptr;

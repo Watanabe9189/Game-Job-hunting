@@ -215,7 +215,7 @@ public:
 	D3DXVECTOR2 GetMouseRotate(void);
 	D3DXVECTOR3 GetMousePos(void);
 
-	void SetUse(void){m_bUse == true ? m_bUse = false : m_bUse = true;}
+	void SetUse(void){m_bUse ? m_bUse = false : m_bUse = true;}
 
 private:
 

@@ -6,7 +6,9 @@
 #include "LandMark.h"
 #include "game.h"
 
-//ファイル名指定
+//<********************************************************
+//静的メンバ変数宣言
+//<********************************************************
 const char*			CLandMark::m_acFilename[TYPE::TYPE_MAX]
 {
 	"data\\MODEL\\LandMark\\SignBoard000.x",		//看板
@@ -55,7 +57,7 @@ CLandMark *CLandMark::FixedCreate(CLandMark *apLandMark[MAX_OBJECT])
 	{
 		apLandMark[nCnt] = new CLandMark;
 
-		assert(apLandMark[nCnt] != nullptr);
+		assert(apLandMark[nCnt] );
 
 		//処理を分ける
 		switch (nCnt)
@@ -156,7 +158,7 @@ void CLandMark::Collid(void)
 		CManager::GetScene()->GetGame()->Get3DPlayer()->GetModel().vtxMin))
 	{
 		//もし中身があれば
-		if (m_pBillBIcon != nullptr)
+		if (m_pBillBIcon )
 		{
 			//表示させる
 			m_pBillBIcon->SetDrawtrue();
@@ -165,7 +167,7 @@ void CLandMark::Collid(void)
 	else
 	{
 		//もし中身があれば
-		if (m_pBillBIcon != nullptr)
+		if (m_pBillBIcon )
 		{
 			//表示させる
 			m_pBillBIcon->SetDrawfalse();

@@ -46,7 +46,7 @@ CDestArrowX *CDestArrowX::Create(void)
 {
 	CDestArrowX *pDestArrow = new CDestArrowX;
 
-	assert(pDestArrow != nullptr&&pDestArrow->Init() == S_OK);
+	assert(pDestArrow &&pDestArrow->Init() == S_OK);
 
 	return pDestArrow;
 }
@@ -124,13 +124,13 @@ void CDestArrowX::RotateToDest(void)
 		}
 	}
 	//見つかっていて、見ているアイテムがゲットされたら
-	if (m_bFind == true && CManager::GetScene()->GetGame()->GetItem(m_nNum)->bGet())
+	if (m_bFind && CManager::GetScene()->GetGame()->GetItem(m_nNum)->bGet())
 	{
 		//見つかっていない状態にする
 		m_bFind = false;
 	}
 	//見つかっていて、見ているアイテムがゲットされたら
-	if (m_bFind == true && !CManager::GetScene()->GetGame()->GetItem(m_nNum)->bGet())
+	if (m_bFind && !CManager::GetScene()->GetGame()->GetItem(m_nNum)->bGet())
 	{
 		//目的地までの距離
 		m_rDis = D3DXVECTOR3(CManager::GetScene()->GetGame()->Get3DPlayer()->GetPosition().x - CManager::GetScene()->GetGame()->GetItem(m_nNum)->GetPosition().x,

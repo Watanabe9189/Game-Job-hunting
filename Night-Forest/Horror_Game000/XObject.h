@@ -79,15 +79,15 @@ public:
 	void SetVector3(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const D3DXVECTOR3 move)
 	{
 		//‚à‚µ‚Ç‚¿‚ç‚©‚ªnullptr‚Å‚È‚¯‚ê‚Î
-		if (pos != nullptr)
+		if (pos )
 		{
 			m_pos = pos;
 		}
-		if (rot != nullptr)
+		if (rot )
 		{
 			m_rot = rot;
 		}
-		if (move != nullptr)
+		if (move )
 		{
 			m_move = move;
 		}

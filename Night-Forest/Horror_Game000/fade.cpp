@@ -44,7 +44,7 @@ CFade *CFade::Create(void)
 	CFade *pFade = new CFade;
 
 	//生成チェック
-	assert(pFade != nullptr);
+	assert(pFade );
 
 	//初期化チェック
 	assert(SUCCEEDED(pFade->Init()));
@@ -57,7 +57,7 @@ CFade *CFade::Create(void)
 HRESULT CFade::Init(void)
 {
 	//中身がなければ
-	if (m_pObject2D == nullptr)
+	if (!m_pObject2D)
 	{
 		//生成する
 		m_pObject2D = new CObject2D;

@@ -54,7 +54,7 @@ HRESULT CTutorial::Init(void)
 
 	for (int nCnt = 0; nCnt < sizeof(m_acFilename) / sizeof(*m_acFilename); nCnt++)
 	{
-		if (m_apTexture[nCnt] == nullptr)
+		if (!m_apTexture[nCnt])
 		{
 			//テクスチャの読み込み
 			if ((CManager::GetTex()->Regist(m_acFilename[nCnt], m_apTexture[nCnt])) <= -1)
@@ -65,7 +65,7 @@ HRESULT CTutorial::Init(void)
 	}
 
 	//頂点バッファの生成
-	if (m_pVtxBuff == nullptr &&
+	if (!m_pVtxBuff&&
 		CManager::GetRenderer()->GetDevice()->CreateVertexBuffer
 	(sizeof(VERTEX_2D) * INT_VALUE::MAX_TOP,
 		D3DUSAGE_WRITEONLY,
@@ -125,7 +125,7 @@ HRESULT CTutorial::Init(void)
 void CTutorial::Uninit(void)
 {
 	//頂点バッファを破棄する
-	if (m_pVtxBuff != nullptr)
+	if (m_pVtxBuff )
 	{
 		m_pVtxBuff->Release();
 		m_pVtxBuff = nullptr;
@@ -138,8 +138,8 @@ void CTutorial::Uninit(void)
 void CTutorial::Update(void)
 {
 	//SPACEキーが押されたら
-	if (CManager::GetKeyboard()->bGetTrigger(DIK_RIGHTARROW) == true ||
-		CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_RIGHT, 0) == true)
+	if (CManager::GetKeyboard()->bGetTrigger(DIK_RIGHTARROW) ||
+		CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_RIGHT, 0))
 	{
 		//チュートリアルステップを進める
 		m_nTutorialStep += 1;
@@ -153,8 +153,8 @@ void CTutorial::Update(void)
 	}
 
 	//SPACEキーが押されたら
-	if (CManager::GetKeyboard()->bGetTrigger(DIK_LEFTARROW) == true ||
-		CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_LEFT, 0) == true)
+	if (CManager::GetKeyboard()->bGetTrigger(DIK_LEFTARROW) ||
+		CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_LEFT, 0))
 	{
 		//チュートリアルステップを進める
 		m_nTutorialStep -= 1;
@@ -166,8 +166,8 @@ void CTutorial::Update(void)
 		}
 	}
 	//SPACEキーが押されたら
-	if (CManager::GetKeyboard()->bGetTrigger(DIK_LSHIFT) == true ||
-		CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_START, 0) == true)
+	if (CManager::GetKeyboard()->bGetTrigger(DIK_LSHIFT) ||
+		CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_START, 0))
 	{
 		//ゲーム画面に遷移
 		CManager::SetMode(CScene::MODE::MODE_GAME);

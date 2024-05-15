@@ -52,11 +52,7 @@ C2DGauge::C2DGauge(int nPriority)
 	m_nMax = INITIAL_INT;
 	m_eVer = VERTEX_MAX;
 
-	//
-	for (int nCnt = 0; nCnt < TYPE::TYPE_MAX; nCnt++)
-	{
-		m_apObject2D[nCnt] = nullptr;
-	}
+	m_apObject2D[TYPE_MAX] = {};
 }
 //<===============================================================
 //
@@ -72,7 +68,7 @@ C2DGauge *C2DGauge::Create(const D3DXVECTOR2 pos,const int nMaxNum, const VERTEX
 {
 	C2DGauge *p2DGauge = new C2DGauge;
 
-	assert(p2DGauge != nullptr);
+	assert(p2DGauge );
 
 	//列挙型変数
 	p2DGauge->m_eVer = eVer;
@@ -99,7 +95,7 @@ HRESULT C2DGauge::Init(void)
 	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); nCnt++)
 	{
 		//最初だけ読み込む
-		if (m_apTexture[nCnt] == nullptr)
+		if (!m_apTexture[nCnt])
 		{
 			//テクスチャの読み込み
 			if ((CManager::GetTex()->Regist(m_acFilename[nCnt], m_apTexture[nCnt])) <= -1)
@@ -139,7 +135,7 @@ void C2DGauge::Uninit(void)
 	//
 	for (int nCnt = 0; nCnt < TYPE::TYPE_MAX; nCnt++)
 	{
-		if (m_apObject2D[nCnt] != nullptr)
+		if (m_apObject2D[nCnt] )
 		{
 			m_apObject2D[nCnt]->Uninit();
 			m_apObject2D[nCnt] = nullptr;
@@ -166,7 +162,7 @@ void C2DGauge::Update(void)
 		for (int nCnt = 0; nCnt < TYPE::TYPE_MAX; nCnt++)
 		{
 			//中身チェック
-			if (m_apObject2D[nCnt] != nullptr)
+			if (m_apObject2D[nCnt] )
 			{
 				//変更されていれば
 				if (m_fAddValue != 0)
@@ -240,7 +236,7 @@ void C2DGauge::SetVtx(void)
 	//
 	for (int nCnt = 0; nCnt < TYPE::TYPE_MAX; nCnt++)
 	{
-		if (m_apObject2D[nCnt] != nullptr)
+		if (m_apObject2D[nCnt] )
 		{
 			m_apObject2D[nCnt]->SetVtx();
 			

@@ -64,7 +64,7 @@ HRESULT CResult::Init(void)
 	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); nCnt++)
 	{
 		//最初だけ読み込む
-		if (m_apTexture[nCnt] == nullptr)
+		if (!m_apTexture[nCnt])
 		{
 			//テクスチャの読み込み
 			if (CManager::GetTex()->Regist(m_acFilename[nCnt], m_apTexture[nCnt]) <= -1)
@@ -133,7 +133,7 @@ HRESULT CResult::Init(void)
 void CResult::Uninit(void)
 {
 	//もしメモリ確保がされていたら
-	if (m_pCamera != nullptr)
+	if (m_pCamera )
 	{
 		m_pCamera->Uninit();
 		delete m_pCamera;
@@ -143,7 +143,7 @@ void CResult::Uninit(void)
 	//ライトの破棄
 	//<******************************************
 	//もしメモリ確保がされていたら
-	if (m_pLight != nullptr)
+	if (m_pLight )
 	{
 		//メモリの解放を行う
 		delete m_pLight;
@@ -153,7 +153,7 @@ void CResult::Uninit(void)
 	//ライトの破棄
 	//<******************************************
 	//もしメモリ確保がされていたら
-	if (m_pFog != nullptr)
+	if (m_pFog )
 	{
 		//メモリの解放を行う
 		m_pFog->Uninit();
@@ -163,7 +163,7 @@ void CResult::Uninit(void)
 	//ライトの破棄
 	//<******************************************
 	//もしメモリ確保がされていたら
-	if (m_pField != nullptr)
+	if (m_pField )
 	{
 		//メモリの解放を行う
 		m_pField->Uninit();
@@ -172,7 +172,7 @@ void CResult::Uninit(void)
 	for (int nCnt = 0; nCnt < XTYPE_MAX; nCnt++)
 	{
 		//もしメモリ確保がされていたら
-		if (m_apXObject[nCnt] != nullptr)
+		if (m_apXObject[nCnt] )
 		{
 			//メモリの解放を行う
 			m_apXObject[nCnt]->Uninit();
@@ -180,21 +180,21 @@ void CResult::Uninit(void)
 		}
 	}
 	//もしメモリ確保がされていたら
-	if (m_pObject3D != nullptr)
+	if (m_pObject3D )
 	{
 		//メモリの解放を行う
 		m_pObject3D->Uninit();
 		m_pObject3D = nullptr;
 	}
 	//もしメモリ確保がされていたら
-	if (m_pFont != nullptr)
+	if (m_pFont )
 	{
 		//メモリの解放を行う
 		m_pFont->Uninit();
 		m_pFont = nullptr;
 	}
 	//もしメモリ確保がされていたら
-	if (m_pObject2D != nullptr)
+	if (m_pObject2D )
 	{
 		//メモリの解放を行う
 		m_pObject2D->Uninit();
@@ -202,7 +202,7 @@ void CResult::Uninit(void)
 	}
 
 	//もしメモリ確保がされていたら
-	if (m_pContinue != nullptr)
+	if (m_pContinue )
 	{
 		//メモリの解放を行う
 		m_pContinue->Uninit();
@@ -218,7 +218,7 @@ void CResult::Update(void)
 	m_pCamera->Update();
 
 	//生成していなかったら
-	if (m_pObject3D != nullptr)
+	if (m_pObject3D )
 	{
 		m_pObject3D->SetVtx();
 	}
@@ -257,7 +257,7 @@ void CResult::Update(void)
 				CManager::SetFade(CScene::MODE::MODE_GAME);
 			}
 			//
-			else if (CManager::GetKeyboard()->bGetTrigger(DIK_RETURN) == true
+			else if (CManager::GetKeyboard()->bGetTrigger(DIK_RETURN)
 				&& m_pContinue->GetSelect() == C2DContinue::SELECT_YES)
 			{
 				//
@@ -275,7 +275,7 @@ void CResult::Update(void)
 				CManager::SetFade(CScene::MODE::MODE_TITLE);
 			}
 			//
-			else if (CManager::GetKeyboard()->bGetTrigger(DIK_RETURN) == true
+			else if (CManager::GetKeyboard()->bGetTrigger(DIK_RETURN)
 				&& m_pContinue->GetSelect() == C2DContinue::SELECT_NO)
 			{
 				//

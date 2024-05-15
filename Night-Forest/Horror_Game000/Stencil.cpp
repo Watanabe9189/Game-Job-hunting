@@ -28,7 +28,7 @@ CStencil *CStencil::Create(const bool bUse, const int nStencil)
 {
 	CStencil *pStencil = new CStencil;
 
-	assert(pStencil != nullptr);
+	assert(pStencil );
 
 	//’lÝ’è
 	pStencil->m_bUse = bUse;

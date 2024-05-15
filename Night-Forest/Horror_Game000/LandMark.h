@@ -40,7 +40,7 @@ public:
 		CXObject::Uninit();
 	
 		//‚à‚µ’†g‚ª‚ ‚ê‚Î
-		if (m_pBillBIcon != nullptr)
+		if (m_pBillBIcon )
 		{
 			//•\Ž¦‚³‚¹‚é
 			m_pBillBIcon->Uninit();

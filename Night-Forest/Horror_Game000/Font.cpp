@@ -26,7 +26,7 @@ CFont::CFont(int nPriority)
 	//値の初期化
 	m_pFont = nullptr;
 	m_Rect = { NULL, NULL, NULL, NULL };
-	memset(&m_aStrDebug[0], NULL, sizeof(m_aStrDebug));
+	m_aStrDebug[MAX_STRING] = {};
 	m_nWeight = FW_DONTCARE;
 	m_Height = NULL;
 	m_Width = NULL;
@@ -57,7 +57,7 @@ CFont *CFont::Create(const RECT Rect, const UINT Width,const UINT Height,
 	//生成用のオブジェクト
 	CFont *PFont = new CFont;
 
-	assert(PFont != nullptr);
+	assert(PFont );
 
 	//<*********************************
 	//情報設定処理
@@ -91,7 +91,7 @@ CFont *CFont::WithIntCreate(const RECT Rect, const UINT Width, const UINT Height
 	//生成用のオブジェクト
 	CFont *PFont = new CFont;
 
-	assert(PFont != nullptr);
+	assert(PFont );
 
 	//<*********************************
 	//情報設定処理
@@ -141,7 +141,7 @@ void CFont::Uninit(void)
 	Release();
 
 	//フォントの破棄
-	if (m_pFont != nullptr)
+	if (m_pFont )
 	{
 		m_pFont->Release();
 		m_pFont = nullptr;

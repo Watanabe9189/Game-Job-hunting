@@ -68,7 +68,7 @@ CItem *CItem::Create(const D3DXVECTOR3 pos, const TYPE eType)
 	CItem *pItem = new CItem;
 
 	//中身チェック
-	assert(pItem != nullptr);
+	assert(pItem );
 
 	//情報設定
 	pItem->SetVector3(Calculate::CalculteRandVec3(D3DXVECTOR3(4000.0f, 0.0f, 4000.0f), D3DXVECTOR3(-4000.0f, 0.0f, -4000.0f), false), pItem->m_rot, {});
@@ -107,7 +107,7 @@ CItem *CItem::RandCreate(CItem *apItem[MAX_OBJECT], int nNum)
 		apItem[nCnt] = new CItem;
 
 		//中身チェック
-		assert(apItem[nCnt] != nullptr);
+		assert(apItem[nCnt] );
 
 		rRandPos = D3DXVECTOR3(Calculate::CalculteRandVec3(D3DXVECTOR3(4000.0f, 0.0f, 4000.0f), D3DXVECTOR3(-4000.0f, 0.0f, -4000.0f), false));
 		nRandType = rand() % TYPE::TYPE_MAX + TYPE::TYPE_ITEM0;
@@ -134,7 +134,7 @@ CItem *CItem::RandCreate(CItem *apItem[MAX_OBJECT], int nNum)
 		for (int nCntBuild = 0; nCntBuild < CBuilding::GetNum(); nCntBuild++)
 		{
 			//中身があれば
-			if (CManager::GetScene()->GetGame()->GetBuil(nCnt) != nullptr)
+			if (CManager::GetScene()->GetGame()->GetBuil(nCnt) )
 			{
 				//
 				if (Collision::CollidAll(CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetPosition(),
@@ -262,12 +262,12 @@ void CItem::RandSet(void)
 	for (int nCntBuild = 0; nCntBuild < CBuilding::GetNum(); nCntBuild++)
 	{
 		//中身があれば
-		if (CManager::GetScene()->GetGame()->GetBuil(nCntBuild) != nullptr)
+		if (CManager::GetScene()->GetGame()->GetBuil(nCntBuild) )
 		{
 			//
 			if (Collision::CollidAll(CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetPosition(),
 				CManager::GetScene()->GetGame()->GetBuil(nCntBuild)->GetModel().rSize,
-				m_pos, m_sModel.vtxMax, m_sModel.vtxMin) == true)
+				m_pos, m_sModel.vtxMax, m_sModel.vtxMin))
 			{
 				//重ならないように位置を変える
 				rPos = D3DXVECTOR3(Calculate::CalculteRandVec3(D3DXVECTOR3(4000.0f, 0.0f, 4000.0f), D3DXVECTOR3(-4000.0f, 0.0f, -4000.0f), false));

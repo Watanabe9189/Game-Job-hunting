@@ -80,13 +80,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hInstancePrev, LPSTR lpCmbLine
 	//メモリリークを出力
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-	if (pManager == nullptr)
+	if (!pManager)
 	{
 		pManager = new CManager;				//メモリ確保を開始する
 	}
 
 	//もしメモリ確保に成功したら
-	if (pManager != nullptr)
+	if (pManager )
 	{
 		//初期化処理が失敗したら
 		if (FAILED(pManager->Init(hInstance, hWnd, TRUE)))
@@ -127,22 +127,22 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hInstancePrev, LPSTR lpCmbLine
 		{//DirectXの処理
 
 			//どちらもfalseだったら
-			if (g_bDoubleSpeed == false && g_bSlowSpeed == false)
+			if (!g_bDoubleSpeed && !g_bSlowSpeed)
 			{
 				dwCurrentTime = timeGetTime() * NORMAL_SPEED;		//現在時刻を取得
 			}
 			//倍速モードがtrue&&鈍足モードがfalse
-			else if(g_bDoubleSpeed == true&&g_bSlowSpeed == false)
+			else if(g_bDoubleSpeed&&!g_bSlowSpeed)
 			{
 				dwCurrentTime = timeGetTime() * SPEED_UP_VALUE;		//現在時刻を取得(2倍速する)
 			}
 			//鈍足モードがtrue&&倍速モードがfalse
-			else if (g_bSlowSpeed == true && g_bDoubleSpeed == false)
+			else if (g_bSlowSpeed && !g_bDoubleSpeed)
 			{
 				dwCurrentTime = timeGetTime() / SPEED_UP_VALUE;		//現在時刻を取得(2倍速する)
 			}
 			//どちらもtrueだった場合
-			else if (g_bSlowSpeed == true && g_bDoubleSpeed == true)
+			else if (g_bSlowSpeed && g_bDoubleSpeed)
 			{
 				dwCurrentTime = timeGetTime() * NORMAL_SPEED;		//現在時刻を取得(どちらにしろ半減されるため)
 			}
@@ -151,22 +151,22 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hInstancePrev, LPSTR lpCmbLine
 			{//0.5秒経過
 
 				//どちらもfalseだったら
-				if (g_bDoubleSpeed == false && g_bSlowSpeed == false)
+				if (!g_bDoubleSpeed && !g_bSlowSpeed)
 				{
 					g_nCountFPS = (dwFrameCount * 1000) / (dwCurrentTime - dwFPSLastTime) * NORMAL_SPEED;		//通常のFPSにする
 				}
 				//倍速モードがtrue&&鈍足モードがfalse
-				else if (g_bDoubleSpeed == true && g_bSlowSpeed == false)
+				else if (g_bDoubleSpeed && !g_bSlowSpeed)
 				{
 					g_nCountFPS = (dwFrameCount * 1000) / (dwCurrentTime - dwFPSLastTime) * SPEED_UP_VALUE;		//2倍速の状態のFPSにする
 				}
 				//鈍足モードがtrue&&倍速モードがfalse
-				else if (g_bSlowSpeed == true && g_bDoubleSpeed == false)
+				else if (g_bSlowSpeed && !g_bDoubleSpeed)
 				{
 					g_nCountFPS = (dwFrameCount * 1000) / (dwCurrentTime - dwFPSLastTime) / 2;					//鈍足の状態のFPSにする
 				}
 				//どちらもtrueだった場合
-				else if (g_bSlowSpeed == true && g_bDoubleSpeed == true)
+				else if (g_bSlowSpeed && g_bDoubleSpeed)
 				{
 					g_nCountFPS = (dwFrameCount * 1000) / (dwCurrentTime - dwFPSLastTime) * NORMAL_SPEED;		//通常のFPSにする(どちらにしろ半減されるため)
 				}
@@ -182,7 +182,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hInstancePrev, LPSTR lpCmbLine
 				dwExecLastTime = dwCurrentTime;		//処理開始の時刻[現在時刻]を保存
 
 				//もしメモリ確保に成功したら
-				if (pManager != nullptr)
+				if (pManager )
 				{
 					pManager->Update();				//更新処理
 
@@ -202,7 +202,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hInstancePrev, LPSTR lpCmbLine
 	//メモリ解放
 	//<==========================
 	//もしメモリ確保に成功したら
-	if (pManager != nullptr)
+	if (pManager )
 	{
 		//終了処理
 		pManager->Uninit();
@@ -298,7 +298,7 @@ int GetFPS(void)
 void SetD_SPEED(void)
 {
 	//三項演算子で入れ替えを行う
-	g_bDoubleSpeed == false ? g_bDoubleSpeed = true : g_bDoubleSpeed = false;
+	!g_bDoubleSpeed ? g_bDoubleSpeed = true : g_bDoubleSpeed = false;
 }
 //<==================================================================================
 //鈍足するかしないかの入れ替え
@@ -306,5 +306,5 @@ void SetD_SPEED(void)
 void SetS_SPEED(void)
 {
 	//三項演算子で入れ替えを行う
-	g_bSlowSpeed == false ? g_bSlowSpeed = true : g_bSlowSpeed = false;
+	!g_bSlowSpeed ? g_bSlowSpeed = true : g_bSlowSpeed = false;
 }

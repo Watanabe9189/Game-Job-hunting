@@ -37,7 +37,7 @@ public:
 	void SetBoolPix(const BOOL bBool);
 
 	void SetStencil(const int nStencil) { m_nStencil = nStencil; }
-	void ChangeScreen(void) {m_bFullScreen == false ? m_bFullScreen = true : m_bFullScreen = false;}
+	void ChangeScreen(void) {!m_bFullScreen ? m_bFullScreen = true : m_bFullScreen = false;}
 
 private:
 

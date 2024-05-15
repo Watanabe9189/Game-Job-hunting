@@ -33,7 +33,7 @@ const char *CDebug::m_acNowScreen[]
 //<==========================================================
 CDebug::CDebug()
 {
-	memset(&m_aStrDebug[0], NULL, sizeof(m_aStrDebug));
+	m_aStrDebug[MAX_DEBUGSTRING] = {};
 
 	m_bDispDebug = true;
 }
@@ -79,10 +79,10 @@ void CDebug::Uninit(void)
 void CDebug::Update(void)
 {
 	//TABキーが押されたら
-	if (CManager::GetKeyboard()->bGetTrigger(DIK_TAB) == true)
+	if (CManager::GetKeyboard()->bGetTrigger(DIK_TAB))
 	{
 		//三項演算子
-		m_bDispDebug == true ? m_bDispDebug = false : m_bDispDebug = true;
+		m_bDispDebug ? m_bDispDebug = false : m_bDispDebug = true;
 	}
 }
 //==========================================================
@@ -94,7 +94,7 @@ void CDebug::Draw(void)
 	RECT rect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 
 	//
-	if (m_bDispDebug == true)
+	if (m_bDispDebug)
 	{
 		//デバッグ情報を描画する
 		m_pFont->DrawText(NULL, &m_aStrDebug[0], -1, &rect, DT_LEFT, D3DCOLOR_RGBA(255, 255, 255, 255));

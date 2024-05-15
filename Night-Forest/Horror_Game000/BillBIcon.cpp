@@ -46,7 +46,7 @@ CBilBIcon *CBilBIcon::Create(const D3DXVECTOR3 pos,const int nIcon)
 	CBilBIcon *pBilBIcon = new CBilBIcon;
 
 	//しっかりメモリ確保されたかのチェック
-	assert(pBilBIcon != nullptr);
+	assert(pBilBIcon );
 
 	//Vector3の要素の設定
 	pBilBIcon->SetVector3(pos, {}, pBilBIcon->m_Size);
@@ -71,7 +71,7 @@ HRESULT CBilBIcon::Init(void)
 	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); nCnt++)
 	{
 		//最初だけ読み込む
-		if (m_apTexture[nCnt] == nullptr)
+		if (!m_apTexture[nCnt])
 		{
 			//テクスチャの読み込み
 			if ((CManager::GetTex()->Regist(m_acFilename[nCnt], m_apTexture[nCnt])) <= -1)

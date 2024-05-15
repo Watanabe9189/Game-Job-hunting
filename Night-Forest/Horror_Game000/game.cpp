@@ -37,17 +37,20 @@ CDestArrowX *CGame::m_pDestArrowX = nullptr;
 CDestArrow *CGame::m_pDestArrow = nullptr;
 Ccamera *CGame::m_pCamera = nullptr;
 
+//<**********************************************************
+//名前宣言
+//<**********************************************************
 namespace
 {
-	const int NUM_BUILDING = 20;
-	const int NUM_ITEM = 5;
-	const int NUM_PLANT = 35;
-	const D3DXVECTOR3 PLAYER_POS = D3DXVECTOR3(-4000.0f, 0.0f, 3640.0f);
-	const D3DXVECTOR2 GAUGE_POS = D3DXVECTOR2(720.0f,660.0f);
+	const int NUM_BUILDING = 20;											//生成する建物の数
+	const int NUM_ITEM = 5;													//生成するアイテムの数
+	const int NUM_PLANT = 35;												//生成する植物の数
+	const D3DXVECTOR3 PLAYER_POS = D3DXVECTOR3(-4000.0f, 0.0f, 3640.0f);	//プレイヤーの初期地点
+	const D3DXVECTOR2 GAUGE_POS = D3DXVECTOR2(720.0f,660.0f);				//ゲージの位置
 
-	const int	MAX_TIME = 4500;				//アイテムテレポートまでの時間の最大値
-	const float MAX_DESTTiME = 7500;			//敵が目的地をプレイヤーの位置の周辺にするまでの時間の最大値
-	const int	MAX_SPAWNTIME = 10000;			//スポーンまでの時間の最大値
+	const int	MAX_TIME = 4500;											//アイテムテレポートまでの時間の最大値
+	const float MAX_DESTTiME = 7500;										//敵が目的地をプレイヤーの位置の周辺にするまでの時間の最大値
+	const int	MAX_SPAWNTIME = 10000;										//スポーンまでの時間の最大値
 }
 //<====================================
 //ゲーム画面のコンストラクタ
@@ -74,55 +77,8 @@ HRESULT CGame::Init(void)
 {
 	CManager::GetRenderer()->SetBoolPix(FALSE);
 	CManager::GetSound()->PlaySound(CSound::LABEL_BGM_GAME);
-	//<******************************************
-	//ライトの生成
-	//<******************************************
-	m_pCamera = Ccamera::Create();
 
-	//ライト生成
-	m_pLight = CLight::Create(CLight::MODE::MODE_DIRECTIONAL);
-
-	//フォグ生成
-	m_pFog = CFog::Create(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), D3DFOGMODE::D3DFOG_LINEAR, CFog::TYPE::TYPE_PIXEL,0.002f);
-
-	//地面生成
-	CField::ReadCreate(m_apField);
-
-	//プレイヤー生成
-	m_p3DPlayer = C3DPlayer::Create(PLAYER_POS);
-
-	//建物生成
-	CBuilding::RandCreate(m_apBuilding, NUM_BUILDING);
-
-	//アイテム生成
-	CItem::RandCreate(m_apItem, NUM_ITEM);
-
-	CPlant::RandCreate(m_apPlant, NUM_PLANT);
-
-	CLandMark::FixedCreate(m_apLandMark);
-
-	m_pDestArrowX = CDestArrowX::Create();
-
-	//ゲージ生成
-	m_p2DGauge = C2DGauge::Create(GAUGE_POS, m_p3DPlayer->GetStamina(), C2DGauge::VERTEX_X, C2DGauge::MODE_ONLY_USE);
-
-	//情報生成
-	m_pInfo = C2DInfo::Create(C2DInfo::Class::CLASS_NUMBER);
-
-	m_ap2DChar[CHAR2D_HIDE] = C2DChar::Create(D3DXVECTOR2(1150.0f, 675.0f),
-		D3DXVECTOR2(125.0f, 125.0f), C2DChar::CHAR_TYPE::CHAR_TYPE_HIDEINFO, C2DChar::MOVE_FROM_NONE, false);
-
-	m_ap2DChar[CHAR2D_PICKUP] = C2DChar::Create(D3DXVECTOR2(1150.0f, 
-		m_ap2DChar[CHAR2D_HIDE]->GetPosition().y), D3DXVECTOR2(125.0f, 125.0f),
-		C2DChar::CHAR_TYPE::CHAR_TYPE_PICKUP_INFO, C2DChar::MOVE_FROM_NONE, false);
-
-	m_ap2DChar[CHAR2D_COMEOUT] = C2DChar::Create(D3DXVECTOR2(1150.0f, 675.0f),
-		D3DXVECTOR2(125.0f, 125.0f), C2DChar::CHAR_TYPE::CHAR_TYPE_COMEOUT_INFO, C2DChar::MOVE_FROM_NONE, false);
-
-	m_ap2DChar[CHAR2D_SEALED] = C2DChar::Create(D3DXVECTOR2(575.0f, 500.0f),
-		D3DXVECTOR2(140.0f, 120.0f), C2DChar::CHAR_TYPE::CHAR_TYPE_SEALED_INFO, C2DChar::MOVE_FROM_NONE, false);
-
-	m_pDestArrow = CDestArrow::Create();
+	Creating();
 
 	return S_OK;
 }
@@ -131,8 +87,10 @@ HRESULT CGame::Init(void)
 //<====================================
 void CGame::Uninit(void)
 {
-	//もしメモリ確保がされていたら
-	if (m_pCamera != nullptr)
+	//<******************************************
+	//カメラの破棄
+	//<******************************************
+	if (m_pCamera )
 	{
 		m_pCamera->Uninit();
 		delete m_pCamera;
@@ -141,8 +99,7 @@ void CGame::Uninit(void)
 	//<******************************************
 	//ライトの破棄
 	//<******************************************
-	//もしメモリ確保がされていたら
-	if (m_pLight != nullptr)
+	if (m_pLight )
 	{
 		//メモリの解放を行う
 		delete m_pLight;
@@ -151,7 +108,7 @@ void CGame::Uninit(void)
 	//<******************************************
 	//プレイヤーの破棄
 	//<******************************************
-	if (m_p3DPlayer != nullptr)
+	if (m_p3DPlayer )
 	{
 		m_p3DPlayer->Uninit();
 		m_p3DPlayer = nullptr;
@@ -159,7 +116,7 @@ void CGame::Uninit(void)
 	//<******************************************
 	//フォグの破棄
 	//<******************************************
-	if (m_pFog != nullptr)
+	if (m_pFog )
 	{
 		m_pFog->Uninit();
 		m_pFog = nullptr;
@@ -167,7 +124,7 @@ void CGame::Uninit(void)
 	//<******************************************
 	//ゲージの破棄
 	//<******************************************
-	if (m_p2DGauge != nullptr)
+	if (m_p2DGauge )
 	{
 		m_p2DGauge->Uninit();
 		m_p2DGauge = nullptr;
@@ -175,7 +132,7 @@ void CGame::Uninit(void)
 	//<******************************************
 	//インフォの破棄
 	//<******************************************
-	if (m_pInfo != nullptr)
+	if (m_pInfo )
 	{
 		m_pInfo->Uninit();
 		m_pInfo = nullptr;
@@ -183,34 +140,34 @@ void CGame::Uninit(void)
 	//<******************************************
 	//カバーの破棄
 	//<******************************************
-	if (m_pCover != nullptr)
+	if (m_pCover )
 	{
 		m_pCover->Uninit();
 		m_pCover = nullptr;
 	}
 	//<******************************************
-	//カバーの破棄
+	//Xモデル目的矢印の破棄
 	//<******************************************
-	if (m_pDestArrowX != nullptr)
+	if (m_pDestArrowX )
 	{
 		m_pDestArrowX->Uninit();
 		m_pDestArrowX = nullptr;
 	}
 	//<******************************************
-	//カバーの破棄
+	//2D目的矢印の破棄
 	//<******************************************
-	if (m_pDestArrow != nullptr)
+	if (m_pDestArrow )
 	{
 		m_pDestArrow->Uninit();
 		m_pDestArrow = nullptr;
 	}
 	//<******************************************
-	//壁の破棄
+	//地面の破棄
 	//<******************************************
 	for (int nCnt = 0; nCnt < CField::GetNum(); nCnt++)
 	{
 		//もしメモリ確保がされていたら
-		if (m_apField[nCnt] != nullptr)
+		if (m_apField[nCnt] )
 		{
 			//メモリの解放を行わず、終了処理をする
 			m_apField[nCnt]->Uninit();
@@ -218,12 +175,12 @@ void CGame::Uninit(void)
 		}
 	}
 	//<******************************************
-	//壁の破棄
+	//敵の破棄
 	//<******************************************
 	for (int nCnt = 0; nCnt < C3DEnemy::GetNum(); nCnt++)
 	{
 		//もしメモリ確保がされていたら
-		if (m_ap3DEnemy[nCnt] != nullptr)
+		if (m_ap3DEnemy[nCnt] )
 		{
 			//メモリの解放を行わず、終了処理をする
 			m_ap3DEnemy[nCnt]->Uninit();
@@ -231,12 +188,12 @@ void CGame::Uninit(void)
 		}
 	}
 	//<******************************************
-	//壁の破棄
+	//建物の破棄
 	//<******************************************
 	for (int nCnt = 0; nCnt < CBuilding::GetNum(); nCnt++)
 	{
 		//もしメモリ確保がされていたら
-		if (m_apBuilding[nCnt] != nullptr)
+		if (m_apBuilding[nCnt] )
 		{
 			//メモリの解放を行わず、終了処理をする
 			m_apBuilding[nCnt]->Uninit();
@@ -244,12 +201,12 @@ void CGame::Uninit(void)
 		}
 	}
 	//<******************************************
-	//壁の破棄
+	//アイテムの破棄
 	//<******************************************
 	for (int nCnt = 0; nCnt < CItem::GetNum(); nCnt++)
 	{
 		//もしメモリ確保がされていたら
-		if (m_apItem[nCnt] != nullptr)
+		if (m_apItem[nCnt] )
 		{
 			//メモリの解放を行わず、終了処理をする
 			m_apItem[nCnt]->Uninit();
@@ -257,12 +214,12 @@ void CGame::Uninit(void)
 		}
 	}
 	//<******************************************
-	//壁の破棄
+	//2D文字の破棄
 	//<******************************************
 	for (int nCnt = 0; nCnt < C2DChar::GetNum(); nCnt++)
 	{
 		//もしメモリ確保がされていたら
-		if (m_ap2DChar[nCnt] != nullptr)
+		if (m_ap2DChar[nCnt] )
 		{
 			//メモリの解放を行わず、終了処理をする
 			m_ap2DChar[nCnt]->Uninit();
@@ -270,12 +227,12 @@ void CGame::Uninit(void)
 		}
 	}
 	//<******************************************
-	//壁の破棄
+	//植物の破棄
 	//<******************************************
 	for (int nCnt = 0; nCnt < CPlant::GetNum(); nCnt++)
 	{
 		//もしメモリ確保がされていたら
-		if (m_apPlant[nCnt] != nullptr)
+		if (m_apPlant[nCnt] )
 		{
 			//メモリの解放を行わず、終了処理をする
 			m_apPlant[nCnt]->Uninit();
@@ -283,12 +240,12 @@ void CGame::Uninit(void)
 		}
 	}
 	//<******************************************
-	//壁の破棄
+	//目印モデルの破棄
 	//<******************************************
 	for (int nCnt = 0; nCnt < CLandMark::GetNum(); nCnt++)
 	{
 		//もしメモリ確保がされていたら
-		if (m_apLandMark[nCnt] != nullptr)
+		if (m_apLandMark[nCnt] )
 		{
 			//メモリの解放を行わず、終了処理をする
 			m_apLandMark[nCnt]->Uninit();
@@ -339,8 +296,8 @@ void CGame::Update(void)
 	//操作タイプ変更処理
 	//<========================================================
 	//SPACEキーが押されたら
-	if (CManager::GetKeyboard()->bGetTrigger(DIK_1) == true ||
-		CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_BACK, 0) == true)
+	if (CManager::GetKeyboard()->bGetTrigger(DIK_1) ||
+		CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_BACK, 0))
 	{
 		CItem::SetNumCollect(CItem::GetMax());
 	}
@@ -348,8 +305,8 @@ void CGame::Update(void)
 	//操作タイプ変更処理
 	//<========================================================
 	//SPACEキーが押されたら
-	if (CManager::GetKeyboard()->bGetTrigger(DIK_2) == true ||
-		CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_BACK, 0) == true)
+	if (CManager::GetKeyboard()->bGetTrigger(DIK_2) ||
+		CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_BACK, 0))
 	{
 		m_pFog->ChangeUse();
 	}
@@ -368,6 +325,101 @@ void CGame::Draw(void)
 	m_pCamera->SetCamera();
 }
 //<====================================
+//生成するオブジェクトのまとめ
+//<====================================
+void CGame::Creating(void)
+{
+	//<******************************************
+	//カメラの生成
+	//<******************************************
+	m_pCamera = Ccamera::Create();
+
+	//<******************************************
+	//ライトの生成
+	//<******************************************
+	m_pLight = CLight::Create(CLight::MODE::MODE_DIRECTIONAL);
+
+	//<******************************************
+	//フォグの生成
+	//<******************************************
+	m_pFog = CFog::Create(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), D3DFOGMODE::D3DFOG_LINEAR, CFog::TYPE::TYPE_PIXEL, 0.002f);
+
+	//<******************************************
+	//地面の生成
+	//<******************************************
+	CField::ReadCreate(m_apField);
+
+	//<******************************************
+	//プレイヤーの生成
+	//<******************************************
+	m_p3DPlayer = C3DPlayer::Create(PLAYER_POS);
+
+	//<******************************************
+	//建物の生成
+	//<******************************************
+	CBuilding::RandCreate(m_apBuilding, NUM_BUILDING);
+
+	//<******************************************
+	//アイテムの生成
+	//<******************************************
+	CItem::RandCreate(m_apItem, NUM_ITEM);
+
+	//<******************************************
+	//植物の生成
+	//<******************************************
+	CPlant::RandCreate(m_apPlant, NUM_PLANT);
+
+	//<******************************************
+	//目印モデルの生成
+	//<******************************************
+	CLandMark::FixedCreate(m_apLandMark);
+
+	//<******************************************
+	//Xモデルでの目的矢印の生成
+	//<******************************************
+	m_pDestArrowX = CDestArrowX::Create();
+
+	//<******************************************
+	//スタミナゲージの生成
+	//<******************************************
+	m_p2DGauge = C2DGauge::Create(GAUGE_POS, m_p3DPlayer->GetStamina(), C2DGauge::VERTEX_X, C2DGauge::MODE_ONLY_USE);
+
+	//<******************************************
+	//スタミナゲージの生成
+	//<******************************************
+	m_pInfo = C2DInfo::Create(C2DInfo::Class::CLASS_NUMBER);
+
+	//<******************************************
+	//[隠れる]文字の生成
+	//<******************************************
+	m_ap2DChar[CHAR2D_HIDE] = C2DChar::Create(D3DXVECTOR2(1150.0f, 675.0f),
+		D3DXVECTOR2(125.0f, 125.0f), C2DChar::CHAR_TYPE::CHAR_TYPE_HIDEINFO, C2DChar::MOVE_FROM_NONE, false);
+
+	//<******************************************
+	//[拾う]文字の生成
+	//<******************************************
+	m_ap2DChar[CHAR2D_PICKUP] = C2DChar::Create(D3DXVECTOR2(1150.0f,
+		m_ap2DChar[CHAR2D_HIDE]->GetPosition().y), D3DXVECTOR2(125.0f, 125.0f),
+		C2DChar::CHAR_TYPE::CHAR_TYPE_PICKUP_INFO, C2DChar::MOVE_FROM_NONE, false);
+
+	//<******************************************
+	//[出る]文字の生成
+	//<******************************************
+	m_ap2DChar[CHAR2D_COMEOUT] = C2DChar::Create(D3DXVECTOR2(1150.0f, 675.0f),
+		D3DXVECTOR2(125.0f, 125.0f), C2DChar::CHAR_TYPE::CHAR_TYPE_COMEOUT_INFO, C2DChar::MOVE_FROM_NONE, false);
+
+	//<******************************************
+	//[封印されている]文字の生成
+	//<******************************************
+	m_ap2DChar[CHAR2D_SEALED] = C2DChar::Create(D3DXVECTOR2(575.0f, 500.0f),
+		D3DXVECTOR2(140.0f, 120.0f), C2DChar::CHAR_TYPE::CHAR_TYPE_SEALED_INFO, C2DChar::MOVE_FROM_NONE, false);
+
+	//<******************************************
+	//2Dでの目的矢印の生成
+	//<******************************************
+	m_pDestArrow = CDestArrow::Create();
+}
+//<====================================
 //フェード関連の更新処理
 //<====================================
 void CGame::Fading(void)
@@ -376,7 +428,7 @@ void CGame::Fading(void)
 	if (m_p3DPlayer->GetState() == C3DPlayer::STATE::STATE_DEATH)
 	{
 		//中身なしだったら
-		if (m_pCover == nullptr)
+		if (!m_pCover)
 		{
 			m_pCover = Ccover::Create(Ccover::TYPE::TYPE_BLOOD_COV);
 		}
@@ -417,7 +469,7 @@ void CGame::Fading(void)
 		CScene::SetResult(TYPE_RESULT::TYPE_RESULT_SUCCEEDED);
 
 		//中身なしだったら
-		if (m_pCover == nullptr)
+		if (!m_pCover)
 		{
 			m_pCover = Ccover::Create(Ccover::TYPE::TYPE_SAFE_COV);
 		}
@@ -498,7 +550,7 @@ void CGame::ItemUpdate(void)
 	//
 	if (m_p3DPlayer->GetUnsealed())
 	{
-		if (m_ap2DChar[CHAR2D_FOUND] == nullptr)
+		if (!m_ap2DChar[CHAR2D_FOUND])
 		{
 			m_ap2DChar[CHAR2D_FOUND] = C2DChar::Create(D3DXVECTOR2(600.0f, 425.0f),
 				D3DXVECTOR2(200.0f, 200.0f), C2DChar::CHAR_TYPE::CHAR_TYPE_FOUND_INFO, C2DChar::MOVE_FROM_LEFT, true);
@@ -516,7 +568,7 @@ void CGame::EnemySpawn(void)
 		for (int nCnt = 0; nCnt < INT_VALUE::MAX_CHAR; nCnt++)
 		{
 			//中身がなければ
-			if (m_ap3DEnemy[nCnt] == nullptr)
+			if (!m_ap3DEnemy[nCnt])
 			{
 				//敵をスポーンさせる
 				m_ap3DEnemy[nCnt] = C3DEnemy::RandCreateWithNum(m_ap3DEnemy, 1);
@@ -541,7 +593,7 @@ void CGame::DestToPlayer(void)
 		{
 
 			//高速型ではなければ
-			if (m_ap3DEnemy[nCnt] != nullptr&&
+			if (m_ap3DEnemy[nCnt] &&
 				m_ap3DEnemy[nCnt]->GetType() != C3DEnemy::TYPE::TYPE_ENEMY_HIGHSPEED)
 			{
 				//0から2までの数をランダムで決める

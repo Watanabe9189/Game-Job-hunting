@@ -216,7 +216,7 @@ public:
 	//<====================================
 	static CObject *GetTop(int nPriority) 
 	{ 
-		if (m_apTop[nPriority] != nullptr)
+		if (m_apTop[nPriority] )
 		{
 			return m_apTop[nPriority];
 		}

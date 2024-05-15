@@ -29,27 +29,32 @@
 #include "DestArrow.h"
 #include "DestArrowX.h"
 //<*************************************************
-//
+//クラス宣言
 //<*************************************************
 class CGame : public CScene
 {
 public:
 
+	//<==============================================
+	//ステート列挙
+	//<==============================================
 	enum STATE
 	{
-		STATE_NONE = 0,
-		STATE_PAUSE,
-		STATE_END,
+		STATE_NONE = 0,	//何もなし
+		STATE_PAUSE,	//ポーズ(今は使っていない)
+		STATE_END,		//ゲーム終了
 		STATE_MAX
 	};
-
+	//<==============================================
+	//2D文字の列挙型
+	//<==============================================
 	enum CHAR2D
 	{
-		CHAR2D_HIDE = 0,
-		CHAR2D_PICKUP,
-		CHAR2D_COMEOUT,
-		CHAR2D_SEALED,
-		CHAR2D_FOUND,
+		CHAR2D_HIDE = 0,	//隠れる	
+		CHAR2D_PICKUP,		//拾う
+		CHAR2D_COMEOUT,		//出る
+		CHAR2D_SEALED,		//封印されている
+		CHAR2D_FOUND,		//発見した
 		CHAR2D_MAX
 	};
 
@@ -75,6 +80,7 @@ public:
 	static CDestArrow *GetDestArrow(void) { return m_pDestArrow; }
 private:
 
+	void Creating(void);
 	void Fading(void);
 	void ItemUpdate(void);
 	void EnemySpawn(void);

@@ -39,7 +39,7 @@ public:
 	{ 
 		CXObject::Uninit(); 
 	
-		if (m_pPlayer != nullptr)
+		if (m_pPlayer )
 		{
 			m_pPlayer->Uninit();
 			m_pPlayer = nullptr;

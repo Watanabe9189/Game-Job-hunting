@@ -49,7 +49,7 @@ CObject2D *CObject2D::Create(const D3DXVECTOR2 rPos, const D3DXVECTOR2 rSize, co
 	CObject2D *pObject2D = new CObject2D;
 
 	//中身と初期化チェック
-	assert(pObject2D != nullptr && pObject2D->Init() == S_OK);
+	assert(pObject2D  && pObject2D->Init() == S_OK);
 
 	pObject2D->SetPosition(rPos);
 

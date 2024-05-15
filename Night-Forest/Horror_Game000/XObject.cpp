@@ -101,7 +101,7 @@ CXObject::DataModel CXObject::BindModel(const char *pFileName, const bool bMatCh
 	//数分繰り返す
 	for (int nCnt = 0; nCnt < nNum; nCnt++)
 	{
-		if (m_apFileName[nCnt] != nullptr)
+		if (m_apFileName[nCnt] )
 		{
 			//もし保存されたファイル名と引数のファイル名が一緒だったら
 			if (strcmp(m_apFileName[nCnt], pFileName) == 0)
@@ -125,7 +125,7 @@ CXObject::DataModel CXObject::BindModel(const char *pFileName, const bool bMatCh
 				m_asModel = m_asaveModel[nCnt];
 
 				assert((m_asModel.pMat =
-					(D3DXMATERIAL*)m_asaveModel[nCnt].pBuffMat->GetBufferPointer()) != nullptr);
+					(D3DXMATERIAL*)m_asaveModel[nCnt].pBuffMat->GetBufferPointer()) );
 
 				m_asModel.pOriginMat = m_asaveModel[nCnt].pOriginMat;
 				//<==========================================
@@ -167,7 +167,7 @@ void CXObject::LoadModel(void)
 		&m_asaveModel[m_nNumAll].pMesh));
 
 	assert((m_asaveModel[m_nNumAll].pMat =
-		(D3DXMATERIAL*)m_asaveModel[m_nNumAll].pBuffMat->GetBufferPointer()) != nullptr);
+		(D3DXMATERIAL*)m_asaveModel[m_nNumAll].pBuffMat->GetBufferPointer()) );
 
 	m_asaveModel[m_nNumAll].pOriginMat = m_asaveModel[m_nNumAll].pMat;
 
@@ -176,7 +176,7 @@ void CXObject::LoadModel(void)
 	{
 		//ファイルが存在していたら
 		if (m_asaveModel[m_nNumAll].pMat[nCntMat].pTextureFilename != NULL &&
-			m_asaveModel[m_nNumAll].apTexture[nCntMat] == nullptr)
+			!m_asaveModel[m_nNumAll].apTexture[nCntMat])
 		{
 			//テクスチャを割り当てる
 			CManager::GetTex()->Regist(
@@ -274,7 +274,7 @@ CXObject *CXObject::Create(const D3DXVECTOR3 rPos, const D3DXVECTOR3 rRot, const
 {
 	CXObject *pXObject = new CXObject;
 
-	assert(pXObject != nullptr);
+	assert(pXObject );
 
 	pXObject->BindModel(pFileName);
 

@@ -54,7 +54,7 @@ public:
 	void SetupVertexFog(DWORD Color, DWORD Mode, BOOL UseRange);
 	void SetupPixelFog(DWORD Mode);
 
-	void ChangeUse(void) {m_bUse == false ? m_bUse = true : m_bUse = false;}
+	void ChangeUse(void) {!m_bUse ? m_bUse = true : m_bUse = false;}
 
 private:
 

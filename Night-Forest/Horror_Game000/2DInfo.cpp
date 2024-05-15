@@ -78,7 +78,7 @@ C2DInfo *C2DInfo::Create(const Class eClass)
 	}
 
 	//中身と初期化チェック
-	assert(p2DInfo != nullptr);
+	assert(p2DInfo );
 
 	p2DInfo->m_eClass = eClass;
 
@@ -93,7 +93,7 @@ HRESULT C2DInfo::Init(void)
 	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); nCnt++)
 	{
 		//最初だけ読み込む
-		if (m_apTexture[nCnt] == nullptr)
+		if (!m_apTexture[nCnt])
 		{
 			//テクスチャの読み込み
 			if (CManager::GetTex()->Regist(m_acFilename[nCnt], m_apTexture[nCnt]) <= -1)
@@ -143,7 +143,7 @@ HRESULT CInfoNum::Init(void)
 	m_pNumber = CNumber::Create(Number::NUMBER_POS, Number::NUMBER_SIZE, m_apTexture[TYPE::TYPE_INFO_NUMBER]);
 
 	//中身チェック
-	assert(m_pObject2D != nullptr && m_pNumber != nullptr);
+	assert(m_pObject2D  && m_pNumber );
 
 	return S_OK;
 }
@@ -153,14 +153,14 @@ HRESULT CInfoNum::Init(void)
 void CInfoNum::Uninit(void)
 {
 	//中身を破棄する
-	if (m_pObject2D != nullptr)
+	if (m_pObject2D )
 	{
 		m_pObject2D->Uninit();
 		m_pObject2D = nullptr;
 	}
 
 	//中身を破棄する
-	if (m_pNumber != nullptr)
+	if (m_pNumber )
 	{
 		m_pNumber->Uninit();
 		m_pNumber = nullptr;
@@ -200,12 +200,7 @@ CInfoFigure::CInfoFigure(int nPriority)
 	//値のクリア
 	m_nNum = INITIAL_INT;
 
-	//
-	for (int nCnt = 0; nCnt < INT_VALUE::MAX_SIZE; nCnt++)
-	{
-		m_apObject2D[nCnt] = nullptr;
-	}
-	m_rCol = INIT_COL;
+	m_apObject2D[INT_VALUE::MAX_SIZE] = {};
 
 }
 //<===========================================
@@ -231,7 +226,7 @@ HRESULT CInfoFigure::Init(void)
 			Figure::FIGURE_COL,m_apTexture[TYPE::TYPE_INFO_FIGURE]);
 
 		//中身チェック
-		assert(m_apObject2D[nCnt] != nullptr);
+		assert(m_apObject2D[nCnt] );
 	}
 	return S_OK;
 }
@@ -243,7 +238,7 @@ void CInfoFigure::Uninit(void)
 	//
 	for (int nCnt = 0; nCnt < INT_VALUE::MAX_SIZE; nCnt++)
 	{
-		if (m_apObject2D[nCnt] != nullptr)
+		if (m_apObject2D[nCnt] )
 		{
 			m_apObject2D[nCnt]->Uninit();
 			m_apObject2D[nCnt] = nullptr;
@@ -265,7 +260,7 @@ void CInfoFigure::Update(void)
 	for (int nCnt = 0; nCnt < CItem::GetNum(); nCnt++)
 	{
 		//アイテムをゲットしていなければ
-		if (CScene::GetGame()->GetItem(nCnt)->bGet() == false)
+		if (!CScene::GetGame()->GetItem(nCnt)->bGet())
 		{
 			//初期値に戻す
 			m_apObject2D[nCnt]->SetColor(Figure::FIGURE_COL);

@@ -39,7 +39,7 @@ CObject3D *CObject3D::Create(const D3DXVECTOR3 rPos, const D3DXVECTOR3 rSize,  c
 {
 	CObject3D *pObject3D = new CObject3D;
 
-	assert(pObject3D != nullptr && pObject3D->Init() == S_OK);
+	assert(pObject3D  && pObject3D->Init() == S_OK);
 
 	//î•ñÝ’è
 	pObject3D->SetPosition(rPos);

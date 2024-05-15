@@ -33,11 +33,8 @@ C2DChar::C2DChar(int nPriority)
 	m_nNumAll++;
 	m_pos = D3DXVECTOR2(0.0f,0.0f);
 
-	//目的位置の最大値分
-	for (int nCnt = 0; nCnt < MAX_DEST; nCnt++)
-	{
-		m_posDest[nCnt] = D3DXVECTOR2(0.0f, 0.0f);
-	}
+	m_posDest[MAX_DEST] = {};
+
 	m_bArrived = false;
 
 	m_Size = D3DXVECTOR2(0.0f, 0.0f);
@@ -63,7 +60,7 @@ C2DChar *C2DChar::Create(const D3DXVECTOR2 pos, const D3DXVECTOR2 Size, const in
 {
 	C2DChar *p2DChar = new C2DChar;
 
-	assert(p2DChar != nullptr);
+	assert(p2DChar );
 
 	assert(SUCCEEDED(p2DChar->Init()));
 
@@ -149,7 +146,7 @@ HRESULT C2DChar::Init(void)
 	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); nCnt++)
 	{
 		//最初だけ読み込む
-		if (m_apTexture[nCnt] == nullptr)
+		if (!m_apTexture[nCnt])
 		{
 			//テクスチャの読み込み
 			if ((CManager::GetTex()->Regist(m_acFilename[nCnt], m_apTexture[nCnt])) <= -1)
@@ -220,7 +217,7 @@ void C2DChar::MoveSide(void)
 	if (m_eFromMove == MOVE_FROM_RIGHT)
 	{
 		//まだ到着していなければ
-		if (m_bArrived == false)
+		if (!m_bArrived)
 		{
 			//目的の位置に行くまで加算し続け、止まりそうになったら慣性で止まる
 			m_pos.x -= (m_posDest[0].x + m_pos.x) * MAX_INATIA;
@@ -253,7 +250,7 @@ void C2DChar::MoveSide(void)
 			}
 		}
 		//もし到着していれば
-		else if (m_bArrived == true)
+		else if (m_bArrived)
 		{
 			//目的の位置に行くまで加算し続け、止まりそうになったら慣性で止まる
 			m_pos.x -= (m_posDest[1].x + m_pos.x) * MAX_INATIA;
@@ -271,7 +268,7 @@ void C2DChar::MoveSide(void)
 	else if (m_eFromMove == MOVE_FROM_LEFT)
 	{
 		//まだ到着していなければ
-		if (m_bArrived == false)
+		if (!m_bArrived)
 		{
 			//目的の位置に行くまで加算し続け、止まりそうになったら慣性で止まる
 			m_pos.x += (m_posDest[0].x + m_pos.x) * MAX_INATIA;
@@ -304,7 +301,7 @@ void C2DChar::MoveSide(void)
 			}
 		}
 		//もし到着していれば
-		else if (m_bArrived == true)
+		else if (m_bArrived)
 		{
 			//目的の位置に行くまで加算し続け、止まりそうになったら慣性で止まる
 			m_pos.x += (m_posDest[1].x + m_pos.x) * MAX_INATIA;
@@ -331,7 +328,7 @@ void C2DChar::MoveVer(void)
 	if (m_eFromMove == MOVE_FROM_UP)
 	{
 		//まだ到着していなければ
-		if (m_bArrived == false)
+		if (!m_bArrived)
 		{
 			//目的の位置に行くまで加算し続け、止まりそうになったら慣性で止まる
 			m_pos.y += (m_posDest[0].y + m_pos.y) * MAX_INATIA;
@@ -364,7 +361,7 @@ void C2DChar::MoveVer(void)
 			}
 		}
 		//もし到着していれば
-		else if (m_bArrived == true)
+		else if (m_bArrived)
 		{
 			//目的の位置に行くまで加算し続け、止まりそうになったら慣性で止まる
 			m_pos.y += (m_posDest[1].y + m_pos.y) * MAX_INATIA;
@@ -381,7 +378,7 @@ void C2DChar::MoveVer(void)
 	else if (m_eFromMove == MOVE_FROM_DOWN)
 	{
 		//まだ到着していなければ
-		if (m_bArrived == false)
+		if (!m_bArrived)
 		{
 			//目的の位置に行くまで加算し続け、止まりそうになったら慣性で止まる
 			m_pos.y -= (m_posDest[0].y + m_pos.y) * MAX_INATIA;
@@ -414,7 +411,7 @@ void C2DChar::MoveVer(void)
 			}
 		}
 		//もし到着していれば
-		else if (m_bArrived == true)
+		else if (m_bArrived)
 		{
 			//目的の位置に行くまで加算し続け、止まりそうになったら慣性で止まる
 			m_pos.y -= (m_posDest[1].y + m_pos.y) * MAX_INATIA;

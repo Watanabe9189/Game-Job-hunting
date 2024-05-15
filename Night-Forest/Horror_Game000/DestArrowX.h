@@ -24,7 +24,7 @@ public:
 	void Update(void)	override;
 	void Draw(void)		override
 	{
-		if (m_bFind == true)
+		if (m_bFind)
 		{
 			CXObject::Draw();
 		}
@@ -32,7 +32,7 @@ public:
 
 	void RotateToDest(void);
 
-	void SetBool(void) { m_bFind == false ? m_bFind = true : m_bFind = false; }
+	void SetBool(void) { !m_bFind ? m_bFind = true : m_bFind = false; }
 	bool GetFind(void) { return m_bFind; }
 
 private:

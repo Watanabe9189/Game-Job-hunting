@@ -31,7 +31,7 @@ CNumber *CNumber::Create(const D3DXVECTOR2 rPos, const D3DXVECTOR2 rSize, const 
 {
 	CNumber *pNumber = new CNumber;
 
-	assert(pNumber != nullptr);
+	assert(pNumber );
 
 	//‰Šú‰»ˆ—
 	pNumber->Init(rPos, rSize, pTexture);
@@ -45,7 +45,7 @@ HRESULT CNumber::Init(const D3DXVECTOR2 rPos, const D3DXVECTOR2 rSize, const LPD
 {
 	m_pObject2D = CObject2D::Create(rPos, rSize);
 
-	assert(m_pObject2D != nullptr);
+	assert(m_pObject2D );
 
 	m_pObject2D->BindTexture(pTexture);
 
@@ -56,7 +56,7 @@ HRESULT CNumber::Init(const D3DXVECTOR2 rPos, const D3DXVECTOR2 rSize, const LPD
 //<=====================================
 void CNumber::Uninit(void)
 {
-	if (m_pObject2D != nullptr)
+	if (m_pObject2D )
 	{
 		m_pObject2D->Uninit();
 		m_pObject2D = nullptr;
@@ -82,7 +82,7 @@ void CNumber::Update(void)
 void CNumber::SetVtx(void)
 {
 	//’†g‚ª‚ ‚ê‚Î
-	if (m_pObject2D != nullptr)
+	if (m_pObject2D )
 	{
 		m_pObject2D->SetVtx();
 

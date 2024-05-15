@@ -12,17 +12,9 @@
 C2DSelect::C2DSelect(int nPriority)
 {
 	//値のクリア
-	for (int nCnt = 0; nCnt < INT_VALUE::MAX_TEX; nCnt++)
-	{
-		m_acFilename[nCnt] = {};
-		m_apTexture[nCnt] = {};
-	}
-
-	//初期化
-	for (int nCnt = 0; nCnt < INT_VALUE::MAX_SIZE; nCnt++)
-	{
-		m_apObject2D[nCnt] = {};
-	}
+	m_acFilename[INT_VALUE::MAX_TEX] = {};
+	m_apTexture[INT_VALUE::MAX_TEX] = {};
+	m_apObject2D[INT_VALUE::MAX_SIZE] = {};
 
 	m_nNumSelect = INITIAL_INT;
 	m_nSelect = INITIAL_INT;
@@ -48,7 +40,7 @@ C2DSelect *C2DSelect::Create(const D3DXVECTOR2 rPos,const int nNumSelect)
 {
 	C2DSelect *p2DSelect = new C2DSelect;
 
-	assert(p2DSelect != nullptr);
+	assert(p2DSelect );
 
 	//値の代入
 	p2DSelect->m_rPos = rPos;
@@ -65,7 +57,7 @@ HRESULT C2DSelect::Init(void)
 {
 	m_pChangeCol = ChangeCol::Create();
 
-	assert(m_pChangeCol != nullptr);
+	assert(m_pChangeCol );
 
 	//セレクトの数分繰り返す
 	for (int nCnt = 0; nCnt < m_nNumSelect; nCnt++)
@@ -73,7 +65,7 @@ HRESULT C2DSelect::Init(void)
 		//生成する
 		m_apObject2D[nCnt] = CObject2D::Create(D3DXVECTOR2(m_rPos.x +m_fDistance *nCnt,m_rPos.y), D3DXVECTOR2(150.0f, 150.0f),m_pChangeCol->GetColor());
 
-		assert(m_apObject2D[nCnt] != nullptr);
+		assert(m_apObject2D[nCnt] );
 	}
 
 	return S_OK;
@@ -87,7 +79,7 @@ void C2DSelect::Uninit(void)
 	for (int nCnt = 0; nCnt < m_nNumSelect; nCnt++)
 	{
 		//
-		if (m_apObject2D[nCnt] != nullptr)
+		if (m_apObject2D[nCnt] )
 		{
 			m_apObject2D[nCnt]->Uninit();
 			m_apObject2D[nCnt] = nullptr;
@@ -114,7 +106,7 @@ void C2DSelect::Update(void)
 	//セレクトの数分繰り返す
 	for (int nCnt = 0; nCnt < m_nNumSelect; nCnt++)
 	{
-		if (m_apObject2D[nCnt] != nullptr)
+		if (m_apObject2D[nCnt] )
 		{
 			m_apObject2D[nCnt]->SetVtx();
 
@@ -180,7 +172,7 @@ void C2DSelect::SetTexName(const char *pFileName, int nCnt)
 	CManager::GetTex()->Regist(m_acFilename[nCnt], m_apTexture[nCnt]);
 
 	//中身があれば
-	if (m_apObject2D[nCnt] != nullptr)
+	if (m_apObject2D[nCnt] )
 	{
 		//テクスチャの割り当て
 		m_apObject2D[nCnt]->BindTexture(m_apTexture[nCnt]);

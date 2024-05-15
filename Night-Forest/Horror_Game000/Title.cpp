@@ -88,7 +88,7 @@ HRESULT CTitle::Init(void)
 	for (int nCnt = 0; nCnt < C3DEnemy::GetNum(); nCnt++)
 	{
 		//中身チェック
-		if (m_ap3DEnemy[nCnt] != nullptr)
+		if (m_ap3DEnemy[nCnt] )
 		{
 			m_ap3DEnemy[nCnt]->SetDrawfalse();
 		}
@@ -121,14 +121,14 @@ void CTitle::Uninit(void)
 	//フォントの数分繰り返す
 	for (int nCnt = 0; nCnt < C2DChar::GetNum(); nCnt++)
 	{
-		if (m_ap2DChar[nCnt] != nullptr)
+		if (m_ap2DChar[nCnt] )
 		{
 			m_ap2DChar[nCnt]->Uninit();
 			m_ap2DChar[nCnt] = nullptr;
 		}
 	}
 	//もしメモリ確保がされていたら
-	if (m_pCamera != nullptr)
+	if (m_pCamera )
 	{
 		m_pCamera->Uninit();
 		delete m_pCamera;
@@ -138,7 +138,7 @@ void CTitle::Uninit(void)
 	//ライトの破棄
 	//<******************************************
 	//もしメモリ確保がされていたら
-	if (m_pLight != nullptr)
+	if (m_pLight )
 	{
 		//メモリの解放を行う
 		delete m_pLight;
@@ -147,7 +147,7 @@ void CTitle::Uninit(void)
 	//<******************************************
 	//フォグの破棄
 	//<******************************************
-	if (m_pFog != nullptr)
+	if (m_pFog )
 	{
 		m_pFog->Uninit();
 		m_pFog = nullptr;
@@ -156,7 +156,7 @@ void CTitle::Uninit(void)
 	//ライトの破棄
 	//<******************************************
 	//もしメモリ確保がされていたら
-	if (m_pField != nullptr)
+	if (m_pField )
 	{
 		//メモリの解放を行う
 		m_pField->Uninit();
@@ -166,7 +166,7 @@ void CTitle::Uninit(void)
 	//ライトの破棄
 	//<******************************************
 	//もしメモリ確保がされていたら
-	if (m_pSelect != nullptr)
+	if (m_pSelect )
 	{
 		//メモリの解放を行う
 		m_pSelect->Uninit();
@@ -176,7 +176,7 @@ void CTitle::Uninit(void)
 	//フォントの数分繰り返す
 	for (int nCnt = 0; nCnt < C3DEnemy::GetNum(); nCnt++)
 	{
-		if (m_ap3DEnemy[nCnt] != nullptr)
+		if (m_ap3DEnemy[nCnt] )
 		{
 			m_ap3DEnemy[nCnt]->Uninit();
 			m_ap3DEnemy[nCnt] = nullptr;
@@ -206,7 +206,7 @@ void CTitle::Update(void)
 			CManager::GetSound()->PlaySound(CSound::LABEL_SE_SELECTED);
 			CManager::SetFade(CScene::MODE::MODE_GAME);
 		}
-		else if (CManager::GetKeyboard()->bGetTrigger(DIK_RETURN) == true && m_pSelect->GetSelect() == SELECT::SELECT_START)
+		else if (CManager::GetKeyboard()->bGetTrigger(DIK_RETURN) && m_pSelect->GetSelect() == SELECT::SELECT_START)
 		{
 			CManager::GetSound()->PlaySound(CSound::LABEL_SE_SELECTED);
 			CManager::SetFade(CScene::MODE::MODE_GAME);
@@ -220,7 +220,7 @@ void CTitle::Update(void)
 			CManager::GetSound()->PlaySound(CSound::LABEL_SE_SELECTED);
 			CManager::SetFade(CScene::MODE::MODE_OPTION);
 		}
-		else if (CManager::GetKeyboard()->bGetTrigger(DIK_RETURN) == true && m_pSelect->GetSelect() == SELECT::SELECT_OPTION)
+		else if (CManager::GetKeyboard()->bGetTrigger(DIK_RETURN) && m_pSelect->GetSelect() == SELECT::SELECT_OPTION)
 		{
 			CManager::GetSound()->PlaySound(CSound::LABEL_SE_SELECTED);
 			CManager::SetFade(CScene::MODE::MODE_OPTION);
@@ -233,7 +233,7 @@ void CTitle::Update(void)
 		{
 			PostQuitMessage(0);
 		}
-		else if (CManager::GetKeyboard()->bGetTrigger(DIK_RETURN) == true && m_pSelect->GetSelect() == SELECT::SELECT_EXIT)
+		else if (CManager::GetKeyboard()->bGetTrigger(DIK_RETURN) && m_pSelect->GetSelect() == SELECT::SELECT_EXIT)
 		{
 			PostQuitMessage(0);
 		}
@@ -276,7 +276,7 @@ void CTitle::SetAppear(void)
 				for (int nCnt = 0; nCnt < C3DEnemy::GetNum(); nCnt++)
 				{
 					//中身チェック
-					if (m_ap3DEnemy[nCnt] != nullptr)
+					if (m_ap3DEnemy[nCnt] )
 					{
 						m_ap3DEnemy[nCnt]->SetDrawtrue();
 					}

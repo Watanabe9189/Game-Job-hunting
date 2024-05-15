@@ -131,7 +131,7 @@ HRESULT C3DEnemy::Init(void)
 		//音声の生成
 		m_pSound = CSound::Create();
 
-		assert(m_pSound != nullptr);
+		assert(m_pSound );
 	}
 
 	return S_OK;
@@ -145,7 +145,7 @@ void C3DEnemy::Uninit(void)
 	CXObject::Uninit();
 
 	//サウンド破棄
-	if (m_pSound != nullptr)
+	if (m_pSound )
 	{
 		//破棄
 		m_pSound->Uninit();
@@ -257,8 +257,8 @@ void C3DEnemy::MoveMent(void)
 	//操作タイプ変更処理
 	//<========================================================
 	//SPACEキーが押されたら
-	if (CManager::GetKeyboard()->bGetTrigger(DIK_F2) == true ||
-		CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_BACK, 0) == true)
+	if (CManager::GetKeyboard()->bGetTrigger(DIK_F2) ||
+		CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_BACK, 0))
 	{
 		m_nInterval = m_nRandInter;
 	}
@@ -642,7 +642,7 @@ C3DEnemy *C3DEnemy::ReadCreate(C3DEnemy *apEnemy[MAX_OBJECT])
 			if (strcmp(aChar, "ENEMY-SET") == 0)
 			{
 				//もし中身がなければ
-				if (apEnemy[nCntMax] == nullptr)
+				if (!apEnemy[nCntMax])
 				{
 					apEnemy[nCntMax] = new C3DEnemy;
 				}
@@ -654,7 +654,7 @@ C3DEnemy *C3DEnemy::ReadCreate(C3DEnemy *apEnemy[MAX_OBJECT])
 					(void)fscanf(pFile, "%s", &aChar[0]);
 
 					//メモリ確保されていたら
-					if (apEnemy[nCntMax] != nullptr)
+					if (apEnemy[nCntMax] )
 					{
 						//TYPEという文字列が存在したら
 						if (strcmp(aChar, "TYPE") == 0)
@@ -713,7 +713,7 @@ C3DEnemy *C3DEnemy::RandCreate(C3DEnemy *apEnemy[MAX_OBJECT])
 		//
 		apEnemy[nCnt] = new C3DEnemy;
 
-		assert(apEnemy[nCnt] != nullptr);
+		assert(apEnemy[nCnt] );
 
 		//最大の手前まで行っていれば
 		if (nCnt == m_nNumSet - 1)
@@ -762,7 +762,7 @@ C3DEnemy *C3DEnemy::RandCreateWithNum(C3DEnemy *apEnemy[MAX_OBJECT], const int n
 			//
 			apEnemy[nCnt] = new C3DEnemy;
 
-			assert(apEnemy[nCnt] != nullptr);
+			assert(apEnemy[nCnt] );
 
 			nRandType = Calculate::CalculeteRandInt(TYPE::TYPE_ENEMY_INVISIBLE,
 				TYPE::TYPE_ENEMY_NORMAL);

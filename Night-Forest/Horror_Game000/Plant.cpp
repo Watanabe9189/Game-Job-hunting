@@ -63,7 +63,7 @@ CPlant *CPlant::RandCreate(CPlant *apPlant[MAX_OBJECT], const int nNum)
 	{
 		apPlant[nCnt] = new CPlant;
 
-		assert(apPlant[nCnt] != nullptr);
+		assert(apPlant[nCnt] );
 
 		nRandType = rand() % TYPE::TYPE_MAX + TYPE::TYPE_GRASS;
 
@@ -93,7 +93,7 @@ HRESULT CPlant::Init(void)
 	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); nCnt++)
 	{
 		//最初だけ読み込む
-		if (m_apTexture[nCnt] == nullptr)
+		if (!m_apTexture[nCnt])
 		{
 			//テクスチャの読み込み
 			if ((CManager::GetTex()->Regist(m_acFilename[nCnt], m_apTexture[nCnt])) <= -1)
@@ -146,7 +146,7 @@ void CPlant::Uninit(void)
 {
 	for (int nCnt = 0; nCnt < MAX_GRASS; nCnt++)
 	{
-		if (m_apGrass[nCnt] != nullptr)
+		if (m_apGrass[nCnt] )
 		{
 			m_apGrass[nCnt]->Uninit();
 			m_apGrass[nCnt] = nullptr;
@@ -162,7 +162,7 @@ void CPlant::Update(void)
 	for (int nCnt = 0; nCnt < MAX_GRASS; nCnt++)
 	{
 		//中身チェック
-		if (m_apGrass[nCnt] != nullptr)
+		if (m_apGrass[nCnt] )
 		{
 			m_apGrass[nCnt]->SetVtx();
 

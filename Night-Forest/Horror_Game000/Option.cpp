@@ -76,7 +76,7 @@ HRESULT COption::Init(void)
 {
 	m_pChangeCol = ChangeCol::Create();
 
-	assert(m_pChangeCol != nullptr);
+	assert(m_pChangeCol );
 
 	//情報を取得してくる
 	m_nStamina = C2DGauge::GetFixed();
@@ -88,7 +88,7 @@ HRESULT COption::Init(void)
 	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); nCnt++)
 	{
 		//最初だけ読み込む
-		if (m_apTexture[nCnt] == nullptr)
+		if (!m_apTexture[nCnt])
 		{
 			//テクスチャの読み込み
 			CManager::GetTex()->Regist(m_acFilename[nCnt], m_apTexture[nCnt]);
@@ -102,7 +102,7 @@ HRESULT COption::Init(void)
 		m_apObject2D[nCnt] = CObject2D::Create(D3DXVECTOR2(OPTION_POS.x, OPTION_POS.y + DISTANCE_Y * nCnt), OPTION_SIZE, m_pChangeCol->GetColor());
 
 		//中身チェック
-		assert(m_apObject2D[nCnt] != nullptr);
+		assert(m_apObject2D[nCnt] );
 
 		//テクスチャ割り当て
 		m_apObject2D[nCnt]->BindTexture(m_apTexture[nCnt]);
@@ -117,7 +117,7 @@ HRESULT COption::Init(void)
 		m_apObject2D[SELECT::SELECT_ENEMYNUM]->GetPosition().y), NUM_SIZE,m_apTexture[3]);
 
 	//中身チェック
-	assert(m_p2DGauge != nullptr&&m_pNumber != nullptr);
+	assert(m_p2DGauge &&m_pNumber );
 
 	m_p2DGauge->NoUseFrame();
 
@@ -135,7 +135,7 @@ void COption::Uninit(void)
 	for (int nCnt = 0; nCnt < SELECT::SELECT_MAX; nCnt++)
 	{
 		//中身があれば
-		if (m_apObject2D[nCnt] != nullptr)
+		if (m_apObject2D[nCnt] )
 		{
 			//終了処理
 			m_apObject2D[nCnt]->Uninit();
@@ -143,14 +143,14 @@ void COption::Uninit(void)
 		}
 	}
 	//中身があれば
-	if (m_p2DGauge != nullptr)
+	if (m_p2DGauge )
 	{
 		//終了処理
 		m_p2DGauge->Uninit();
 		m_p2DGauge = nullptr;
 	}
 	//中身があれば
-	if (m_pNumber != nullptr)
+	if (m_pNumber )
 	{
 		//終了処理
 		m_pNumber->Uninit();
@@ -240,7 +240,7 @@ void COption::Update(void)
 			}
 		}
 		//EXITボタンに行っていて決定ボタンが押されていたら
-		else if (CManager::GetKeyboard()->bGetTrigger(DIK_RETURN) == true
+		else if (CManager::GetKeyboard()->bGetTrigger(DIK_RETURN)
 			|| CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_B, 0)&&m_nSelect == SELECT::SELECT_EXIT)
 		{
 			CManager::GetSound()->PlaySound(CSound::LABEL_SE_SELECTED);

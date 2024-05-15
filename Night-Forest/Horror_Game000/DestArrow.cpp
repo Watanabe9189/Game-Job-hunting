@@ -35,11 +35,7 @@ CDestArrow::CDestArrow(int nPriority)
 
 	m_bFind = false;
 
-	//‰Šú‰»
-	for (int nCnt = 0; nCnt < INT_VALUE::MAX_SIZE; nCnt++)
-	{
-		m_apItem[nCnt] = nullptr;
-	}
+	m_apItem[INT_VALUE::MAX_SIZE] = {};
 
 	m_p3DPlayer = nullptr;
 	m_nNum = INITIAL_INT;
@@ -58,7 +54,7 @@ CDestArrow *CDestArrow::Create(void)
 {
 	CDestArrow *pDestArrow = new CDestArrow;
 
-	assert(pDestArrow != nullptr&&pDestArrow->Init() == S_OK);
+	assert(pDestArrow &&pDestArrow->Init() == S_OK);
 
 	return pDestArrow;
 }

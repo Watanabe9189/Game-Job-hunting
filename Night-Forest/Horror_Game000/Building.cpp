@@ -108,7 +108,7 @@ CBuilding *CBuilding::Create(const D3DXVECTOR3 pos, const TYPE eType)
 {
 	CBuilding *pBuilding = new CBuilding;
 
-	assert(pBuilding != nullptr);
+	assert(pBuilding );
 
 	
 	//初期化処理
@@ -149,7 +149,7 @@ CBuilding *CBuilding::ReadCreate(CBuilding *apBuilding[MAX_OBJECT])
 			if (strcmp(aChar, "BUILDING-SET") == 0)
 			{
 				//もし中身がなければ
-				if (apBuilding[nCntMax] == nullptr)
+				if (!apBuilding[nCntMax])
 				{
 					apBuilding[nCntMax] = new CBuilding;
 				}
@@ -161,7 +161,7 @@ CBuilding *CBuilding::ReadCreate(CBuilding *apBuilding[MAX_OBJECT])
 					(void)fscanf(pFile, "%s", &aChar[0]);
 
 					//メモリ確保されていたら
-					if (apBuilding[nCntMax] != nullptr)
+					if (apBuilding[nCntMax] )
 					{
 						//TYPEという文字列が存在したら
 						if (strcmp(aChar, "TYPE") == 0)
@@ -226,7 +226,7 @@ CBuilding *CBuilding::RandCreate(CBuilding *apBuilding[MAX_OBJECT], const int nN
 	{
 		apBuilding[nCnt] = new CBuilding;
 
-		assert(apBuilding[nCnt] != nullptr);
+		assert(apBuilding[nCnt] );
 
 		//ランダムで値を決める
 		rRandPos = rRandPos = D3DXVECTOR3(Calculate::CalculteRandVec3(D3DXVECTOR3(4000.0f, 0.0f, 4000.0f), D3DXVECTOR3(-4000.0f, 0.0f, -4000.0f), false));
@@ -251,7 +251,7 @@ CBuilding *CBuilding::RandCreate(CBuilding *apBuilding[MAX_OBJECT], const int nN
 		for (int nCntBefore = -1; nCntBefore < m_nNumAll-1; nCntBefore++)
 		{
 			//もし手前の建物の中身があれば
-			if (nCntBefore != -1 && apBuilding[nCntBefore] != nullptr)
+			if (nCntBefore != -1 && apBuilding[nCntBefore] )
 			{
 				nCollidRange = 350.0f;
 

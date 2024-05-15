@@ -222,7 +222,7 @@ void C3DPlayer::Dash(void)
 		}
 	}
 	//ダッシュしていれば
-	if (m_bDash == true)
+	if (m_bDash)
 	{
 		//スタミナが0以下になったら
 		if (m_nStamina <= 0)
@@ -304,7 +304,7 @@ void C3DPlayer::Hide(void)
 			}
 
 			//範囲内に入っている際にキーを押すと
-			if (CManager::GetKeyboard()->bGetTrigger(DIK_SPACE) == true
+			if (CManager::GetKeyboard()->bGetTrigger(DIK_SPACE)
 				|| CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_B, 0))
 			{
 				//ステートが何もなしなら隠れ状態になり、隠れ状態なら何もなしにする
@@ -353,10 +353,10 @@ void C3DPlayer::MoveAction(void)
 	//<*****************************************************
 	//ジャンプアクション関連
 	//<*****************************************************
-	if (CManager::GetKeyboard()->bGetTrigger(DIK_SPACE) == true)//もしAキーが押されていたら下の処理を実行
+	if (CManager::GetKeyboard()->bGetTrigger(DIK_SPACE))//もしAキーが押されていたら下の処理を実行
 	{
 		//もしジャンプしていなければ
-		if (m_bJump == false)
+		if (!m_bJump)
 		{
 			//ジャンプする
 			m_move.y += JUMP_VALUE;
@@ -397,14 +397,14 @@ void C3DPlayer::MoveAction(void)
 void C3DPlayer::Movement(void)
 {
 	//ダッシュしていなければ
-	if (m_bDash == false
+	if (!m_bDash
 		||m_nStamina <= 0)
 	{
 		//ダッシュしていない値にする
 		m_fMoveValue = NO_DASH_VALUE;
 	}
 	//していたら
-	else if(m_bDash == true
+	else if(m_bDash
 		|| !(m_nStamina <= 0))
 	{
 		//ダッシュしている値にする
@@ -415,7 +415,7 @@ void C3DPlayer::Movement(void)
 	//移動関連
 	//<***************************************************
 	//上移動
-	if (CManager::GetKeyboard()->bGetPress(DIK_W) == true || CManager::GetJoyPad()->YGetStickPressL(BUTTON_LY, 0) > 0)
+	if (CManager::GetKeyboard()->bGetPress(DIK_W) || CManager::GetJoyPad()->YGetStickPressL(BUTTON_LY, 0) > 0)
 	{
 		//カメラの向きに合わせて移動する
 		m_move.x += sinf(-D3DX_PI * MOVE_DOWN + CManager::GetScene()->GetGame()->GetCamera()->m_rot.y) * m_fMoveValue;
@@ -429,7 +429,7 @@ void C3DPlayer::Movement(void)
 		{
 
 			//ダッシュしていない状態だったら
-			if (m_bDash == false)
+			if (!m_bDash)
 			{
 				//ダッシュしている状態にする
 				m_bDash = true;
@@ -438,7 +438,7 @@ void C3DPlayer::Movement(void)
 
 	}
 	//離していたら
-	else if (!(CManager::GetKeyboard()->bGetPress(DIK_W) == true || CManager::GetJoyPad()->YGetStickPressL(BUTTON_LY, 0) > 0))
+	else if (!(CManager::GetKeyboard()->bGetPress(DIK_W) || CManager::GetJoyPad()->YGetStickPressL(BUTTON_LY, 0) > 0))
 	{
 		//W押してLSHIFT押したままダッシュ発動を防ぐ
 		m_bDash = false;
@@ -446,7 +446,7 @@ void C3DPlayer::Movement(void)
 	//<===================================================
 	//下移動
 	//<===================================================
-	if (CManager::GetKeyboard()->bGetPress(DIK_S) == true || CManager::GetJoyPad()->YGetStickPressL(BUTTON_LY, 0) < 0)
+	if (CManager::GetKeyboard()->bGetPress(DIK_S) || CManager::GetJoyPad()->YGetStickPressL(BUTTON_LY, 0) < 0)
 	{
 		//カメラの向きに合わせて移動する
 		m_move.x += sinf(-D3DX_PI * MOVE_UP + CManager::GetScene()->GetGame()->GetCamera()->m_rot.y) * m_fMoveValue;
@@ -460,7 +460,7 @@ void C3DPlayer::Movement(void)
 		{
 
 			//ダッシュしていない状態だったら
-			if (m_bDash == false)
+			if (!m_bDash)
 			{
 				//ダッシュしている状態にする
 				m_bDash = true;
@@ -471,7 +471,7 @@ void C3DPlayer::Movement(void)
 	//<=======================================
 	//キー入力(Dキー)
 	//<=======================================
-	if (CManager::GetKeyboard()->bGetPress(DIK_D) == true || CManager::GetJoyPad()->XGetStickPressL(BUTTON_LX, 0) > 0)//もしAキーが押されていたら下の処理を実行
+	if (CManager::GetKeyboard()->bGetPress(DIK_D) || CManager::GetJoyPad()->XGetStickPressL(BUTTON_LX, 0) > 0)//もしAキーが押されていたら下の処理を実行
 	{
 		//左に移動
 		m_move.x -= sinf(-D3DX_PI * MOVE_LR + CManager::GetScene()->GetGame()->GetCamera()->m_rot.y) * m_fMoveValue;
@@ -485,7 +485,7 @@ void C3DPlayer::Movement(void)
 			|| CManager::GetJoyPad()->bGetPress(BUTTON::BUTTON_LB, 0))
 		{
 			//ダッシュしていない状態だったら
-			if (m_bDash == false)
+			if (!m_bDash)
 			{
 				//ダッシュしている状態にする
 				m_bDash = true;
@@ -496,7 +496,7 @@ void C3DPlayer::Movement(void)
 	//<=======================================
 	//キー入力(Aキー)
 	//<=======================================
-	if (CManager::GetKeyboard()->bGetPress(DIK_A) == true || CManager::GetJoyPad()->XGetStickPressL(BUTTON_LX, 0) < 0)//もしAキーが押されていたら下の処理を実行
+	if (CManager::GetKeyboard()->bGetPress(DIK_A) || CManager::GetJoyPad()->XGetStickPressL(BUTTON_LX, 0) < 0)//もしAキーが押されていたら下の処理を実行
 	{
 		//左に移動
 		m_move.x += sinf(-D3DX_PI * MOVE_LR + CManager::GetScene()->GetGame()->GetCamera()->m_rot.y) * m_fMoveValue;
@@ -511,7 +511,7 @@ void C3DPlayer::Movement(void)
 		{
 
 			//ダッシュしていない状態だったら
-			if (m_bDash == false)
+			if (!m_bDash)
 			{
 				//ダッシュしている状態にする
 				m_bDash = true;

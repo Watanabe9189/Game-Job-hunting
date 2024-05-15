@@ -135,7 +135,7 @@ void CKeyboard::Update(void)
 			m_aStateRepeat[nCntKey] = m_aStateTrigger[nCntKey];
 
 			//リピート処理(プレスしている間)
-			if (bGetPress(nCntKey) == true)
+			if (bGetPress(nCntKey))
 			{
 				//カウントを加算していく
 				RepeatCount[nCntKey]++;
@@ -158,7 +158,7 @@ void CKeyboard::Update(void)
 				RepeatCount[nCntKey] = 0;
 			}
 			//
-			if (bGetRelease(nCntKey) == true)
+			if (bGetRelease(nCntKey))
 			{//リリース入力されたとき
 				RepeatCount[nCntKey] = 0;
 			}
@@ -290,7 +290,7 @@ CMouse::~CMouse()
 HRESULT CMouse::Init(HINSTANCE hInstance, HWND hWnd)
 {
 	//もし使う
-	if (m_bUse == true)
+	if (m_bUse)
 	{
 		CInput::Init(hInstance, hWnd);
 
@@ -349,7 +349,7 @@ void CMouse::Uninit(void)
 //<======================================
 void CMouse::Update(void)
 {
-	if (m_bUse == true)
+	if (m_bUse)
 	{
 		DIMOUSESTATE2 mouse; //マウスの入力情報
 
@@ -375,7 +375,7 @@ void CMouse::Update(void)
 bool CMouse::GetMousePress(MOUSE_BUTTON nKey)
 {
 	//もし使う
-	if (m_bUse == true)
+	if (m_bUse)
 	{
 		return (m_State.rgbButtons[nKey] & 0x80) ? true : false;
 	}
@@ -388,7 +388,7 @@ bool CMouse::GetMousePress(MOUSE_BUTTON nKey)
 D3DXVECTOR3 CMouse::GetMouseMove(void)
 {
 	//もし使う
-	if (m_bUse == true)
+	if (m_bUse)
 	{
 		return D3DXVECTOR3(((float)m_State.lX) * MOUSE_MOVE_SENS, (-(float)m_State.lY) * MOUSE_MOVE_SENS, (-(float)m_State.lZ) * MOUSE_MOVE_SENS);
 	}
@@ -400,7 +400,7 @@ D3DXVECTOR3 CMouse::GetMouseMove(void)
 D3DXVECTOR2 CMouse::GetMouseRotate(void)
 {
 	//もし使う
-	if (m_bUse == true)
+	if (m_bUse)
 	{
 		return D3DXVECTOR2(((float)m_State.lX) * MOUSE_ROTATE_SENSE, (-(float)m_State.lY) * MOUSE_ROTATE_SENSE);
 	}
@@ -412,7 +412,7 @@ D3DXVECTOR2 CMouse::GetMouseRotate(void)
 D3DXVECTOR3 CMouse::GetMousePos(void)
 {
 	//もし使う
-	if (m_bUse == true)
+	if (m_bUse)
 	{
 		return D3DXVECTOR3((float)m_pos.x, (float)m_pos.y, 0.0f);
 	}

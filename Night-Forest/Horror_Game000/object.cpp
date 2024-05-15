@@ -41,13 +41,13 @@ CObject::CObject(int nPriority)
 	//<******************************************
 	//リストに追加する(先頭がなければ)
 	//<******************************************
-	if (m_apTop[nPriority] == nullptr)
+	if (!m_apTop[nPriority])
 	{
 		//メモリ確保をする
 		m_apTop[nPriority] = this;
 
 		//できていなかったら
-		if (m_apTop[nPriority] == nullptr)
+		if (!m_apTop[nPriority])
 		{
 			//何もせずこの関数を抜ける
 			return;
@@ -80,7 +80,7 @@ CObject::CObject(int nPriority)
 		m_apCur[nPriority]->m_pNext = this;
 
 		//できなかったら
-		if (m_apCur[nPriority] == nullptr)
+		if (!m_apCur[nPriority])
 		{
 			//何もせずこの関数を抜ける
 			return;
@@ -150,12 +150,12 @@ void CObject::ReleaseAll(void)
 	for (int nCntPri = 0; nCntPri < NEED_PRIORITY; nCntPri++)
 	{
 		//whileでも可能
-		for (CObject *pObj = m_apTop[nCntPri]; pObj != nullptr; pObj = m_pObjNext)
+		for (CObject *pObj = m_apTop[nCntPri]; pObj ; pObj = m_pObjNext)
 		{
 			m_pObjNext = pObj->m_pNext;
 
 			//ステンシルの中身があれば
-			if (pObj->m_pStencil != nullptr)
+			if (pObj->m_pStencil )
 			{
 				pObj->m_pStencil->Uninit();
 				delete pObj->m_pStencil;
@@ -171,7 +171,7 @@ void CObject::ReleaseAll(void)
 	for (int nCntPri = 0; nCntPri < NEED_PRIORITY; nCntPri++)
 	{
 		//whileでも可能
-		for (CObject *pObj = m_apTop[nCntPri]; pObj != nullptr; pObj = m_pObjNext)
+		for (CObject *pObj = m_apTop[nCntPri]; pObj ; pObj = m_pObjNext)
 		{
 			m_pObjNext = pObj->m_pNext;
 
@@ -179,13 +179,13 @@ void CObject::ReleaseAll(void)
 			delete pObj;
 			pObj = nullptr;
 
-			if (m_apTop[nCntPri] != nullptr)
+			if (m_apTop[nCntPri] )
 			{
 				m_apTop[nCntPri] = nullptr;
 				delete m_apTop[nCntPri];
 			}
 			//最後尾の削除
-			if (m_apCur[nCntPri] != nullptr)
+			if (m_apCur[nCntPri] )
 			{
 				m_apCur[nCntPri] = nullptr;
 				delete m_apCur[nCntPri];
@@ -204,7 +204,7 @@ void CObject::ReleaseAll(void)
 		for (int nCntObj = 0; nCntObj < MAX_OBJECT; nCntObj++)
 		{
 			//メモリ確保がされていたら
-			if (m_apObject[nCntPriotiry][nCntObj] != nullptr)
+			if (m_apObject[nCntPriotiry][nCntObj] )
 			{
 				//終了処理
 				m_apObject[nCntPriotiry][nCntObj]->Uninit();
@@ -227,7 +227,7 @@ void CObject::UpdateAll(void)
 	for (int nCntPri = 0; nCntPri < NEED_PRIORITY; nCntPri++)
 	{
 		//whileでも可能
-		for (CObject *pObj = m_apTop[nCntPri]; pObj != nullptr; pObj = m_pObjNext)
+		for (CObject *pObj = m_apTop[nCntPri]; pObj ; pObj = m_pObjNext)
 		{
 			//次のオブジェクト
 			if ((unsigned int)(m_pObjNext = pObj->m_pNext) == 0xDDDDDDDD)
@@ -244,7 +244,7 @@ void CObject::UpdateAll(void)
 				//次のオブジェクトに進める
 				pObj = m_pObjNext;
 			}
-			if (pObj != nullptr)
+			if (pObj )
 			{
 				//もし状態がfalseだったら
 				if (pObj->m_bDestru != true
@@ -266,37 +266,37 @@ void CObject::UpdateAll(void)
 		//前のオブジェクト保存用
 		CObject *pPrev = nullptr;
 
-		if (m_apTop[nCntPri] != nullptr)
+		if (m_apTop[nCntPri] )
 		{
 			pPrev = m_apTop[nCntPri];
 
 			//<*********************************
 			//whileでも可能
-			for (CObject *pObj = m_apTop[nCntPri]; pObj != nullptr; pObj = m_pObjNext)
+			for (CObject *pObj = m_apTop[nCntPri]; pObj ; pObj = m_pObjNext)
 			{
 				m_pObjNext = pObj->m_pNext;
 
 				//もし状態がfalseだったら
-				if (pObj->m_bDestru == true
+				if (pObj->m_bDestru
 					&& !(pObj->m_bDestru > true))
 				{
 					//
-					if (pObj == nullptr)
+					if (!pObj)
 					{
 						m_pObjNext = pPrev;
 					}
 					//次のオブジェクトが存在していたら
-					if (m_pObjNext != nullptr)
+					if (m_pObjNext )
 					{
 						pPrev->m_pNext = m_pObjNext;
 					}
 					//
-					if (pObj->m_pNext != nullptr)
+					if (pObj->m_pNext )
 					{
 						pPrev->m_pNext = pObj->m_pNext;
 					}
 					//
-					if (pObj->m_pPrev != nullptr)
+					if (pObj->m_pPrev )
 					{
 						pPrev->m_pPrev = pObj->m_pPrev;
 					}
@@ -316,10 +316,10 @@ void CObject::UpdateAll(void)
 						m_pObjNext = pPrev;
 					}
 					//次のオブジェクトが存在していたら
-					if (pObj != nullptr)
+					if (pObj )
 					{
 						//ステンシルの中身があれば
-						if (pObj->m_pStencil != nullptr)
+						if (pObj->m_pStencil )
 						{
 							pObj->m_pStencil->Uninit();
 							delete pObj->m_pStencil;
@@ -347,7 +347,7 @@ void CObject::UpdateAll(void)
 		for (int nCntObj = 0; nCntObj < MAX_OBJECT; nCntObj++)
 		{
 			//メモリの確保がされていたら
-			if (m_apObject[nCntPriotiry][nCntObj] != nullptr)
+			if (m_apObject[nCntPriotiry][nCntObj] )
 			{
 				//更新処理
 				m_apObject[nCntPriotiry][nCntObj]->Update();
@@ -367,7 +367,7 @@ void CObject::DrawAll(void)
 	for (int nCntPri = 0; nCntPri < NEED_PRIORITY; nCntPri++)
 	{
 		//whileでも可能
-		for (CObject *pObj = m_apTop[nCntPri]; pObj != nullptr; pObj = m_pObjNext)
+		for (CObject *pObj = m_apTop[nCntPri]; pObj ; pObj = m_pObjNext)
 		{
 			//次のオブジェクト
 			if ((unsigned int)(m_pObjNext = pObj->m_pNext) == 0xDDDDDDDD)
@@ -378,7 +378,7 @@ void CObject::DrawAll(void)
 
 
 			//もし破壊状態がfalseだったら
-			if (pObj->m_bDestru == false)
+			if (!pObj->m_bDestru)
 			{
 				//描画するようになっていたら
 				if (!(pObj->m_nPriority >= NEED_PRIORITY))
@@ -405,7 +405,7 @@ void CObject::DrawAll(void)
 		for (int nCntObj = 0; nCntObj < MAX_OBJECT; nCntObj++)
 		{
 			//メモリの確保がされていたら
-			if (m_apObject[nCntPriotiry][nCntObj] != nullptr)
+			if (m_apObject[nCntPriotiry][nCntObj] )
 			{
 				//描画処理
 				m_apObject[nCntPriotiry][nCntObj]->Draw();
@@ -425,7 +425,7 @@ void CObject::Release(void)
 	//
 	//<*****************************************
 	//もし破壊状態がfalseだったら
-	if (m_bDestru == false)
+	if (!m_bDestru)
 	{
 		m_bDestru = true;
 	}
@@ -435,7 +435,7 @@ void CObject::Release(void)
 
 #if 0
 	//メモリ確保がされていたら
-	if (m_apObject[nIdxPrio][nIdx] != nullptr)
+	if (m_apObject[nIdxPrio][nIdx] )
 	{
 		//メモリ解放
 		delete m_apObject[nIdxPrio][nIdx];

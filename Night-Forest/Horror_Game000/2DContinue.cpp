@@ -37,16 +37,9 @@ namespace
 C2DContinue::C2DContinue(int nPriority)
 {
 	//初期化
-	for (int nCnt = 0; nCnt < TYPE::TYPE_MAX; nCnt++)
-	{
-		m_apObject2D[nCnt] = {};
-	}
+	m_apObject2D[TYPE::TYPE_MAX] = {};
+	m_apSelect[SELECT::SELECT_MAX] = {};
 
-	//初期化
-	for (int nCnt = 0; nCnt < SELECT::SELECT_MAX; nCnt++)
-	{
-		m_apSelect[nCnt] = {};
-	}
 	m_nNumSelect = INITIAL_INT;
 	m_nSelect = INITIAL_INT;
 	m_nOldSelect = INITIAL_INT;
@@ -71,7 +64,7 @@ C2DContinue *C2DContinue::Create(void)
 {
 	C2DContinue *p2DSelect = new C2DContinue;
 
-	assert(p2DSelect != nullptr);
+	assert(p2DSelect );
 
 	p2DSelect->Init();
 
@@ -84,13 +77,13 @@ HRESULT C2DContinue::Init(void)
 {
 	m_pChangeCol = ChangeCol::Create();
 
-	assert(m_pChangeCol != nullptr);
+	assert(m_pChangeCol );
 
 	//テクスチャの初期化
 	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); nCnt++)
 	{
 		//最初だけ読み込む
-		if (m_apTexture[nCnt] == nullptr)
+		if (!m_apTexture[nCnt])
 		{
 			//テクスチャの読み込み
 			if (CManager::GetTex()->Regist(m_acFilename[nCnt], m_apTexture[nCnt]) <= -1)
@@ -105,12 +98,13 @@ HRESULT C2DContinue::Init(void)
 	//セレクトの数分繰り返す
 	for (int nCnt = 0; nCnt < TYPE::TYPE_SELECT_YES; nCnt++)
 	{
-		//
+		//フレーム
 		if (nCnt == TYPE::TYPE_FRAME)
 		{
 			m_rCol = FRAME_COL;
 			m_rSize = FRAME_SIZE;
 		}
+		//フレーム以外
 		else if (nCnt != TYPE::TYPE_FRAME)
 		{
 			m_rPos = CONTINUE_POS;
@@ -121,7 +115,7 @@ HRESULT C2DContinue::Init(void)
 		//生成する
 		m_apObject2D[nCnt] = CObject2D::Create(D3DXVECTOR2(m_rPos.x, m_rPos.y), m_rSize, m_rCol,m_apTexture[nCnt]);
 
-		assert(m_apObject2D[nCnt] != nullptr);
+		assert(m_apObject2D[nCnt] );
 	}
 	//セレクトの数分繰り返す
 	for (int nCnt = 0; nCnt < SELECT::SELECT_MAX; nCnt++)
@@ -132,7 +126,7 @@ HRESULT C2DContinue::Init(void)
 		//生成する
 		m_apSelect[nCnt] = CObject2D::Create(D3DXVECTOR2(m_rPos.x + DISTANCE_VALUE *nCnt, m_rPos.y), m_rSize, m_pChangeCol->GetColor(), m_apTexture[nCnt+2]);
 
-		assert(m_apSelect[nCnt] != nullptr);
+		assert(m_apSelect[nCnt] );
 	}
 
 	return S_OK;
@@ -146,13 +140,13 @@ void C2DContinue::Uninit(void)
 	for (int nCnt = 0; nCnt < SELECT::SELECT_MAX; nCnt++)
 	{
 		//
-		if (m_apObject2D[nCnt] != nullptr)
+		if (m_apObject2D[nCnt] )
 		{
 			m_apObject2D[nCnt]->Uninit();
 			m_apObject2D[nCnt] = nullptr;
 		}
 		//
-		if (m_apSelect[nCnt] != nullptr)
+		if (m_apSelect[nCnt] )
 		{
 			m_apSelect[nCnt]->Uninit();
 			m_apSelect[nCnt] = nullptr;
@@ -178,7 +172,7 @@ void C2DContinue::Update(void)
 		//セレクトの数分繰り返す
 		for (int nCnt = 0; nCnt < SELECT::SELECT_MAX; nCnt++)
 		{
-			if (m_apSelect[nCnt] != nullptr)
+			if (m_apSelect[nCnt] )
 			{
 				m_apSelect[nCnt]->SetVtx();
 
@@ -196,7 +190,7 @@ void C2DContinue::Update(void)
 		//セレクトの数分繰り返す
 		for (int nCnt = 0; nCnt < TYPE::TYPE_MAX; nCnt++)
 		{
-			if (m_apObject2D[nCnt] != nullptr)
+			if (m_apObject2D[nCnt] )
 			{
 				m_apObject2D[nCnt]->SetVtx();
 

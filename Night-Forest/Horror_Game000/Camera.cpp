@@ -147,7 +147,7 @@ void Ccamera::Update(void)
 	case CScene::MODE_GAME:
 
 		//ジャンプしていれば
-		if (m_bFollow == true)
+		if (m_bFollow)
 		{
 			CManager::GetDebugProc()->Print("追従しているかどうか[している]\n\n");
 			SetMoveFollow();
@@ -190,7 +190,7 @@ void Ccamera::Update(void)
 	////<***************************
 	////投影方法のチェンジ
 	////<***************************
-	//if (CManager::GetKeyboard()->bGetTrigger(DIK_LSHIFT) == true)
+	//if (CManager::GetKeyboard()->bGetTrigger(DIK_LSHIFT))
 	//{
 	//	//三項演算子
 	//	m_Type == TYPE_XRAY ? m_Type = TYPE_PARALLEL : m_Type = TYPE_XRAY;
@@ -248,14 +248,14 @@ void Ccamera::SetMoveFollow(void)
 	//Z方向回転
 	//<**************************************************
 	//上方向に回転する
-	if (CManager::GetKeyboard()->bGetPress(DIK_R) == true || CManager::GetJoyPad()->YGetStickPressR(BUTTON_LX, 0) > 0)
+	if (CManager::GetKeyboard()->bGetPress(DIK_R) || CManager::GetJoyPad()->YGetStickPressR(BUTTON_LX, 0) > 0)
 	{
 
 		m_rot.z += ROT_MOVE;
 
 	}
 	//下方向に回転する
-	else if (CManager::GetKeyboard()->bGetPress(DIK_F) == true || CManager::GetJoyPad()->YGetStickPressR(BUTTON_LX, 0) < 0)
+	else if (CManager::GetKeyboard()->bGetPress(DIK_F) || CManager::GetJoyPad()->YGetStickPressR(BUTTON_LX, 0) < 0)
 	{
 
 		m_rot.z -= ROT_MOVE;
@@ -269,12 +269,12 @@ void Ccamera::SetMoveFollow(void)
 	//Y方向回転
 	//<**************************************************
 	//左方向に回転する
-	if (CManager::GetKeyboard()->bGetPress(DIK_Z) == true || CManager::GetJoyPad()->XGetStickPressR(BUTTON_LY, 0) < 0)
+	if (CManager::GetKeyboard()->bGetPress(DIK_Z) || CManager::GetJoyPad()->XGetStickPressR(BUTTON_LY, 0) < 0)
 	{
 		m_rot.y -= ROT_MOVE;
 	}
 	//右方向に回転する
-	else if (CManager::GetKeyboard()->bGetPress(DIK_C) == true || CManager::GetJoyPad()->XGetStickPressR(BUTTON_LY, 0) > 0)
+	else if (CManager::GetKeyboard()->bGetPress(DIK_C) || CManager::GetJoyPad()->XGetStickPressR(BUTTON_LY, 0) > 0)
 	{
 		m_rot.y += ROT_MOVE;
 	}
@@ -286,20 +286,18 @@ void Ccamera::SetMoveFollow(void)
 //<=================================
 void Ccamera::MoveRot(void)
 {
-	CJoyPad *pJoyPad = CManager::GetJoyPad();
-
 	//追従していなければ
-	if (m_bFollow == false)
+	if (!m_bFollow)
 	{
 		//z軸方向に回転する
-		if (CManager::GetKeyboard()->bGetPress(DIK_R) == true || pJoyPad->XGetStickPressR(BUTTON_LX, 0) < 0)
+		if (CManager::GetKeyboard()->bGetPress(DIK_R) || CManager::GetJoyPad()->XGetStickPressR(BUTTON_LX, 0) < 0)
 		{
 
 			m_rot.z += ROT_MOVE;
 
 		}
 		//z軸方向に逆回転する
-		if (CManager::GetKeyboard()->bGetPress(DIK_F) == true || pJoyPad->XGetStickPressR(BUTTON_LX, 0) > 0)
+		if (CManager::GetKeyboard()->bGetPress(DIK_F) || CManager::GetJoyPad()->XGetStickPressR(BUTTON_LX, 0) > 0)
 		{
 
 			m_rot.z -= ROT_MOVE;
@@ -307,14 +305,14 @@ void Ccamera::MoveRot(void)
 		}
 	}
 	//Y軸方向に回転する
-	if (CManager::GetKeyboard()->bGetPress(DIK_Z) == true || pJoyPad->XGetStickPressR(BUTTON_LY, 0) < 0)
+	if (CManager::GetKeyboard()->bGetPress(DIK_Z) || CManager::GetJoyPad()->XGetStickPressR(BUTTON_LY, 0) < 0)
 	{
 
 		m_rot.y += ROT_MOVE;
 
 	}
 	//Y軸方向に逆回転する
-	if (CManager::GetKeyboard()->bGetPress(DIK_C) == true || pJoyPad->XGetStickPressR(BUTTON_LY, 0) > 0)
+	if (CManager::GetKeyboard()->bGetPress(DIK_C) || CManager::GetJoyPad()->XGetStickPressR(BUTTON_LY, 0) > 0)
 	{
 		m_rot.y -= ROT_MOVE;
 	}
@@ -331,22 +329,22 @@ void Ccamera::MoveRot(void)
 void Ccamera::MoveVR(void)
 {
 	//追従していなければ
-	if (m_bFollow == false)
+	if (!m_bFollow)
 	{
 		//<**************************************
 		//左移動関連
 		//<**************************************
-		if (CManager::GetKeyboard()->bGetPress(DIK_LEFTARROW) == true || CManager::GetJoyPad()->XGetStickPressR(BUTTON_LX, 0) < 0)
+		if (CManager::GetKeyboard()->bGetPress(DIK_LEFTARROW) || CManager::GetJoyPad()->XGetStickPressR(BUTTON_LX, 0) < 0)
 		{
 			//左上移動
-			if (CManager::GetKeyboard()->bGetPress(DIK_UPARROW) == true || CManager::GetJoyPad()->YGetStickPressR(BUTTON_LY, 0) > 0)
+			if (CManager::GetKeyboard()->bGetPress(DIK_UPARROW) || CManager::GetJoyPad()->YGetStickPressR(BUTTON_LY, 0) > 0)
 			{
 
 				m_move.x += sinf(-D3DX_PI * MOVE_LRDW + m_rot.y) * MOVE;
 				m_move.y += cosf(-D3DX_PI * MOVE_LRDW + m_rot.y) * MOVE;
 			}
 			//左下移動
-			else if (CManager::GetKeyboard()->bGetPress(DIK_DOWNARROW) == true || CManager::GetJoyPad()->YGetStickPressR(BUTTON_LY, 0) < 0)
+			else if (CManager::GetKeyboard()->bGetPress(DIK_DOWNARROW) || CManager::GetJoyPad()->YGetStickPressR(BUTTON_LY, 0) < 0)
 			{
 
 				m_move.x += sinf(-D3DX_PI * MOVE_LRUP + m_rot.y) * MOVE;
@@ -364,18 +362,18 @@ void Ccamera::MoveVR(void)
 		//<**************************************
 		//右移動関連
 		//<**************************************
-		else if (CManager::GetKeyboard()->bGetPress(DIK_RIGHTARROW) == true || CManager::GetJoyPad()->XGetStickPressR(BUTTON_LX, 0) > 0)
+		else if (CManager::GetKeyboard()->bGetPress(DIK_RIGHTARROW) || CManager::GetJoyPad()->XGetStickPressR(BUTTON_LX, 0) > 0)
 		{
 
 			//右上移動
-			if (CManager::GetKeyboard()->bGetPress(DIK_UPARROW) == true || CManager::GetJoyPad()->YGetStickPressR(BUTTON_LY, 0) > 0)
+			if (CManager::GetKeyboard()->bGetPress(DIK_UPARROW) || CManager::GetJoyPad()->YGetStickPressR(BUTTON_LY, 0) > 0)
 			{
 
 				m_move.x += sinf(D3DX_PI * MOVE_LRDW + m_rot.y) * MOVE;
 				m_move.y += cosf(D3DX_PI * MOVE_LRDW + m_rot.y) * MOVE;
 			}
 			//右下移動
-			else if (CManager::GetKeyboard()->bGetPress(DIK_DOWNARROW) == true || CManager::GetJoyPad()->YGetStickPressR(BUTTON_LY, 0) < 0)
+			else if (CManager::GetKeyboard()->bGetPress(DIK_DOWNARROW) || CManager::GetJoyPad()->YGetStickPressR(BUTTON_LY, 0) < 0)
 			{
 
 				m_move.x += sinf(D3DX_PI * MOVE_LRUP + m_rot.y) * MOVE;
@@ -393,7 +391,7 @@ void Ccamera::MoveVR(void)
 		//<***************************
 		//前移動
 		//<***************************
-		else if (CManager::GetKeyboard()->bGetPress(DIK_UPARROW) == true || CManager::GetJoyPad()->YGetStickPressR(BUTTON_LY, 0) > 0)
+		else if (CManager::GetKeyboard()->bGetPress(DIK_UPARROW) || CManager::GetJoyPad()->YGetStickPressR(BUTTON_LY, 0) > 0)
 		{
 
 			m_move.x += sinf(m_rot.y) * MOVE;
@@ -403,7 +401,7 @@ void Ccamera::MoveVR(void)
 		//<***************************
 		//手前移動
 		//<***************************
-		else if (CManager::GetKeyboard()->bGetPress(DIK_DOWNARROW) == true || CManager::GetJoyPad()->YGetStickPressR(BUTTON_LY, 0) < 0)
+		else if (CManager::GetKeyboard()->bGetPress(DIK_DOWNARROW) || CManager::GetJoyPad()->YGetStickPressR(BUTTON_LY, 0) < 0)
 		{
 
 			m_move.x += sinf(D3DX_PI + m_rot.y) * MOVE;
@@ -414,9 +412,9 @@ void Ccamera::MoveVR(void)
 	//<***************************
 	//投影方法のチェンジ
 	//<***************************
-	if (CManager::GetKeyboard()->bGetTrigger(DIK_M) == true)
+	if (CManager::GetKeyboard()->bGetTrigger(DIK_M))
 	{
-		m_bFollow == true ? m_bFollow = false : m_bFollow = true;
+		m_bFollow ? m_bFollow = false : m_bFollow = true;
 	}
 #endif
 	//移動量分を加算
@@ -455,7 +453,7 @@ void Ccamera::Shake(void)
 void Ccamera::SetV(void)
 {
 	//追従していなければ
-	if (m_bFollow == false)
+	if (!m_bFollow)
 	{
 		//視点の代入処理
 		m_posV.x = m_posR.x + cosf(m_rot.z) * sinf(m_rot.y) * -m_fDistance;
@@ -473,7 +471,7 @@ void Ccamera::SetV(void)
 void Ccamera::SetR(void)
 {
 	//追従していなければ
-	if (m_bFollow == false)
+	if (!m_bFollow)
 	{
 		//注視点の代入処理
 		m_posR.x = m_posV.x + cosf(m_rot.z) * sinf(m_rot.y) * m_fDistance;

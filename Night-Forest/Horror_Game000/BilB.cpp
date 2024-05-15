@@ -40,7 +40,7 @@ CBillB *CBillB::Create(const D3DXVECTOR3 rPos, const D3DXVECTOR2 rSize,const D3D
 {
 	CBillB *pBillB = new CBillB;
 
-	assert(pBillB != nullptr && pBillB->Init() == S_OK);
+	assert(pBillB  && pBillB->Init() == S_OK);
 
 	pBillB->SetVector3(rPos, INIT_VECTOR, D3DXVECTOR3(rSize.x, rSize.y, 0.0f));
 	pBillB->SetColor(rColor);

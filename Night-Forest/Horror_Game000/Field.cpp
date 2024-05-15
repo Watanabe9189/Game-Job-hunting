@@ -55,7 +55,7 @@ CField *CField::Create(const D3DXVECTOR3 pos)
 //<==========================
 HRESULT CField::Init(void)
 {
-	if (m_pTexture == nullptr)
+	if (!m_pTexture)
 	{
 		if (FAILED(CManager::GetTex()->Regist("data/TEXTURE/Grass001.png", m_pTexture)))
 		{
@@ -163,7 +163,7 @@ void CField::Draw(void)
 //<==========================
 void CField::SetVtx(void)
 {
-	if (m_pVtxBuff == nullptr)
+	if (!m_pVtxBuff)
 	{
 		//頂点バッファの生成
 		CManager::GetRenderer()->GetDevice()->CreateVertexBuffer(sizeof(VERTEX_3D) * m_NumVtx,
@@ -218,7 +218,7 @@ void CField::SetVtx(void)
 //<==========================
 void CField::SetIndex(void)
 {
-	if (m_pIdxBuff == nullptr)
+	if (!m_pIdxBuff)
 	{
 		//インデックスバッファの生成
 		CManager::GetRenderer()->GetDevice()->CreateIndexBuffer(sizeof(WORD) * m_nNumIndex,
@@ -322,7 +322,7 @@ CField *CField::ReadCreate(CField *apField[MAX_OBJECT])
 			{
 
 				//もし中身がなければ
-				if (apField[nCntMax] == nullptr)
+				if (!apField[nCntMax])
 				{
 					apField[nCntMax] = new CField;
 				}
@@ -334,7 +334,7 @@ CField *CField::ReadCreate(CField *apField[MAX_OBJECT])
 					(void)fscanf(pFile, "%s", &aChar[0]);
 
 					//メモリ確保されていたら
-					if (apField[nCntMax] != nullptr)
+					if (apField[nCntMax] )
 					{
 						//POSという文字列が存在したら
 						if (strcmp(aChar, "POS") == 0)

@@ -37,7 +37,7 @@ CLight *CLight::Create(const MODE mode)
 {
 	CLight *pLight = new CLight;
 
-	assert(pLight != nullptr);
+	assert(pLight );
 
 	pLight->m_eMode = mode;
 

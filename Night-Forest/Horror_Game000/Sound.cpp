@@ -55,7 +55,7 @@ CSound *CSound::Create(void)
 {
 	CSound *pSound = new CSound;
 
-	assert(pSound != nullptr);
+	assert(pSound );
 
 	pSound->Init(CManager::GetRenderer()->GetHwnd());
 
@@ -287,13 +287,13 @@ void CSound::Uninit(void)
 	for (int nCntSound = 0; nCntSound < LABEL_MAX; nCntSound++)
 	{
 		//
-		if (m_apDataAudio[nCntSound] != nullptr)
+		if (m_apDataAudio[nCntSound] )
 		{
 			// オーディオデータの開放
 			free(m_apDataAudio[nCntSound]);
 			m_apDataAudio[nCntSound] = nullptr;
 		}
-		if (m_apSourceVoice[nCntSound] != nullptr)
+		if (m_apSourceVoice[nCntSound] )
 		{
 			// 一時停止
 			m_apSourceVoice[nCntSound]->Stop(0);
@@ -463,7 +463,7 @@ HRESULT CSound::PlaySoundWithDis(const LABEL label,const D3DXVECTOR3 rPos, const
 	buffer.LoopCount = m_aSoundInfo[label].Type;
 	m_VolumeBuff.dwFlags =DSBCAPS_CTRLVOLUME;//音量調整フラグ
 
-	if (m_apSourceVoice[label] != nullptr)
+	if (m_apSourceVoice[label] )
 	{
 		// 状態取得
 		m_apSourceVoice[label]->GetState(&xa2state);
@@ -515,7 +515,7 @@ void CSound::StopSound(LABEL label)
 	// 状態取得
 	m_apSourceVoice[label]->GetState(&xa2state);
 
-	if (m_apSourceVoice[label]!= nullptr&&
+	if (m_apSourceVoice[label]&&
 		xa2state.BuffersQueued != 0)
 	{	// 再生中
 		 // 一時停止
@@ -742,7 +742,7 @@ HRESULT CSound::CheckChunkSound(const LABEL Label)
 	DWORD pSize = NULL;
 
 	//どちらの中身もなければ
-	if (m_apDataAudio[Label] == nullptr
+	if (!m_apDataAudio[Label]
 		&&m_aSizeAudio[Label] == NULL)
 	{
 		// バッファのクリア
