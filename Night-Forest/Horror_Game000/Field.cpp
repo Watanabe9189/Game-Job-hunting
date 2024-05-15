@@ -165,7 +165,7 @@ void CField::Draw(void)
 //<==========================
 void CField::SetVtx(void)
 {
-	if (m_pVtxBuff == nullptr)
+	if (!m_pVtxBuff)
 	{
 		//頂点バッファの生成
 		CManager::GetRenderer()->GetDevice()->CreateVertexBuffer(sizeof(VERTEX_3D) * m_NumVtx,

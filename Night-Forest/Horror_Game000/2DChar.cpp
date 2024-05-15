@@ -33,7 +33,11 @@ C2DChar::C2DChar(int nPriority)
 	m_nNumAll++;
 	m_pos = D3DXVECTOR2(0.0f,0.0f);
 
-	memset(&m_posDest[0], NULL, sizeof(m_posDest));
+	//
+	for (int nCnt = 0; nCnt < MAX_DEST; nCnt++)
+	{
+		m_posDest[nCnt] = {};
+	}
 
 	m_bArrived = false;
 

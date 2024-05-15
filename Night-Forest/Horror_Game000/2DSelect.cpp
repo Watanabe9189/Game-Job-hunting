@@ -11,10 +11,17 @@
 //<======================================================================
 C2DSelect::C2DSelect(int nPriority)
 {
-	memset(&m_acFilename[0], NULL, sizeof(m_acFilename));
-	memset(&m_apTexture[0], NULL, sizeof(m_apTexture));
+	for (int nCnt = 0; nCnt < INT_VALUE::MAX_TEX; nCnt++)
+	{
+		m_acFilename[nCnt] = {};
+		m_apTexture[nCnt] = {};
+	}
 
-	memset(&m_apObject2D[0], NULL, sizeof(m_apObject2D));
+	for (int nCnt = 0; nCnt <INT_VALUE::MAX_SIZE; nCnt++)
+	{
+		m_apObject2D[nCnt] = {};
+	}
+	
 	m_nNumSelect = INITIAL_INT;
 	m_nSelect = INITIAL_INT;
 	m_nOldSelect = INITIAL_INT;

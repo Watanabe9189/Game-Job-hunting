@@ -20,8 +20,11 @@ const char*			Ccover::m_acFilename[TYPE_MAX] =
 //<====================================================
 Ccover::Ccover(int nPriority)
 {
-	memset(&m_apObject2D[0], NULL, sizeof(m_apObject2D));
-
+	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++)
+	{
+		m_apObject2D[nCnt] = {};
+	}
+	
 	 m_rPos = D3DXVECTOR2(0.0f, 0.0f);
 	 m_rSize = D3DXVECTOR2(0.0f, 0.0f);
 	 m_rCol = INIT_COL;

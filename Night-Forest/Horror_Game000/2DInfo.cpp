@@ -200,7 +200,10 @@ CInfoFigure::CInfoFigure(int nPriority)
 	//’l‚ÌƒNƒŠƒA
 	m_nNum = INITIAL_INT;
 
-	memset(&m_apObject2D[0], NULL, sizeof(m_apObject2D));
+	for (int nCnt = 0; nCnt < INT_VALUE::MAX_SIZE; nCnt++)
+	{
+		m_apObject2D[nCnt] = {};
+	}
 }
 //<===========================================
 //

@@ -36,8 +36,16 @@ namespace
 //<======================================================================
 C2DContinue::C2DContinue(int nPriority)
 {
-	memset(&m_apObject2D[0], NULL, sizeof(m_apObject2D));
-	memset(&m_apSelect[0], NULL, sizeof(m_apSelect));
+	for (int nCnt = 0; nCnt < TYPE::TYPE_MAX; nCnt++)
+	{
+		m_apObject2D[nCnt] = {};
+	}
+
+	for (int nCnt = 0; nCnt < SELECT::SELECT_MAX; nCnt++)
+	{
+		m_apSelect[nCnt] = {};
+	}
+	
 	m_nNumSelect = INITIAL_INT;
 	m_nSelect = INITIAL_INT;
 	m_nOldSelect = INITIAL_INT;
