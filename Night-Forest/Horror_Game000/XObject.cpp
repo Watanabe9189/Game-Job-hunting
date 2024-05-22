@@ -76,16 +76,16 @@ void CXObject::Draw(void)
 	CManager::GetRenderer()->GetDevice()->GetMaterial(&matDef);
 	
 	//頂点数分繰り返し
-	for (DWORD nCntMat = 0; nCntMat < m_asaveModel[m_nModelId].dwNumMat; nCntMat++)
+	for (DWORD nCntMat = 0; nCntMat < m_asModel.dwNumMat; nCntMat++)
 	{
 		//マテリアルの設定
 		CManager::GetRenderer()->GetDevice()->SetMaterial(&m_asModel.pMat[nCntMat].MatD3D);
 
 		//テクスチャの設定
-		CManager::GetRenderer()->GetDevice()->SetTexture(0, m_asaveModel[m_nModelId].apTexture[nCntMat]);
+		CManager::GetRenderer()->GetDevice()->SetTexture(0, m_asModel.apTexture[nCntMat]);
 
 		//モデルの描画
-		m_asaveModel[m_nModelId].pMesh->DrawSubset(nCntMat);
+		m_asModel.pMesh->DrawSubset(nCntMat);
 	}
 
 	//保存していたマテリアルを戻す

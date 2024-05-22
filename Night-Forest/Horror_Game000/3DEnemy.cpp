@@ -99,7 +99,6 @@ HRESULT C3DEnemy::Init(void)
 {
 	const float RADIUSE_VALUE = 650.0f;	//半径の値
 	m_sModel = BindModel(m_acFilename[m_eType], true);
-
 	SetDest();
 
 	m_nRandInter = Calculate::CalculeteRandInt(3500, 1000);
@@ -718,16 +717,16 @@ C3DEnemy *C3DEnemy::RandCreate(C3DEnemy *apEnemy[MAX_OBJECT])
 		//最大の手前まで行っていれば
 		if (nCnt == m_nNumSet - 1)
 		{
-			apEnemy[nCnt]->m_eType = TYPE::TYPE_ENEMY_HIGHSPEED;
+			nRandType = TYPE::TYPE_ENEMY_HIGHSPEED;
 		}
 		//まだ最大の手前まで行っていなければ
 		else
 		{
 			nRandType = Calculate::CalculeteRandInt(TYPE::TYPE_ENEMY_INVISIBLE,
 				TYPE::TYPE_ENEMY_NORMAL);
-
-			apEnemy[nCnt]->m_eType = (TYPE)nRandType;
 		}
+
+		apEnemy[nCnt]->m_eType = (TYPE)nRandType;
 
 		apEnemy[nCnt]->Init();
 

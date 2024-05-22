@@ -610,6 +610,8 @@ void Ccamera::SetCamera(void)
 #define MAX_Z	(5000.0f)	//プロジェクションマトリックス作成時のZ軸の最大値
 #define MIN_Z	(10.0f)		//プロジェクションマトリックス作成時のZ軸の最小値
 
+	float fAspect = (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT;
+
 	//プロジェクションマトリックスの初期化
 	D3DXMatrixIdentity(&m_mtxProjection);
 
@@ -620,7 +622,7 @@ void Ccamera::SetCamera(void)
 		//※オブジェクトの距離の影響を受ける
 		D3DXMatrixPerspectiveFovLH(&m_mtxProjection,
 			D3DXToRadian(45.0f),						//視野
-			(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT,	//縦横比
+			fAspect,	//縦横比
 			MIN_Z,										//Z軸の最小値
 			MAX_Z);										//Z軸の最大値
 	}
