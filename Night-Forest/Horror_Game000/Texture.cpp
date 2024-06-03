@@ -16,12 +16,9 @@ int CTexture::m_nNumAll = 0;	//テクスチャの総数
 //<===============================
 CTexture::CTexture()
 {
-	//テクスチャのクリア
-	for (int nCnt = 0; nCnt < INT_VALUE::MAX_TEX; nCnt++)
-	{
-		m_apTexture[nCnt] = {nullptr};
-		m_apFileName[nCnt] = { nullptr };
-	}
+	//値のクリア
+	m_pTexture.clear();			
+	m_pFileName.clear();
 }
 //<===============================
 //テクスチャのデストラクタ
@@ -44,24 +41,24 @@ HRESULT CTexture::Load(void)
 //<===============================
 void CTexture::UnloadAll(void)
 {
-	for (int nCnt = 0; nCnt < INT_VALUE::MAX_TEX; nCnt++)
+	for (unsigned int nCnt = 0; nCnt < m_pTexture.size(); nCnt++)
 	{
 		//全てのテクスチャの破棄
-		if (m_apTexture[nCnt] )
+		if (!m_pTexture.empty())
 		{
-			m_apTexture[nCnt]->Release();
-			m_apTexture[nCnt] = nullptr;
+			m_pTexture.at(nCnt)->Release();
+			m_pTexture.at(nCnt) = nullptr;
 		}
-		if (m_apFileName[nCnt] )
+
+		if (!m_pFileName.empty())
 		{
-			m_apFileName[nCnt] = nullptr;
-		}
-		else if (!m_apFileName[nCnt]&&!m_apTexture[nCnt])
-		{
-			break;
+			m_pFileName.at(nCnt) = nullptr;
 		}
 	}
 
+	//クリア
+	m_pFileName.clear();
+	m_pTexture.clear();
 	m_nNumAll = 0;
 }
 //<===============================
@@ -69,60 +66,17 @@ void CTexture::UnloadAll(void)
 //<===============================
 void CTexture::Unload(void)
 {
-	//総数保存用の変数
-	int nNum = m_nNumAll;
+	////総数保存用の変数
+	//int nNum = m_nNumAll;
 
-	if (m_apTexture[nNum] != NULL)
-	{
-		m_apTexture[nNum]->Release();
-		m_apTexture[nNum] = NULL;
-	}
+	//if (m_apTexture[nNum] != NULL)
+	//{
+	//	m_apTexture[nNum]->Release();
+	//	m_apTexture[nNum] = NULL;
+	//}
 	//<*******************************
 	//ここでテクスチャの破棄は行わない
 	//<*******************************
-}
-//<===============================
-//テキストからテクスチャを読み込む
-//<===============================
-void CTexture::LoadTxtTex(void)
-{
-	//必要以外の文字列読み込み用データ
-	char aChar[INT_VALUE::MAX_CHAR] = { NULL };
-
-	//ファイルの名前
-	char apFileName[INT_VALUE::MAX_CHAR][INT_VALUE::MAX_CHAR];
-
-	//ファイル情報
-	FILE *pFile = fopen("data/TEXT/LoadTexture.txt", "r");;
-
-	//ファイルが開けたら
-	if (pFile != NULL)
-	{
-		//ずっと繰り返す
-		while (strcmp(aChar, "EndFile") != 0)
-		{
-			//空字を読み込む
-			(void)fscanf(pFile, "%s", &aChar[0]);
-
-			//ENEMY-SETという文字列が存在したら
-			if (strcmp(aChar, "TEX_NAME") == 0)
-			{
-				//空字を読み込む
-				(void)fscanf(pFile, "%s", &aChar[0]);
-
-				//ファイルパスを読み込む
-				(void)fscanf(pFile, "%s", &apFileName[m_nNumAll][0]);
-
-				//ファイルネームを登録する
-				m_apFileName[m_nNumAll] = &apFileName[m_nNumAll][0];
-
-				//総数を増やす
-				m_nNumAll++;
-			}
-		}
-		//ファイルを閉じる
-		fclose(pFile);
-	}
 }
 //<===============================
 //テクスチャの登録処理
@@ -141,31 +95,29 @@ int CTexture::Regist(const char *pTexName, LPDIRECT3DTEXTURE9 &pTex)
 		//数分繰り返す
 		for (int nCnt = 0; nCnt < nNum; nCnt++)
 		{
-			if (m_apFileName[nCnt] )
+			if (!(m_pFileName.empty()))
 			{
 				//もし保存されたファイル名と引数のファイル名が一緒だったら
-				if (strcmp(m_apFileName[nCnt], pTexName) == 0)
+				if (strcmp(m_pFileName.at(nCnt), pTexName) == 0)
 				{
 					//その番号を返し、すでに登録されているテクスチャ
-					pTex = m_apTexture[nCnt];
+					pTex = m_pTexture.at(nCnt);
 					return nCnt;
 				}
 			}
 		}
 
-		m_apFileName[nNum] = pTexName;
+		m_pFileName.insert(m_pFileName.begin() + nNum, pTexName);
 
 		//もしなければ
 		if (!pTex)
 		{
+
 			assert((D3DXCreateTextureFromFile(CManager::GetRenderer()->GetDevice(),
-				m_apFileName[nNum],
-				&m_apTexture[nNum])) == D3D_OK);
+				m_pFileName.at(nNum),
+				&pTex)) == D3D_OK);
 
-			pTex = m_apTexture[nNum];
-
-			m_apTexture[nNum] = pTex;
-
+			m_pTexture.insert(m_pTexture.begin() + nNum, pTex);
 		}
 
 		m_nNumAll++;

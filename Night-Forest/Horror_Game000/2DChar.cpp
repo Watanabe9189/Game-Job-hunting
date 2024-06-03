@@ -17,19 +17,21 @@ LPDIRECT3DTEXTURE9 C2DChar::m_apTexture[INT_VALUE::MAX_TEX] = {};
 const char			*C2DChar::m_acFilename[CHAR_TYPE_MAX] =
 {
 
-	"data/TEXTURE/HORROR_TITLE.png",						//目的
-	"data/TEXTURE/HORROR_INFO000.png",
-	"data/TEXTURE/HORROR_INFO002.png",
-	"data/TEXTURE/HORROR_INFO003.png",
-	"data/TEXTURE/HORROR_INFO005.png",
-	"data/TEXTURE/HORROR_INFO006.png",
-	"data/TEXTURE/HORROR_INFO007.png",
+	"data/TEXTURE/HORROR_TITLE.png",			//目的
+	"data/TEXTURE/HORROR_INFO000.png",			//「隠れる」文字
+	"data/TEXTURE/HORROR_INFO002.png",			//「取る」文字
+	"data/TEXTURE/HORROR_INFO003.png",			//「出る」文字
+	"data/TEXTURE/HORROR_INFO005.png",			//「封印されている」文字
+	"data/TEXTURE/HORROR_INFO006.png",			//「見つけた」文字
+	"data/TEXTURE/HORROR_INFO007.png",			//「封印解除」文字
 };
+
 //<======================================
-//
+//コンストラクタ
 //<======================================
 C2DChar::C2DChar(int nPriority)
 {
+	//値の初期化
 	m_nNumAll++;
 	m_pos = D3DXVECTOR2(0.0f,0.0f);
 
@@ -51,10 +53,11 @@ C2DChar::C2DChar(int nPriority)
 	m_eFromMove = MOVE_FROM_MAX;
 }
 //<======================================
-//
+//デストラクタ
 //<======================================
 C2DChar::~C2DChar()
 {
+	//総数を減らす
 	m_nNumAll--;
 }
 //<======================================
@@ -142,7 +145,7 @@ C2DChar *C2DChar::Create(const D3DXVECTOR2 pos, const D3DXVECTOR2 Size, const in
 	return p2DChar;
 }
 //<======================================
-//
+//初期化
 //<======================================
 HRESULT C2DChar::Init(void)
 {
@@ -165,7 +168,7 @@ HRESULT C2DChar::Init(void)
 	return S_OK;
 }
 //<======================================
-//
+//更新処理
 //<======================================
 void C2DChar::Update(void)
 {
@@ -189,7 +192,7 @@ void C2DChar::Update(void)
 	SetPosition(m_pos);
 }
 //<======================================
-//
+//頂点設定
 //<======================================
 void C2DChar::SetVtx(void)
 { 

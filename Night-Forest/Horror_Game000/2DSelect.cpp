@@ -16,12 +16,7 @@ C2DSelect::C2DSelect(int nPriority)
 		m_acFilename[nCnt] = {};
 		m_apTexture[nCnt] = {};
 	}
-
-	for (int nCnt = 0; nCnt <INT_VALUE::MAX_SIZE; nCnt++)
-	{
-		m_apObject2D[nCnt] = {};
-	}
-	
+	m_apObject2D.clear();
 	m_nNumSelect = INITIAL_INT;
 	m_nSelect = INITIAL_INT;
 	m_nOldSelect = INITIAL_INT;
@@ -68,10 +63,12 @@ HRESULT C2DSelect::Init(void)
 	//セレクトの数分繰り返す
 	for (int nCnt = 0; nCnt < m_nNumSelect; nCnt++)
 	{
-		//生成する
-		m_apObject2D[nCnt] = CObject2D::Create(D3DXVECTOR2(m_rPos.x +m_fDistance *nCnt,m_rPos.y), D3DXVECTOR2(150.0f, 150.0f),m_pChangeCol->GetColor());
+		//要素の挿入を開始
+		m_apObject2D.insert(m_apObject2D.begin()+nCnt, 
+			CObject2D::Create(D3DXVECTOR2(m_rPos.x + m_fDistance *nCnt, m_rPos.y), D3DXVECTOR2(150.0f, 150.0f), m_pChangeCol->GetColor()));
 
-		assert(m_apObject2D[nCnt] );
+		//要素チェック
+		assert(m_apObject2D.at(nCnt));
 	}
 
 	return S_OK;
@@ -85,10 +82,10 @@ void C2DSelect::Uninit(void)
 	for (int nCnt = 0; nCnt < m_nNumSelect; nCnt++)
 	{
 		//
-		if (m_apObject2D[nCnt] )
+		if (!(m_apObject2D.empty()))
 		{
-			m_apObject2D[nCnt]->Uninit();
-			m_apObject2D[nCnt] = nullptr;
+			m_apObject2D.at(nCnt)->Uninit();
+			m_apObject2D.at(nCnt) = nullptr;
 		}
 	}
 
@@ -99,6 +96,7 @@ void C2DSelect::Uninit(void)
 		m_pChangeCol = nullptr;
 	}
 
+	m_apObject2D.clear();
 	Release();
 }
 //<======================================================================
@@ -112,17 +110,17 @@ void C2DSelect::Update(void)
 	//セレクトの数分繰り返す
 	for (int nCnt = 0; nCnt < m_nNumSelect; nCnt++)
 	{
-		if (m_apObject2D[nCnt] )
+		if (!(m_apObject2D.empty()))
 		{
-			m_apObject2D[nCnt]->SetVtx();
+			m_apObject2D.at(nCnt)->SetVtx();
 
 			//情報の取得
-			m_rPos = m_apObject2D[nCnt]->GetPosition();
-			m_rSize = m_apObject2D[nCnt]->GetSize();
+			m_rPos = m_apObject2D.at(nCnt)->GetPosition();
+			m_rSize = m_apObject2D.at(nCnt)->GetSize();
 
 			//設定
-			m_apObject2D[nCnt]->SetPosition(m_rPos);
-			m_apObject2D[nCnt]->SetSize(m_rSize);
+			m_apObject2D.at(nCnt)->SetPosition(m_rPos);
+			m_apObject2D.at(nCnt)->SetSize(m_rSize);
 
 		}
 
@@ -163,8 +161,8 @@ void C2DSelect::SelectUpdate(void)
 	}
 
 	//カラーを設定する
-	m_apObject2D[m_nOldSelect]->SetColor(D3DXCOLOR(1.0f,1.0f,1.0f, m_pChangeCol->GetMinAlpha()));
-	m_apObject2D[m_nSelect]->SetColor(m_pChangeCol->GetColor());
+	m_apObject2D.at(m_nOldSelect)->SetColor(D3DXCOLOR(1.0f,1.0f,1.0f, m_pChangeCol->GetMinAlpha()));
+	m_apObject2D.at(m_nSelect)->SetColor(m_pChangeCol->GetColor());
 }
 //<=============================================
 //
@@ -178,10 +176,10 @@ void C2DSelect::SetTexName(const char *pFileName, int nCnt)
 	CManager::GetTex()->Regist(m_acFilename[nCnt], m_apTexture[nCnt]);
 
 	//中身があれば
-	if (m_apObject2D[nCnt] )
+	if (m_apObject2D.at(nCnt) )
 	{
 		//テクスチャの割り当て
-		m_apObject2D[nCnt]->BindTexture(m_apTexture[nCnt]);
+		m_apObject2D.at(nCnt)->BindTexture(m_apTexture[nCnt]);
 	}
 
 }

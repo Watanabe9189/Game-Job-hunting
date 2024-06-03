@@ -32,21 +32,19 @@ public:
 	//<====================================
 	//メンバ関数(Get)
 	//<====================================
-	LPDIRECT3DTEXTURE9 GetAddress(int nIdx) { return m_apTexture[nIdx]; }	//テクスチャ番号の取得
-	const char* GetAddressName(int nIdx)	{ return m_apFileName[nIdx]; }	//何番目のテクスチャ名を取得するか
+	LPDIRECT3DTEXTURE9 GetAddress(int nIdx) { return m_pTexture.at(nIdx); }	//テクスチャ番号の取得
+	const char* GetAddressName(int nIdx)	{ return m_pFileName.at(nIdx); }	//何番目のテクスチャ名を取得するか
 
 	static int GetNumAll(void) { return m_nNumAll; }
 
 private:
 
-	void LoadTxtTex(void);
-
 	//<============================
 	//メンバ変数
 	//<============================
-	LPDIRECT3DTEXTURE9 m_apTexture[INT_VALUE::MAX_TEX];			//テクスチャへのポインタ
-	const char *m_apFileName[INT_VALUE::MAX_TEX];				//
-	static int m_nNumAll;										//テクスチャの総数
+	std::vector<LPDIRECT3DTEXTURE9>m_pTexture;			//テクスチャへのポインタ
+	std::vector<const char*>m_pFileName;				//
+	static int m_nNumAll;								//テクスチャの総数
 
 };
 

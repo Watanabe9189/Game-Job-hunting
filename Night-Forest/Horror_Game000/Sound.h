@@ -120,8 +120,8 @@ private:
 	IXAudio2MasteringVoice *m_pMasteringVoice = NULL;			//マスターボイス
 	IXAudio2MasteringVoice *m_pMasteringVoiceSE = NULL;			//マスターボイス
 	IXAudio2SourceVoice *m_apSourceVoice[LABEL_MAX];			//ソースボイス
-	BYTE *m_apDataAudio[LABEL_MAX];						//オーディオデータ
-	DWORD m_aSizeAudio[LABEL_MAX];							//オーディオデータサイズ
+	BYTE *m_apDataAudio[LABEL_MAX];								//オーディオデータ
+	DWORD m_aSizeAudio[LABEL_MAX];								//オーディオデータサイズ
 	DSBUFFERDESC m_VolumeBuff;									//DirectSoundのバッファ情報設定の構造体
 	static float m_fMasterVolume;										//マスターボリューム
 

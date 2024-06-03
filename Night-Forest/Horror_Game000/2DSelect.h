@@ -40,7 +40,8 @@ private:
 	D3DXVECTOR2 m_rPos;
 	D3DXVECTOR2 m_rSize;
 
-	CObject2D *m_apObject2D[INT_VALUE::MAX_SIZE];
+	std::vector<CObject2D*>m_apObject2D;
+
 	int m_nNumSelect;
 
 	LPDIRECT3DTEXTURE9	m_apTexture[INT_VALUE::MAX_TEX];		//テクスチャへのポインタ

@@ -82,10 +82,6 @@ namespace Correction
 //<============================================================================================================
 namespace Change
 {
-	static int m_nCounter = 0;
-	static bool m_bEnd = false;
-
-	D3DXCOLOR ChangeColInter(const D3DXCOLOR pColor, const float MAX_COLOR, const float MIN_COLOR, const float fValueChange);//変える色・最大色値・最小色値・変更値
 	bool Changebool(bool bBool, const BOOL nBool);
 }
 //<============================================================================================================
