@@ -32,7 +32,7 @@ namespace
 int C3DEnemy::m_nNumAll = NULL;			//êî
 #ifdef _DEBUG
 
-int C3DEnemy::m_nNumSet = 1;
+int C3DEnemy::m_nNumSet = MAX_NUM_SET;
 
 #else
 
