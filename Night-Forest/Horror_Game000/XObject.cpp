@@ -11,6 +11,14 @@ int CXObject::m_nNumAll = INITIAL_INT;
 const char *CXObject::m_apFileName[INT_VALUE::MAX_SIZE] = {};
 CXObject::DataModel CXObject::m_asaveModel[INT_VALUE::MAX_SIZE] = {};
 
+//<***************************************************
+//名前宣言
+//<***************************************************
+namespace
+{
+	const float VALUE_TRANSLUSENT = 0.5f;	//半透明の値
+}
+
 //<====================================
 //Xファイルオブジェクトのコンストラクタ
 //<====================================
@@ -60,7 +68,7 @@ void CXObject::Draw(void)
 
 	//ワールドマトリックスの初期化
 	D3DXMatrixIdentity(&m_mtxWorld);
-
+	
 	//向きを反映する
 	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
@@ -74,9 +82,9 @@ void CXObject::Draw(void)
 
 	//現在のマテリアルを取得
 	CManager::GetRenderer()->GetDevice()->GetMaterial(&matDef);
-	
+
 	//頂点数分繰り返し
-	for (DWORD nCntMat = 0; nCntMat < m_asModel.dwNumMat; nCntMat++)
+	for (int nCntMat = 0; nCntMat < (int)m_asModel.dwNumMat; nCntMat++)
 	{
 		//マテリアルの設定
 		CManager::GetRenderer()->GetDevice()->SetMaterial(&m_asModel.pMat[nCntMat].MatD3D);
@@ -84,8 +92,12 @@ void CXObject::Draw(void)
 		//テクスチャの設定
 		CManager::GetRenderer()->GetDevice()->SetTexture(0, m_asModel.apTexture[nCntMat]);
 
-		//モデルの描画
-		m_asModel.pMesh->DrawSubset(nCntMat);
+		//透明度が半透明の値を超えていたら
+		if (m_asModel.pMat[nCntMat].MatD3D.Diffuse.a >= VALUE_TRANSLUSENT)
+		{
+			//モデルの描画
+			m_asModel.pMesh->DrawSubset(nCntMat);
+		}
 	}
 
 	//保存していたマテリアルを戻す
@@ -141,7 +153,6 @@ CXObject::DataModel CXObject::BindModel(const char *pFileName, const bool bMatCh
 
 	//モデルの設定を行う
 	LoadModel();
-	CheckVtxNo();
 
 	m_nModelId = m_nNumAll;
 
@@ -184,6 +195,7 @@ void CXObject::LoadModel(void)
 				m_asaveModel[m_nNumAll].apTexture[nCntMat]);
 		}
 	}
+	CheckVtxNo();
 }
 //<====================================
 //頂点情報チェック

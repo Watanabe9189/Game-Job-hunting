@@ -242,16 +242,16 @@ public:
 
 	}
 
-	//<=======================================
-	//当たり判定関連
-	//<=======================================
-	virtual bool Collision(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld,D3DXVECTOR3 *pMove ,D3DXVECTOR2 pSize, bool bJump,TYPE_2D type) { return false; }
-	virtual bool Collision3D(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 *pMove, D3DXVECTOR3 *vtxMin, D3DXVECTOR3 *vtxMax, bool bJump,TYPE_3D Type3D) { return false; }
-	virtual void Collision3DNoBool(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 *pMove, D3DXVECTOR3 *vtxMin, D3DXVECTOR3 *vtxMax, bool bJump, TYPE_3D Type3D) { return; }
-	virtual bool CollisionDestroy(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 *pMove, D3DXVECTOR3 *vtxMin, D3DXVECTOR3 *vtxMax, bool bJump, TYPE_3D Type3D) { return false; }
-	virtual bool CollisionWall(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 *pMove, D3DXVECTOR3 *vtxMin, D3DXVECTOR3 *vtxMax, TYPE_3D Type3D) {return false;}
-	virtual bool CollisionField(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 *pMove, D3DXVECTOR3 *vtxMin, D3DXVECTOR3 *vtxMax, TYPE_3D Type3D) { return false; }
-	virtual bool CollisionWithHP(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 *pMove, D3DXVECTOR3 *vtxMin, D3DXVECTOR3 *vtxMax, int nLife, TYPE_3D Type3D) { return false; }
+	////<=======================================
+	////当たり判定関連
+	////<=======================================
+	//virtual bool Collision(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld,D3DXVECTOR3 *pMove ,D3DXVECTOR2 pSize, bool bJump,TYPE_2D type) { return false; }
+	//virtual bool Collision3D(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 *pMove, D3DXVECTOR3 *vtxMin, D3DXVECTOR3 *vtxMax, bool bJump,TYPE_3D Type3D) { return false; }
+	//virtual void Collision3DNoBool(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 *pMove, D3DXVECTOR3 *vtxMin, D3DXVECTOR3 *vtxMax, bool bJump, TYPE_3D Type3D) { return; }
+	//virtual bool CollisionDestroy(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 *pMove, D3DXVECTOR3 *vtxMin, D3DXVECTOR3 *vtxMax, bool bJump, TYPE_3D Type3D) { return false; }
+	//virtual bool CollisionWall(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 *pMove, D3DXVECTOR3 *vtxMin, D3DXVECTOR3 *vtxMax, TYPE_3D Type3D) {return false;}
+	//virtual bool CollisionField(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 *pMove, D3DXVECTOR3 *vtxMin, D3DXVECTOR3 *vtxMax, TYPE_3D Type3D) { return false; }
+	//virtual bool CollisionWithHP(D3DXVECTOR3 *pPos, D3DXVECTOR3 *pPosOld, D3DXVECTOR3 *pMove, D3DXVECTOR3 *vtxMin, D3DXVECTOR3 *vtxMax, int nLife, TYPE_3D Type3D) { return false; }
 
 	CStencil *GetStencil(void) { return m_pStencil; }	//ステンシルオブジェクトを取得する
 

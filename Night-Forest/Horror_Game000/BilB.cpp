@@ -125,7 +125,7 @@ void CBillB::Draw(void)
 
 								//Zテストを無効にする
 		CManager::GetRenderer()->GetDevice()->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
-		CManager::GetRenderer()->GetDevice()->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);	//常に描画する
+		CManager::GetRenderer()->GetDevice()->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);	//常に描画する
 
 																							//ビューマトリックスの取得
 		CManager::GetRenderer()->GetDevice()->GetTransform(D3DTS_VIEW, &m_mtxview);
@@ -163,7 +163,7 @@ void CBillB::Draw(void)
 
 		//Zテストを有効にする
 		CManager::GetRenderer()->GetDevice()->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
-		CManager::GetRenderer()->GetDevice()->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+		CManager::GetRenderer()->GetDevice()->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 	}
 }
 //<================================

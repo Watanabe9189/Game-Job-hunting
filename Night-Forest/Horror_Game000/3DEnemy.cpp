@@ -98,8 +98,9 @@ C3DEnemy::~C3DEnemy()
 HRESULT C3DEnemy::Init(void)
 {
 	const float RADIUSE_VALUE = 650.0f;	//”¼Œa‚Ì’l
-	m_sModel = BindModel(m_acFilename[m_eType], true);
 	SetDest();
+
+	m_sModel = BindModel(m_acFilename[m_eType], true);
 
 	m_nRandInter = Calculate::CalculeteRandInt(3500, 1000);
 	m_nSoundMax = Calculate::CalculeteRandInt(200, 100);
