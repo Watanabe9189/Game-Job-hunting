@@ -46,7 +46,7 @@ CFog *CFog::Create(const D3DXCOLOR Col, const D3DFOGMODE Mode,
 {
 	CFog *pFog = new CFog;
 
-	assert(pFog );
+	assert(pFog);
 
 	assert(SUCCEEDED(pFog->Init()));
 

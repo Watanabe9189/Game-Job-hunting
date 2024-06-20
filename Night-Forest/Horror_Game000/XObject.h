@@ -64,6 +64,8 @@ public:
 	void Uninit(void);
 	void Draw(void);
 
+	void DrawModel(void);
+
 	void CheckVtxNo(void);
 
 	static CXObject *Create(const D3DXVECTOR3 rPos,const D3DXVECTOR3 rRot,const char *pFileName);
@@ -117,6 +119,8 @@ public:
 	DataModel GetModel(void) { return m_asModel; }
 	static int GetNum(void) { return m_nNumAll; }
 
+	bool BoolDis(const D3DXVECTOR3 rPos,const D3DXVECTOR3 rTargetPos);
+
 private:
 
 	DataModel m_asModel;
@@ -131,6 +135,7 @@ private:
 	D3DXVECTOR3			m_pos;						//ˆÊ’u
 	D3DXVECTOR3			m_rot;						//Œü‚«
 	D3DXVECTOR3			m_move;						//ˆÚ“®—Ê
+	D3DXVECTOR3			m_Distance;					//‹——£
 
 	static int m_nNumAll;
 };

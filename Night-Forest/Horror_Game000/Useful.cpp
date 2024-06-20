@@ -197,10 +197,26 @@ bool Bool::bMove(const D3DXVECTOR3 rMove)
 		&&rMove.y != 0.0f ||rMove.y != -0.0f
 		&& rMove.z != 0.0f ||rMove.z != -0.0f)
 	{
-		bMove = true;
+		return true;
 	}
 
-	return bMove;
+	return false;
+}
+//<==========================================
+//‹ß‚Ã‚¢‚Ä‚¢‚é‚©‚Ì”»’fˆ—
+//<==========================================
+bool Bool::bApproach(const D3DXVECTOR3 rDis,const float fDisValue)
+{
+	//‚à‚µ‹ß‚Ã‚¢‚Ä‚¢‚½‚ç
+	if (rDis.x <= fDisValue&&
+		rDis.z <= fDisValue &&
+		!(-rDis.x >= fDisValue) &&
+		!(-rDis.z >= fDisValue))
+	{
+		return true;
+	}
+
+	return false;
 }
 //<==========================================
 //boolŒ^‚Ì•ÏXˆ—

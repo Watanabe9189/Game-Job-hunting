@@ -644,10 +644,7 @@ void CSound::SetDistance(const D3DXVECTOR3 Pos, const int nType, const LABEL Lab
 	//<***********************************************************************
 
 	//Ç‡ÇµãﬂÇ√Ç¢ÇƒÇ¢ÇΩÇÁ
-	if (m_rDistance.x <= Dis_NEAR&&
-		m_rDistance.z <= Dis_NEAR &&
-		!(-m_rDistance.x >= Dis_NEAR) &&
-		!(-m_rDistance.z >= Dis_NEAR))
+	if (Bool::bApproach(m_rDistance, Dis_NEAR))
 	{
 		if (nType == TYPE::TYPE_SE)
 		{
@@ -661,10 +658,7 @@ void CSound::SetDistance(const D3DXVECTOR3 Pos, const int nType, const LABEL Lab
 		}
 	}
 	//Ç‡Çµè≠ÇµãﬂÇ√Ç¢ÇƒÇ¢ÇΩÇÁ
-	else if (m_rDistance.x <= Dis_LIT_NEAR&&
-		m_rDistance.z <= Dis_LIT_NEAR &&
-		!(-m_rDistance.x >= Dis_LIT_NEAR) &&
-		!(-m_rDistance.z >= Dis_LIT_NEAR))
+	else if (Bool::bApproach(m_rDistance, Dis_LIT_NEAR))
 	{
 		if (nType == TYPE::TYPE_SE)
 		{
@@ -680,10 +674,7 @@ void CSound::SetDistance(const D3DXVECTOR3 Pos, const int nType, const LABEL Lab
 		}
 	}
 	//Ç‡Çµè≠ÇµâìÇ©Ç¡ÇΩÇÁ
-	else if (m_rDistance.x <= Dis_LIT_FAR&&
-		m_rDistance.z <= Dis_LIT_FAR &&
-		!(-m_rDistance.x >= Dis_LIT_FAR) &&
-		!(-m_rDistance.z >= Dis_LIT_FAR))
+	else if (Bool::bApproach(m_rDistance, Dis_LIT_FAR))
 	{
 		if (nType == TYPE::TYPE_SE)
 		{
@@ -698,11 +689,8 @@ void CSound::SetDistance(const D3DXVECTOR3 Pos, const int nType, const LABEL Lab
 
 		}
 	}
-	//Ç‡ÇµâìÇ©Ç¡ÇΩÇÁ
-	else if (m_rDistance.x <= Dis_FAR&&
-		m_rDistance.z <= Dis_FAR &&
-		!(-m_rDistance.x >= Dis_FAR) &&
-		!(-m_rDistance.z >= Dis_FAR))
+	//Ç‡Çµè≠ÇµâìÇ©Ç¡ÇΩÇÁ
+	else if (Bool::bApproach(m_rDistance, Dis_FAR))
 	{
 		if (nType == TYPE::TYPE_SE)
 		{

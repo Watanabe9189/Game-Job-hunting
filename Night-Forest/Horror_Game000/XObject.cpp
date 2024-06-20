@@ -68,7 +68,7 @@ void CXObject::Draw(void)
 
 	//ワールドマトリックスの初期化
 	D3DXMatrixIdentity(&m_mtxWorld);
-	
+
 	//向きを反映する
 	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
@@ -83,6 +83,17 @@ void CXObject::Draw(void)
 	//現在のマテリアルを取得
 	CManager::GetRenderer()->GetDevice()->GetMaterial(&matDef);
 
+	DrawModel();
+
+	//保存していたマテリアルを戻す
+	CManager::GetRenderer()->GetDevice()->SetMaterial(&matDef);
+
+}
+//<====================================
+//モデル割り当て
+//<====================================
+void CXObject::DrawModel(void)
+{
 	//頂点数分繰り返し
 	for (int nCntMat = 0; nCntMat < (int)m_asModel.dwNumMat; nCntMat++)
 	{
@@ -92,16 +103,9 @@ void CXObject::Draw(void)
 		//テクスチャの設定
 		CManager::GetRenderer()->GetDevice()->SetTexture(0, m_asModel.apTexture[nCntMat]);
 
-		//透明度が半透明の値を超えていたら
-		if (m_asModel.pMat[nCntMat].MatD3D.Diffuse.a >= VALUE_TRANSLUSENT)
-		{
-			//モデルの描画
-			m_asModel.pMesh->DrawSubset(nCntMat);
-		}
+		//モデルの描画
+		m_asModel.pMesh->DrawSubset(nCntMat);
 	}
-
-	//保存していたマテリアルを戻す
-	CManager::GetRenderer()->GetDevice()->SetMaterial(&matDef);
 }
 //<====================================
 //モデル割り当て
@@ -118,12 +122,14 @@ CXObject::DataModel CXObject::BindModel(const char *pFileName, const bool bMatCh
 			//もし保存されたファイル名と引数のファイル名が一緒だったら
 			if (strcmp(m_apFileName[nCnt], pFileName) == 0)
 			{
+				LPD3DXBUFFER pBuf = nullptr;
+
 				//<==========================================
 				//色変えのためにもう一度モデルを読み込む
 				//(pBuffMat以外はすでに保存されているデータを使用)
 				//<==========================================
 				if (FAILED(D3DXLoadMeshFromX(m_apFileName[nCnt],
-					D3DXMESH_SYSTEMMEM,
+					D3DXMESH_MANAGED,
 					CManager::GetRenderer()->GetDevice(),
 					NULL,
 					&m_asaveModel[nCnt].pBuffMat,			//ここだけ変更するモデルの引数にする
@@ -169,7 +175,7 @@ void CXObject::LoadModel(void)
 {
 	//Xファイルの読み込み
 	(D3DXLoadMeshFromX(m_apFileName[m_nNumAll],
-		D3DXMESH_SYSTEMMEM,
+		D3DXMESH_MANAGED,
 		CManager::GetRenderer()->GetDevice(),
 		NULL,
 		&m_asaveModel[m_nNumAll].pBuffMat,
@@ -296,4 +302,20 @@ CXObject *CXObject::Create(const D3DXVECTOR3 rPos, const D3DXVECTOR3 rRot, const
 
 	return pXObject;
 }
+//<====================================
+//距離による近づいているかどうかの判断
+//<====================================
+bool CXObject::BoolDis(const D3DXVECTOR3 rPos, const D3DXVECTOR3 rTargetPos)
+{
+	//ここでしか使わない変数
+	const float DIS_VALUE = 1000.0f;																	//距離の固定値
+	D3DXVECTOR3 rDis = D3DXVECTOR3(rPos.x - rTargetPos.x, rPos.y - rTargetPos.y, rPos.z - rTargetPos.z);//距離計算用
 
+	//もし近づいていたら
+	if (Bool::bApproach(rDis, DIS_VALUE))
+	{
+		return true;
+	}
+
+	return false;
+}

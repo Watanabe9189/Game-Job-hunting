@@ -216,7 +216,21 @@ void C3DEnemy::Update(void)
 //<=======================================
 void C3DEnemy::Draw(void)
 {
-	CXObject::Draw();
+	//モードがゲームの時のみ
+	if (CManager::GetMode() == CScene::MODE_GAME)
+	{
+		//プレイヤー中身チェック&&近づいていたらまたは高速型だったら
+		if (m_pPlayer != nullptr
+			&&BoolDis(m_pos, m_pPlayer->GetPosition())
+			||m_eType == TYPE::TYPE_ENEMY_HIGHSPEED)
+		{
+			CXObject::Draw();
+		}
+	}
+	else if (CManager::GetMode() == CScene::MODE_TITLE)
+	{
+		CXObject::Draw();
+	}
 }
 //<=======================================
 //3Dエネミーの行動処理

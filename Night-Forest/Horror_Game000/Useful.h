@@ -117,6 +117,7 @@ namespace Calculate
 namespace Bool
 {
 	bool bMove(const D3DXVECTOR3 rMove);
+	bool bApproach(const D3DXVECTOR3 rDis,const float fDisValue);
 }
 //<============================================================================================================
 //boolŒ^”»’èŠÖ˜A‚Ì–¼‘OéŒ¾
