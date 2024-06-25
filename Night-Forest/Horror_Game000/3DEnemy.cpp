@@ -227,6 +227,7 @@ void C3DEnemy::Draw(void)
 			CXObject::Draw();
 		}
 	}
+	//ƒ^ƒCƒgƒ‹‰æ–Ê‚¾‚Á‚½‚ç
 	else if (CManager::GetMode() == CScene::MODE_TITLE)
 	{
 		CXObject::Draw();

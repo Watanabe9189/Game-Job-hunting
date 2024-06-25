@@ -110,7 +110,6 @@ CBuilding *CBuilding::Create(const D3DXVECTOR3 pos, const TYPE eType)
 
 	assert(pBuilding );
 
-	
 	//‰Šú‰»ˆ—
 	assert(SUCCEEDED(pBuilding->Init()));
 
