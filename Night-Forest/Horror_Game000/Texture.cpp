@@ -107,6 +107,7 @@ int CTexture::Regist(const char *pTexName, LPDIRECT3DTEXTURE9 &pTex)
 			}
 		}
 
+		//î•ñ‘}“ü
 		m_pFileName.insert(m_pFileName.begin() + nNum, pTexName);
 
 		//‚à‚µ‚È‚¯‚ê‚Î
@@ -117,6 +118,7 @@ int CTexture::Regist(const char *pTexName, LPDIRECT3DTEXTURE9 &pTex)
 				m_pFileName.at(nNum),
 				&pTex)) == D3D_OK);
 
+			//î•ñ‘}“ü
 			m_pTexture.insert(m_pTexture.begin() + nNum, pTex);
 		}
 
