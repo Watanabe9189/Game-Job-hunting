@@ -1,0 +1,321 @@
+//<===============================================
+//3Dオブジェクト専門の処理[Xファイル](XObject.cpp)
+//
+//Author:kazuki watanabe
+//<===============================================
+#include "XObject.h"
+#include "manager.h"
+#include "Texture.h"
+
+int CXObject::m_nNumAll = INITIAL_INT;
+const char *CXObject::m_apFileName[INT_VALUE::MAX_SIZE] = {};
+CXObject::DataModel CXObject::m_asaveModel[INT_VALUE::MAX_SIZE] = {};
+
+//<***************************************************
+//名前宣言
+//<***************************************************
+namespace
+{
+	const float VALUE_TRANSLUSENT = 0.5f;	//半透明の値
+}
+
+//<====================================
+//Xファイルオブジェクトのコンストラクタ
+//<====================================
+CXObject::CXObject(int nPriority) : CObject(nPriority)
+{
+	//値のクリア
+	m_mtxWorld = {};
+
+	//位置情報関連
+	m_pos		=	INIT_VECTOR;
+	m_rot		=	INIT_VECTOR;
+	m_move		=	INIT_VECTOR;
+
+	m_pMat = nullptr;
+
+	m_asModel = {};
+}
+//<====================================
+//Xファイルオブジェクトのデストラクタ
+//<====================================
+CXObject::~CXObject()
+{
+	
+}
+//<====================================
+//Xファイルオブジェクトの初期化処理
+//<====================================
+HRESULT CXObject::Init(void)
+{
+	return S_OK;
+}
+//<====================================
+//Xファイルオブジェクトの終了処理
+//<====================================
+void CXObject::Uninit(void)
+{
+	Release();
+}
+//<====================================
+//Xファイルオブジェクトの描画処理
+//<====================================
+void CXObject::Draw(void)
+{
+	//この関数でしか使わない変数宣言
+	D3DXMATRIX			mtxRot = {}, mtxTrans = {};		//計算用マトリックス宣言
+	D3DMATERIAL9		matDef = {};					//現在のマテリアル保存用変数
+
+	//ワールドマトリックスの初期化
+	D3DXMatrixIdentity(&m_mtxWorld);
+
+	//向きを反映する
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
+	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxRot);
+
+	//位置を反映する
+	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
+	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
+
+	//ワールドマトリックスの設定
+	CManager::GetRenderer()->GetDevice()->SetTransform(D3DTS_WORLD, &m_mtxWorld);
+
+	//現在のマテリアルを取得
+	CManager::GetRenderer()->GetDevice()->GetMaterial(&matDef);
+
+	DrawModel();
+
+	//保存していたマテリアルを戻す
+	CManager::GetRenderer()->GetDevice()->SetMaterial(&matDef);
+
+}
+//<====================================
+//モデル割り当て
+//<====================================
+void CXObject::DrawModel(void)
+{
+	//頂点数分繰り返し
+	for (int nCntMat = 0; nCntMat < (int)m_asModel.dwNumMat; nCntMat++)
+	{
+		//マテリアルの設定
+		CManager::GetRenderer()->GetDevice()->SetMaterial(&m_asModel.pMat[nCntMat].MatD3D);
+
+		//テクスチャの設定
+		CManager::GetRenderer()->GetDevice()->SetTexture(0, m_asModel.apTexture[nCntMat]);
+
+		//モデルの描画
+		m_asModel.pMesh->DrawSubset(nCntMat);
+	}
+}
+//<====================================
+//モデル割り当て
+//<====================================
+CXObject::DataModel CXObject::BindModel(const char *pFileName, const bool bMatChange)
+{
+	int nNum = m_nNumAll;
+
+	//数分繰り返す
+	for (int nCnt = 0; nCnt < nNum; nCnt++)
+	{
+		if (m_apFileName[nCnt] )
+		{
+			//もし保存されたファイル名と引数のファイル名が一緒だったら
+			if (strcmp(m_apFileName[nCnt], pFileName) == 0)
+			{
+				LPD3DXBUFFER pBuf = nullptr;
+
+				//<==========================================
+				//色変えのためにもう一度モデルを読み込む
+				//(pBuffMat以外はすでに保存されているデータを使用)
+				//<==========================================
+				if (FAILED(D3DXLoadMeshFromX(m_apFileName[nCnt],
+					D3DXMESH_MANAGED,
+					CManager::GetRenderer()->GetDevice(),
+					NULL,
+					&m_asaveModel[nCnt].pBuffMat,			//ここだけ変更するモデルの引数にする
+					NULL,
+					&m_asaveModel[nCnt].dwNumMat,
+					&m_asaveModel[nCnt].pMesh)))
+				{
+					return{};
+				}
+				//その番号を返し、すでに登録されているテクスチャ
+				m_asModel = m_asaveModel[nCnt];
+
+				assert((m_asModel.pMat =
+					(D3DXMATERIAL*)m_asaveModel[nCnt].pBuffMat->GetBufferPointer()) );
+
+				m_asModel.pOriginMat = m_asaveModel[nCnt].pOriginMat;
+				//<==========================================
+				//モデルIDを保存
+				//<==========================================
+				m_nModelId = nCnt;
+				return m_asModel;
+			}
+		}
+	}
+
+	m_apFileName[nNum] = pFileName;
+
+	//モデルの設定を行う
+	LoadModel();
+
+	m_nModelId = m_nNumAll;
+
+	m_asModel = m_asaveModel[nNum];
+
+	m_nNumAll++;
+
+	return m_asModel;
+}
+//<====================================
+//新たに読み込むモデル
+//<====================================
+void CXObject::LoadModel(void)
+{
+	//Xファイルの読み込み
+	(D3DXLoadMeshFromX(m_apFileName[m_nNumAll],
+		D3DXMESH_MANAGED,
+		CManager::GetRenderer()->GetDevice(),
+		NULL,
+		&m_asaveModel[m_nNumAll].pBuffMat,
+		NULL,
+		&m_asaveModel[m_nNumAll].dwNumMat,
+		&m_asaveModel[m_nNumAll].pMesh));
+
+	assert((m_asaveModel[m_nNumAll].pMat =
+		(D3DXMATERIAL*)m_asaveModel[m_nNumAll].pBuffMat->GetBufferPointer()) );
+
+	m_asaveModel[m_nNumAll].pOriginMat = m_asaveModel[m_nNumAll].pMat;
+
+	//頂点数分繰り返し
+	for (DWORD nCntMat = 0; nCntMat < m_asaveModel[m_nNumAll].dwNumMat; nCntMat++)
+	{
+		//ファイルが存在していたら
+		if (m_asaveModel[m_nNumAll].pMat[nCntMat].pTextureFilename != NULL &&
+			!m_asaveModel[m_nNumAll].apTexture[nCntMat])
+		{
+			//テクスチャを割り当てる
+			CManager::GetTex()->Regist(
+				m_asaveModel[m_nNumAll].pMat[nCntMat].pTextureFilename,
+				m_asaveModel[m_nNumAll].apTexture[nCntMat]);
+		}
+	}
+	CheckVtxNo();
+}
+//<====================================
+//頂点情報チェック
+//<====================================
+void CXObject::CheckVtxNo(void)
+{
+	//頂点確認用のバーテックス変数
+	D3DXVECTOR3 rVtx = INIT_VECTOR;
+
+	//モデルの頂点数を取得
+	m_asaveModel[m_nNumAll].nNumVtx = m_asaveModel[m_nNumAll].pMesh->GetNumVertices();
+
+	//頂点フォーマットのサイズを取得
+	m_asaveModel[m_nNumAll].dwSizeFVF = D3DXGetFVFVertexSize(m_asaveModel[m_nNumAll].pMesh->GetFVF());
+
+	//頂点バッファをロック
+	m_asaveModel[m_nNumAll].pMesh->LockVertexBuffer(D3DLOCK_READONLY, (void**)&m_asaveModel[m_nNumAll].pVtxBuff);
+
+	//全ての頂点をチェックする
+	for (int nCntVtx = 0; nCntVtx < m_asaveModel[m_nNumAll].nNumVtx; nCntVtx++)
+	{
+		//今回のデータ
+		rVtx = *(D3DXVECTOR3*)m_asaveModel[m_nNumAll].pVtxBuff;
+
+		//<***********************************
+		//X軸判定
+		//<***********************************
+		//今の最小値よりも今回の値が小さかったら
+		if (m_asaveModel[m_nNumAll].vtxMin.x > rVtx.x)
+		{
+			m_asaveModel[m_nNumAll].vtxMin.x = rVtx.x;
+		}
+		//今の最大値よりも今回の値が大きかったら
+		if (m_asaveModel[m_nNumAll].vtxMax.x < rVtx.x)
+		{
+			m_asaveModel[m_nNumAll].vtxMax.x = rVtx.x;
+		}
+		//<***********************************
+		//Y軸判定
+		//<***********************************
+		//今の最小値よりも今回の値が小さかったら
+		if (m_asaveModel[m_nNumAll].vtxMin.y > rVtx.y)
+		{
+			m_asaveModel[m_nNumAll].vtxMin.y = rVtx.y;
+		}
+		//今の最大値よりも今回の値が大きかったら
+		if (m_asaveModel[m_nNumAll].vtxMax.y < rVtx.y)
+		{
+			m_asaveModel[m_nNumAll].vtxMax.y = rVtx.y;
+		}
+		//<***********************************
+		//Z軸判定
+		//<***********************************
+		//今の最小値よりも今回の値が小さかったら
+		if (m_asaveModel[m_nNumAll].vtxMin.z > rVtx.z)
+		{
+			m_asaveModel[m_nNumAll].vtxMin.z = rVtx.z;
+		}
+		//今の最大値よりも今回の値が大きかったら
+		if (m_asaveModel[m_nNumAll].vtxMax.z < rVtx.z)
+		{
+			m_asaveModel[m_nNumAll].vtxMax.z = rVtx.z;
+		}
+
+		//サイズ分ポインタを移動させる
+		m_asaveModel[m_nNumAll].pVtxBuff += m_asaveModel[m_nNumAll].dwSizeFVF;
+
+	}
+
+	//頂点バッファをアンロック
+	m_asaveModel[m_nNumAll].pMesh->UnlockVertexBuffer();
+
+	//サイズの設定
+	m_asaveModel[m_nNumAll].rSize = m_asaveModel[m_nNumAll].vtxMax - m_asaveModel[m_nNumAll].vtxMin;
+
+	//代入
+	m_asaveModel[m_nNumAll].rSizeX = m_asaveModel[m_nNumAll].rSize;
+	m_asaveModel[m_nNumAll].rSizeZ = m_asaveModel[m_nNumAll].rSize;
+
+	//判定用に半減する
+	m_asaveModel[m_nNumAll].rSizeX.z = m_asaveModel[m_nNumAll].rSizeX.z / 2.1f;
+	m_asaveModel[m_nNumAll].rSizeZ.x = m_asaveModel[m_nNumAll].rSizeZ.x / 2.1f;
+}
+//<====================================
+//単体生成処理
+//<====================================
+CXObject *CXObject::Create(const D3DXVECTOR3 rPos, const D3DXVECTOR3 rRot, const char *pFileName)
+{
+	CXObject *pXObject = new CXObject;
+
+	assert(pXObject );
+
+	pXObject->BindModel(pFileName);
+
+	pXObject->Init();
+
+	pXObject->SetVector3(rPos, rRot, INIT_VECTOR);
+
+	return pXObject;
+}
+//<====================================
+//距離による近づいているかどうかの判断
+//<====================================
+bool CXObject::BoolDis(const D3DXVECTOR3 rPos, const D3DXVECTOR3 rTargetPos)
+{
+	//ここでしか使わない変数
+	const float DIS_VALUE = 1000.0f;																	//距離の固定値
+	D3DXVECTOR3 rDis = D3DXVECTOR3(rPos.x - rTargetPos.x, rPos.y - rTargetPos.y, rPos.z - rTargetPos.z);//距離計算用
+
+	//もし近づいていたら
+	if (Bool::bApproach(rDis, DIS_VALUE))
+	{
+		return true;
+	}
+
+	return false;
+}

@@ -1,0 +1,117 @@
+//<============================================
+//3Dエネミー処理(3DEnemy.h)
+//
+//Author:kazuki watanabe
+//<============================================
+#ifndef _3DENEMY_H_
+#define _3DENEMY_H_
+
+#include "XObject.h"
+#include "3DPlayer.h"
+
+//<**********************************************
+//3Dエネミーのクラス定義
+//<**********************************************
+class C3DEnemy : public CXObject
+{
+public:
+
+	//<=========================================
+	//敵タイプの列挙型
+	//<=========================================
+	enum TYPE
+	{
+		TYPE_ENEMY_NORMAL = 0,	//通常型
+		TYPE_ENEMY_INVISIBLE,	//透明型
+		TYPE_ENEMY_HIGHSPEED,	//高速型
+		TYPE_MAX
+
+	};
+	//<=========================================
+	//敵ステートの列挙型
+	//<=========================================
+	enum STATE
+	{
+		STATE_NORMAL = 0,		//何もない状態
+		STATE_SEARCH,			//探索状態
+		STATE_WAIT,				//待機状態
+		STATE_CHASE,			//追跡状態
+		STATE_MAX
+
+	};
+
+	C3DEnemy(int nPriority = FIX_PRIORITY);
+	~C3DEnemy();
+
+	HRESULT Init(void);
+	void Uninit(void);
+	void Update(void);
+	void Draw(void);
+
+	static C3DEnemy *ReadCreate(C3DEnemy *apEnemy[MAX_OBJECT]);
+	static C3DEnemy *RandCreate(C3DEnemy *apEnemy[MAX_OBJECT]);
+	static C3DEnemy *RandCreateWithNum(C3DEnemy *apEnemy[MAX_OBJECT],const int nNum);
+	void Search(void);
+	static int GetNum(void) { return m_nNumAll; }
+
+	static void SetNumSet(const int nNumSet) { m_nNumSet = nNumSet; }
+	static int GetNumSet(void) { return m_nNumSet; }
+	static int GetNumMax(void) { return m_nNumMax; }
+	static int GetNumMin(void) { return m_nNumMin; }
+	//<============================================
+	//今回使用しないオーバーロードメンバ関数
+	//<============================================
+	void SetVtx(void) { return; }
+
+	//
+	STATE GetState(void) { return m_sState; }
+	TYPE GetType(void) { return m_eType; }
+
+	void SetDest(const D3DXVECTOR3 rDestPos);
+
+protected:
+
+	//メンバ関数
+	void SetDest(void);
+	void SetSound(const CSound::LABEL Label, const int nMaxCount, const D3DXVECTOR3 rTargetPos);
+	void CollidPlayer(void);
+	void DeathSound(void);
+	void SerachRot(const D3DXVECTOR3 rRandPos);
+
+	//メンバ変数
+	D3DXVECTOR3 m_pos;		//位置
+	D3DXVECTOR3 m_rDestPos;	//目的の位置
+	D3DXVECTOR3 m_OldPos;	//前回の位置
+	D3DXVECTOR3 m_rot;		//向き
+	D3DXVECTOR3 m_move;		//移動値
+	float m_fSearchRad;		//探索円
+	D3DXVECTOR3 m_rDis;
+	static int m_nNumAll;	//総数
+	static int m_nNumSet;		//
+	static int m_nNumMax;
+	static int m_nNumMin;
+
+	STATE m_sState;
+	
+															
+	static const char*			m_acFilename[TYPE::TYPE_MAX];				//ファイル名
+
+	int m_nSoundCount;
+	int m_nSoundMax;
+
+	float m_fMoveValue;
+
+	D3DXVECTOR3 m_rRandDest;
+
+	D3DXVECTOR3 m_fFrontDest;
+	D3DXVECTOR3 m_fBackDest;
+
+	C3DPlayer *m_pPlayer;
+	CSound *m_pSound;
+
+	TYPE m_eType;
+
+	DataModel m_sModel;
+	D3DXMATERIAL *m_pMat;
+};
+#endif
