@@ -26,7 +26,6 @@ CField *CGame::m_apField[INT_VALUE::MAX_SIZE] = {};
 CFog *CGame::m_pFog = nullptr;
 CBuilding *CGame::m_apBuilding[INT_VALUE::MAX_SIZE] = {};
 C2DGauge *CGame::m_p2DGauge = nullptr;
-C3DEnemy *CGame::m_ap3DEnemy[INT_VALUE::MAX_SIZE];
 CItem *CGame::m_apItem[INT_VALUE::MAX_SIZE] = {};
 C2DInfo *CGame::m_pInfo = nullptr;
 Ccover *CGame::m_pCover = nullptr;
@@ -36,6 +35,7 @@ CLandMark *CGame::m_apLandMark[INT_VALUE::MAX_SIZE] = {};
 CDestArrowX *CGame::m_pDestArrowX = nullptr;
 CDestArrow *CGame::m_pDestArrow = nullptr;
 Ccamera *CGame::m_pCamera = nullptr;
+CEnemyManagement *CGame::pEnemyManagment = nullptr;
 
 //<**********************************************************
 //名前宣言
@@ -175,19 +175,6 @@ void CGame::Uninit(void)
 		}
 	}
 	//<******************************************
-	//敵の破棄
-	//<******************************************
-	for (int nCnt = 0; nCnt < C3DEnemy::GetNum(); nCnt++)
-	{
-		//もしメモリ確保がされていたら
-		if (m_ap3DEnemy[nCnt] )
-		{
-			//メモリの解放を行わず、終了処理をする
-			m_ap3DEnemy[nCnt]->Uninit();
-			m_ap3DEnemy[nCnt] = nullptr;
-		}
-	}
-	//<******************************************
 	//建物の破棄
 	//<******************************************
 	for (int nCnt = 0; nCnt < CBuilding::GetNum(); nCnt++)
@@ -252,6 +239,15 @@ void CGame::Uninit(void)
 			m_apLandMark[nCnt] = nullptr;
 		}
 	}
+	//<******************************************
+	//Xモデル目的矢印の破棄
+	//<******************************************
+	if (pEnemyManagment)
+	{
+		pEnemyManagment->Uninit();
+		delete pEnemyManagment;
+		pEnemyManagment = nullptr;
+	}
 	Release();
 }
 //<====================================
@@ -272,8 +268,6 @@ void CGame::Update(void)
 	if (Bool::bMove(m_p3DPlayer->GetMove())
 		&& !m_bMoved)
 	{
-		//敵生成
-		C3DEnemy::RandCreate(m_ap3DEnemy);
 
 		//フラグを立て、二回目の生成がないようにする
 		m_bMoved = true;
@@ -283,9 +277,8 @@ void CGame::Update(void)
 	{
 		m_nSpawnTime++;
 		m_nDestTime++;
-		EnemySpawn();
-		DestToPlayer();
 	}
+	pEnemyManagment->Appear();
 	
 	Fading();
 	ItemUpdate();
@@ -418,6 +411,8 @@ void CGame::Creating(void)
 	//2Dでの目的矢印の生成
 	//<******************************************
 	m_pDestArrow = CDestArrow::Create();
+
+	pEnemyManagment = new CEnemyManagement;
 }
 //<====================================
 //フェード関連の更新処理
@@ -554,62 +549,6 @@ void CGame::ItemUpdate(void)
 		{
 			m_ap2DChar[CHAR2D_FOUND] = C2DChar::Create(D3DXVECTOR2(600.0f, 425.0f),
 				D3DXVECTOR2(200.0f, 200.0f), C2DChar::CHAR_TYPE::CHAR_TYPE_FOUND_INFO, C2DChar::MOVE_FROM_LEFT, true);
-		}
-	}
-}
-//<====================================
-//敵スポーン関連の更新処理
-//<====================================
-void CGame::EnemySpawn(void)
-{
-	//既定値にいっていたら
-	if (m_nSpawnTime >= MAX_SPAWNTIME)
-	{
-		for (int nCnt = 0; nCnt < INT_VALUE::MAX_CHAR; nCnt++)
-		{
-			//中身がなければ
-			if (!m_ap3DEnemy[nCnt])
-			{
-				//敵をスポーンさせる
-				m_ap3DEnemy[nCnt] = C3DEnemy::RandCreateWithNum(m_ap3DEnemy, 1);
-				m_nSpawnTime = INITIAL_INT;
-				return;
-			}
-		}
-	}
-}
-//<====================================
-//目的関連の更新処理
-//<====================================
-void CGame::DestToPlayer(void)
-{
-	int nRand = INITIAL_INT;			//乱数をするための変数
-	const float DISTANCE_POS = 350.0f;	//プレイヤーの位置から離れる距離
-
-	//基底の時間になったら
-	if (m_nDestTime >= MAX_DESTTiME)
-	{
-		for(int nCnt =0;nCnt < C3DEnemy::GetNum();nCnt++)
-		{
-
-			//高速型ではなければ
-			if (m_ap3DEnemy[nCnt] &&
-				m_ap3DEnemy[nCnt]->GetType() != C3DEnemy::TYPE::TYPE_ENEMY_HIGHSPEED)
-			{
-				//0から2までの数をランダムで決める
-				nRand = Calculate::CalculeteRandInt(5, 0);
-
-				//当てはまったら
-				if (nRand == 3)
-				{
-					//プレイヤーの方向に移動する
-					m_ap3DEnemy[nCnt]->SetDest(D3DXVECTOR3(m_p3DPlayer->GetPosition().x + DISTANCE_POS,
-						0.0f, m_p3DPlayer->GetPosition().z + DISTANCE_POS));
-
-					m_nDestTime = INITIAL_INT;
-					return;
-				}
-			}
 		}
 	}
 }

@@ -234,10 +234,7 @@ void CObject::UpdateAll(void)
 			{
 				return;
 			}
-
-			//ポインタの有効性をチェック
-			_ASSERTE(_CrtIsValidPointer(pObj, sizeof(CObject), TRUE));
-
+			
 			//もし初期化されていないメモリにアクセスしようとしたら
 			if (pObj->m_bDestru > true)
 			{

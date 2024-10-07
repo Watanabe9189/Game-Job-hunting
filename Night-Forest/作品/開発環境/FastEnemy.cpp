@@ -1,3 +1,8 @@
+//<======================================
+//高速型敵の処理(FastEnemy.cpp)
+//
+//Author:Kazuki Watanabe
+//<======================================
 #include "FastEnemy.h"
 #include "Item.h"
 
@@ -9,36 +14,43 @@ namespace
 	const float ALPHA_VALUE_HIGH = 0.005f;	//高速型の透明度の値
 	const float ROTATE_VALUE = 0.1f;		//回転値
 
-	const int	MAX_INTERVAL = 1000;		//間隔の最大値
+	const int	MAX_INTERVAL = 500;		//間隔の最大値
 }
 
 //<================================
-//
+//コンストラクタ
 //<================================
 CFastEnemy::CFastEnemy()
 {
 	//値のクリア
 	m_sFastState = FAST_STATE::FAST_STATE_WAIT;
 	m_rTelportPos = INIT_VECTOR;
-	m_bStartMove = false;
-
 	m_nInterval=INITIAL_INT;
 	m_nRandInter = INITIAL_INT;
-	m_nFixedInter = INITIAL_INT;
 }
 //<================================
 //
 //<================================
-CFastEnemy::~CFastEnemy()
+CFastEnemy *CFastEnemy::Create(void)
 {
+	//メモリ確保+中身チェック
+	CFastEnemy *pFast = new CFastEnemy;
+	assert(pFast);
 
+	//初期化処理と値の代入
+	pFast->Init();
+	pFast->SetPosition(INIT_VECTOR);
+	pFast->m_nInterval = pFast->m_nRandInter;
+	pFast->m_OldPos = pFast->GetPosition();
+
+	return pFast;
 }
 //<================================
-//
+//初期化処理
 //<================================
 HRESULT CFastEnemy::Init(void)
 {
-	//
+	//初期化とモデルチェック
 	C3DEnemy::Init();
 	m_sModel = BindModel("data/MODEL/Monster001.x", true);
 
@@ -54,52 +66,36 @@ HRESULT CFastEnemy::Init(void)
 		}
 	}
 
+	//インターバルを設定
 	m_nRandInter = Calculate::CalculeteRandInt(3500, 1000);
+
+	return S_OK;
 }
 //<================================
-//
-//<================================
-void CFastEnemy::Uninit(void)
-{
-	C3DEnemy::Uninit();
-}
-//<================================
-//
+//更新処理
 //<================================
 void CFastEnemy::Update(void)
 {
 	C3DEnemy::Update();
 
-	//アイテム収集数が0以上だったら
-	if (CItem::GetNumCollect() > 0)
-	{
-		HighSpeedMove();
-	}
+	m_pos = GetPosition();
+	m_rot = GetRotation();
+	m_move = GetMove();
 
-	//一個目をゲットしていたら
-	if (CItem::GetNumCollect() == 1
-		&& !m_bStartMove)
-	{
-		m_bStartMove = true;
-		m_nInterval = m_nRandInter;
-	}
-}
-//<================================
-//
-//<================================
-void CFastEnemy::Draw(void)
-{
-	C3DEnemy::Draw();
+	HighSpeedMove();
+
+	//ベクトルの三要素の設定
+	SetVector3(m_pos, m_rot, m_move);
 }
 //<=======================================
-//3Dエネミーの
+//動き
 //<=======================================
 void CFastEnemy::HighSpeedMove(void)
 {
 	const float HIGHSPEED_VALUE = 0.085f;							//高速型の移動量
 	const int nFixedInter = MAX_INTERVAL / CItem::GetNumCollect();	//固定インターバル
 
-																	//目的向き
+	//目的向き
 	D3DXVECTOR3 rRotDest = Calculate::CalculateDest(m_pos, m_rDestPos);
 
 	//高速型のステートによって行動を変化させる
@@ -112,7 +108,6 @@ void CFastEnemy::HighSpeedMove(void)
 
 		//プレイヤーの位置を目的地とする
 		SetDest(m_pPlayer->GetPosition());
-
 		m_fMoveValue = HIGHSPEED_VALUE;
 
 		//プレイヤーが隠れていれば
@@ -240,6 +235,7 @@ void CFastEnemy::HighSpeedMove(void)
 				m_nInterval++;
 			}
 		}
+
 		m_sModel.pMat = Color::AlphaChangeMaterial(m_sModel.pMat, -ALPHA_VALUE_HIGH, m_sModel.dwNumMat);
 
 		break;

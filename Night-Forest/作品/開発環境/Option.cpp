@@ -58,7 +58,6 @@ COption::COption()
 	m_nSelect = INITIAL_INT;
 	m_nOldSelect = INITIAL_INT;
 	m_nStamina = INITIAL_INT;
-	m_nNumEnemy = INITIAL_INT;
 
 	m_pChangeCol = nullptr;
 }
@@ -80,7 +79,6 @@ HRESULT COption::Init(void)
 
 	//情報を取得してくる
 	m_nStamina = C2DGauge::GetFixed();
-	m_nNumEnemy = C3DEnemy::GetNumSet();
 
 	CManager::GetSound()->PlaySound(CSound::LABEL_BGM_OPTION);
 
@@ -112,17 +110,10 @@ HRESULT COption::Init(void)
 	m_p2DGauge = C2DGauge::Create(D3DXVECTOR2(m_apObject2D[SELECT::SELECT_STAMINA]->GetPosition().x + DISTANCE_GAUGE,
 		m_apObject2D[SELECT::SELECT_STAMINA]->GetPosition().y), m_nStamina, C2DGauge::VERTEX_X, C2DGauge::MODE_ALWAYS);
 
-	//番号設定
-	m_pNumber = CNumber::Create(D3DXVECTOR2(m_apObject2D[SELECT::SELECT_ENEMYNUM]->GetPosition().x + DISTANCE_NUM,
-		m_apObject2D[SELECT::SELECT_ENEMYNUM]->GetPosition().y), NUM_SIZE,m_apTexture[3]);
-
 	//中身チェック
 	assert(m_p2DGauge &&m_pNumber );
 
 	m_p2DGauge->NoUseFrame();
-
-	//数を設定する
-	m_pNumber->SetNum(&m_nNumEnemy);
 
 	return S_OK;
 }
@@ -210,43 +201,12 @@ void COption::Update(void)
 			}
 		}
 		//EXITボタンに行っていて決定ボタンが押されていたら
-		else if (m_nSelect == SELECT::SELECT_ENEMYNUM)
-		{
-			//左キーが押されていたら
-			if (CManager::GetKeyboard()->bGetTrigger(DIK_LEFTARROW)
-				|| CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_LEFT, 0))
-			{
-				m_nNumEnemy--;
-
-				if (m_nNumEnemy <= C3DEnemy::GetNumMin())
-				{
-					m_nNumEnemy = C3DEnemy::GetNumMin();
-				}
-
-				m_pNumber->SetNum(&m_nNumEnemy);
-			}
-			//右キーが押されていたら
-			else if (CManager::GetKeyboard()->bGetTrigger(DIK_RIGHTARROW)
-				|| CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_RIGHT, 0))
-			{
-				m_nNumEnemy++;
-
-				if (m_nNumEnemy >= ENEMY_NUM)
-				{
-					m_nNumEnemy = ENEMY_NUM;
-				}
-
-				m_pNumber->SetNum(&m_nNumEnemy);
-			}
-		}
-		//EXITボタンに行っていて決定ボタンが押されていたら
 		else if (CManager::GetKeyboard()->bGetTrigger(DIK_RETURN)
 			|| CManager::GetJoyPad()->GetTrigger(BUTTON::BUTTON_B, 0)&&m_nSelect == SELECT::SELECT_EXIT)
 		{
 			CManager::GetSound()->PlaySound(CSound::LABEL_SE_SELECTED);
 			CManager::SetFade(CScene::MODE::MODE_TITLE);
 			C2DGauge::SetFixed(m_nStamina);				//スタミナ最大値を設定
-			C3DEnemy::SetNumSet(m_nNumEnemy);
 		}
 	}
 }

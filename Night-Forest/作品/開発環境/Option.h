@@ -32,7 +32,6 @@ public:
 	enum SELECT
 	{
 		SELECT_STAMINA = 0,
-		SELECT_ENEMYNUM,
 		SELECT_EXIT,
 		SELECT_MAX
 	};
@@ -61,7 +60,6 @@ private:
 	static Ccamera *m_pCamera;					//
 
 	int m_nStamina;
-	int m_nNumEnemy;
 	int m_nSelect;
 	int m_nOldSelect;
 	ChangeCol *m_pChangeCol;

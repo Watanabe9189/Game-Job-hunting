@@ -28,6 +28,7 @@
 #include "LandMark.h"
 #include "DestArrow.h"
 #include "DestArrowX.h"
+#include "EnemyManagment.h"
 //<*************************************************
 //クラス宣言
 //<*************************************************
@@ -73,7 +74,6 @@ public:
 	static CLandMark *GetLand(int nCnt) { return m_apLandMark[nCnt]; }
 	static C2DGauge *GetGauge(void) { return m_p2DGauge; }
 	static C3DPlayer *Get3DPlayer(void) { return m_p3DPlayer; }
-	static C3DEnemy *Get3DEnemy(int nCnt) { return m_ap3DEnemy[nCnt]; }
 	static C2DChar *Get2DChar(int nCnt) { return m_ap2DChar[nCnt]; }
 	static CItem *GetItem(int nCnt) { return m_apItem[nCnt]; }
 	static Ccamera *GetCamera(void) { return m_pCamera; }
@@ -83,14 +83,11 @@ private:
 	void Creating(void);
 	void Fading(void);
 	void ItemUpdate(void);
-	void EnemySpawn(void);
-	void DestToPlayer(void);
 
 	static CLight *m_pLight;					//
 	static C3DPlayer *m_p3DPlayer;
 	static CBuilding *m_apBuilding[INT_VALUE::MAX_SIZE];
 	static CField *m_apField[INT_VALUE::MAX_SIZE];
-	static C3DEnemy *m_ap3DEnemy[INT_VALUE::MAX_SIZE];
 	static CFog *m_pFog;
 	static C2DGauge *m_p2DGauge;
 	static CItem *m_apItem[INT_VALUE::MAX_SIZE];
@@ -103,6 +100,7 @@ private:
 	static CDestArrow *m_pDestArrow;
 	//
 	static Ccamera *m_pCamera;					//
+	static CEnemyManagement *pEnemyManagment;
 
 	int m_nWaitTime;
 	int m_nSpawnTime;		//敵が新たにスポーンするまでの時間

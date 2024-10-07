@@ -64,7 +64,6 @@ private:
 	STATE m_sState;
 	
 	static Ccamera *m_pCamera;					//
-	static C3DEnemy *m_ap3DEnemy[INT_VALUE::MAX_SIZE];
 	static C2DSelect *m_pSelect;
 };
 

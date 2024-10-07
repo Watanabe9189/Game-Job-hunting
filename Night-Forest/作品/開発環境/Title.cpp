@@ -43,8 +43,6 @@ CField *CTitle::m_pField = nullptr;
 Ccamera *CTitle::m_pCamera = nullptr;
 CFog *CTitle::m_pFog = nullptr;
 
-C3DEnemy *CTitle::m_ap3DEnemy[INT_VALUE::MAX_SIZE] = {};
-
 C2DSelect *CTitle::m_pSelect = nullptr;
 
 //<====================================
@@ -81,19 +79,6 @@ HRESULT CTitle::Init(void)
 
 	//フォグ生成
 	m_pFog = CFog::Create(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), D3DFOGMODE::D3DFOG_LINEAR, CFog::TYPE::TYPE_PIXEL, 0.001f);
-
-	C3DEnemy::ReadCreate(m_ap3DEnemy);
-
-	//フォントの数分繰り返す
-	for (int nCnt = 0; nCnt < C3DEnemy::GetNum(); nCnt++)
-	{
-		//中身チェック
-		if (m_ap3DEnemy[nCnt] )
-		{
-			m_ap3DEnemy[nCnt]->SetDrawfalse();
-		}
-
-	}
 
 	//2D文字を生成
 	m_ap2DChar[0] = C2DChar::Create(D3DXVECTOR2(625.0f, 150.0f), D3DXVECTOR2(350.0f, 100.0f), C2DChar::CHAR_TYPE_TITLE);
@@ -164,21 +149,11 @@ void CTitle::Uninit(void)
 	//ライトの破棄
 	//<******************************************
 	//もしメモリ確保がされていたら
-	if (m_pSelect )
+	if (m_pSelect)
 	{
 		//メモリの解放を行う
 		m_pSelect->Uninit();
 		m_pSelect = nullptr;
-	}
-
-	//フォントの数分繰り返す
-	for (int nCnt = 0; nCnt < C3DEnemy::GetNum(); nCnt++)
-	{
-		if (m_ap3DEnemy[nCnt] )
-		{
-			m_ap3DEnemy[nCnt]->Uninit();
-			m_ap3DEnemy[nCnt] = nullptr;
-		}
 	}
 
 	Release();
@@ -270,14 +245,6 @@ void CTitle::SetAppear(void)
 				//<***************************************************
 				//見えていない部分のオブジェクトの表示をする
 				//フォントの数分繰り返す
-				for (int nCnt = 0; nCnt < C3DEnemy::GetNum(); nCnt++)
-				{
-					//中身チェック
-					if (m_ap3DEnemy[nCnt] )
-					{
-						m_ap3DEnemy[nCnt]->SetDrawtrue();
-					}
-				}
 				m_pField->SetDrawtrue();
 				m_pSelect->SetUpdatetrue();
 				//<***************************************************
