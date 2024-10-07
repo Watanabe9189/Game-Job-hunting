@@ -98,9 +98,13 @@ void CNorEnemy::Update(void)
 	m_rot = GetRotation();
 	m_move = GetMove();
 
-	CollidPlayer();
-	Movement();
+	if (m_pPlayer)
+	{
+		CollidPlayer();
+		Movement();
 
+	}
+	
 	//ベクトルの三要素の設定
 	SetVector3(m_pos, m_rot, m_move);
 }
@@ -109,16 +113,16 @@ void CNorEnemy::Update(void)
 //<================================
 void CNorEnemy::Draw(void)
 {
-	////モードがゲームの時のみ
-	//if (CManager::GetMode() == CScene::MODE_GAME)
-	//{
-	//	//プレイヤー中身チェック&&近づいていたらまたは高速型だったら
-	//	if (m_pPlayer != nullptr
-	//		&&BoolDis(m_pos, m_pPlayer->GetPosition()))
-	//	{
+	//モードがゲームの時のみ
+	if (CManager::GetMode() == CScene::MODE_GAME)
+	{
+		//プレイヤー中身チェック&&近づいていたらまたは高速型だったら
+		if (m_pPlayer != nullptr
+			&&BoolDis(m_pos, m_pPlayer->GetPosition()))
+		{
 			CXObject::Draw();
-	//	}
-	//}
+		}
+	}
 }
 //<================================
 //行動処理
@@ -261,7 +265,7 @@ CInvEnemy *CInvEnemy::Create(void)
 {
 	//総数追加と初期化
 	m_nNumAll++;
-	CInvEnemy * pInvEnemy = new CInvEnemy;
+	CInvEnemy *pInvEnemy = new CInvEnemy;
 	D3DXVECTOR3 rRandDest = Calculate::CalculteRandVec3(D3DXVECTOR3(4000.0f, 0.0f, 4000.0f), 
 		D3DXVECTOR3(-4000.0f, 0.0f, -4000.0f), false);
 
@@ -290,9 +294,9 @@ HRESULT CInvEnemy::Init(void)
 		//頂点数分繰り返し
 		for (int nCntMaxMat = 0; nCntMaxMat < (int)m_sModel.dwNumMat; nCntMaxMat++)
 		{
-			//初期の透明度を透明色にする
-			m_sModel.pMat[nCntMaxMat].MatD3D.Diffuse.a = COLOR_VALUE::ALPHA_CLEANNESS;
-			m_sModel.pMat[nCntMaxMat].MatD3D.Ambient.a = COLOR_VALUE::ALPHA_CLEANNESS;
+				//初期の透明度を透明色にする
+				m_sModel.pMat[nCntMaxMat].MatD3D.Diffuse.a = COLOR_VALUE::ALPHA_CLEANNESS;
+				m_sModel.pMat[nCntMaxMat].MatD3D.Ambient.a = COLOR_VALUE::ALPHA_CLEANNESS;
 		}
 	}
 
@@ -313,35 +317,37 @@ void CInvEnemy::Uninit(void)
 void CInvEnemy::Update(void)
 {
 	CNorEnemy::Update();
-
-	//サウンドセット
-	SetSound(CSound::LABEL_SE_MOAN1, m_nSoundMax, m_pPlayer->GetPosition());
-
-	//追跡状態だったら
-	if (m_sState == STATE::STATE_CHASE)
+	if (m_pPlayer)
 	{
-		//姿を現す
-		m_sModel.pMat = Color::AlphaChangeMaterial(m_sModel.pMat, ALPHA_VALUE, m_sModel.dwNumMat);
-	}
-	//探索モードだったら
-	else if (m_sState == STATE_SEARCH)
-	{
-		//プレイヤーが隠れていなければ
-		if (m_pPlayer->GetState() != C3DPlayer::STATE_HIDE)
+		//サウンドセット
+		SetSound(CSound::LABEL_SE_MOAN1, m_nSoundMax, m_pPlayer->GetPosition());
+
+		//追跡状態だったら
+		if (m_sState == STATE::STATE_CHASE)
 		{
-			//プレイヤーとの距離が近かったら
-			if (m_rDis.x <= m_fSearchRad
-				&& !(-m_rDis.x >= m_fSearchRad)
-				&& m_rDis.z <= m_fSearchRad
-				&& !(-m_rDis.z >= m_fSearchRad))
+			//姿を現す
+			m_sModel.pMat = Color::AlphaChangeMaterial(m_sModel.pMat, ALPHA_VALUE, m_sModel.dwNumMat);
+		}
+		//探索モードだったら
+		else if (m_sState == STATE_SEARCH)
+		{
+			//プレイヤーが隠れていなければ
+			if (m_pPlayer->GetState() != C3DPlayer::STATE_HIDE)
 			{
-				//サウンドを流す
-				m_pSound->PlaySoundWithVolume(CSound::LABEL_SE_NOTICED2, 2.0f);
+				//プレイヤーとの距離が近かったら
+				if (m_rDis.x <= m_fSearchRad
+					&& !(-m_rDis.x >= m_fSearchRad)
+					&& m_rDis.z <= m_fSearchRad
+					&& !(-m_rDis.z >= m_fSearchRad))
+				{
+					//サウンドを流す
+					m_pSound->PlaySoundWithVolume(CSound::LABEL_SE_NOTICED2, 2.0f);
+				}
 			}
+
+			//透明化する
+			m_sModel.pMat = Color::AlphaChangeMaterial(m_sModel.pMat, -ALPHA_VALUE_HIGH, m_sModel.dwNumMat);
 		}
 
-		//透明化する
-		m_sModel.pMat = Color::AlphaChangeMaterial(m_sModel.pMat, -ALPHA_VALUE_HIGH, m_sModel.dwNumMat);
 	}
-
 }

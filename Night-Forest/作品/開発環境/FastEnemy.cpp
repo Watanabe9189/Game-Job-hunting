@@ -81,8 +81,10 @@ void CFastEnemy::Update(void)
 	m_pos = GetPosition();
 	m_rot = GetRotation();
 	m_move = GetMove();
-
-	HighSpeedMove();
+	if (m_pPlayer)
+	{
+		HighSpeedMove();
+	}
 
 	//ベクトルの三要素の設定
 	SetVector3(m_pos, m_rot, m_move);

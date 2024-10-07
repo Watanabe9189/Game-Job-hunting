@@ -83,12 +83,13 @@ void C3DEnemy::Update(void)
 		if (CManager::GetScene()->GetGame()->GetGame()->GetState() == CGame::STATE_NONE)
 		{
 			m_pPlayer = CScene::GetGame()->Get3DPlayer();
+
 			//<***********************************
 			//‚»‚ê‚¼‚ê‚Ìî•ñ‚ÌŽæ“¾
 			//<***********************************
-			m_pos = GetPosition();
-			m_rot = GetRotation();
-			m_move = GetMove();
+			//m_pos = GetPosition();
+			//m_rot = GetRotation();
+			//m_move = GetMove();
 
 			//‰ÁŽZ‚µ‚Ä‚¢‚­
 			m_pos += m_move;
@@ -130,7 +131,7 @@ void C3DEnemy::Draw(void)
 void C3DEnemy::CollidPlayer(void)
 {
 	//‰B‚êó‘Ô‚Å‚Í–³‚¯‚ê‚Î
-	if (m_pPlayer->GetState() != C3DPlayer::STATE_HIDE)
+	if (m_pPlayer&&m_pPlayer->GetState() != C3DPlayer::STATE_HIDE)
 	{
 		//“–‚½‚Á‚Ä‚¢‚½‚ç
 		if (Collision::CollidAll(m_pPlayer->GetPosition(), m_pPlayer->GetModel().vtxMax,

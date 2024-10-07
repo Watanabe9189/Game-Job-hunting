@@ -35,8 +35,7 @@ CRenderer *CManager::m_pRenderer = nullptr;
 CKeyboard *CManager::m_pKeyboard = nullptr;
 CJoyPad *CManager::m_pJoyPad = nullptr;
 CMouse *CManager::m_pMouse = nullptr;
-//2DŠÖ˜A
-CBG *CManager::m_pBg = nullptr;
+
 //‚»‚Ì‘¼ŠÖ˜A
 CTexture *CManager::m_pTexture = nullptr;
 CDebug *CManager::m_pDebug = nullptr;

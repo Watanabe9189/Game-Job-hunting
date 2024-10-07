@@ -188,6 +188,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hInstancePrev, LPSTR lpCmbLine
 
 					pManager->Draw();				//•`‰æˆ—
 
+					//ƒq[ƒv‚ª”j‘¹‚µ‚Ä‚¢‚½‚çŽ¸”s‚µ‚½‚±‚Æ‚ð“`‚¦‚é
+					_ASSERTE(_CrtCheckMemory());
 				}
 				
 

@@ -168,8 +168,6 @@ private:
 	static CKeyboard *m_pKeyboard;				//キーボードインスタンス
 	static CJoyPad *m_pJoyPad;					//ジョイパッドインスタンス
 	static CMouse *m_pMouse;
-	//
-	static CBG *m_pBg;							//背景インスタンス
 
 	static CTexture *m_pTexture;				//
 	
