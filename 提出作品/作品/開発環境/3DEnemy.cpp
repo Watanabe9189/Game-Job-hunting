@@ -4,8 +4,8 @@
 //Author:kazuki watanabe
 //<============================================
 #include "3DEnemy.h"
-#include "game.h"
 #include "Result.h"
+#include "game.h"
 //<*******************************************
 //Ã“Iƒƒ“ƒo•Ï”‚ÌéŒ¾
 //<*******************************************
@@ -79,8 +79,8 @@ void C3DEnemy::Update(void)
 	//ƒ‚[ƒh‚ªƒQ[ƒ€‚ÌŽž‚Ì‚Ý
 	if (CManager::GetMode() == CScene::MODE_GAME)
 	{
-		//‚Ü‚¾ƒQ[ƒ€‚ªI‚í‚Á‚Ä‚¢‚È‚¯‚ê‚Î
-		if (CManager::GetScene()->GetGame()->GetGame()->GetState() == CGame::STATE_NONE)
+		//ƒQ[ƒ€‚ªI‚í‚Á‚Ä‚¢‚È‚¯‚ê‚Î
+		if (CScene::GetGame()->GetState() != CGame::STATE_END)
 		{
 			m_pPlayer = CScene::GetGame()->Get3DPlayer();
 
@@ -153,30 +153,10 @@ void C3DEnemy::DeathSound(void)
 	CManager::GetSound()->StopSound();
 	m_pSound->StopSound();
 
-	////’ÊíŒ^‚¾‚Á‚½‚ç
-	//if (m_eType == TYPE::TYPE_ENEMY_NORMAL)
-	//{
-	//	//‰¹‚ð–Â‚ç‚·
-	//	CManager::GetSound()->SetSE(1.2f, CSound::LABEL::LABEL_SE_DEATH0);
-	//	CManager::GetSound()->PlaySound(CSound::LABEL::LABEL_SE_DEATH0);
-	//	CResult::SetName(m_acFilename[m_eType]);
-	//}
-	////“§–¾Œ^‚¾‚Á‚½‚ç
-	//else if (m_eType == TYPE::TYPE_ENEMY_INVISIBLE)
-	//{
-	//	//‰¹‚ð–Â‚ç‚·
-	//	CManager::GetSound()->SetSE(1.2f, CSound::LABEL::LABEL_SE_DEATE1);
-	//	CManager::GetSound()->PlaySound(CSound::LABEL::LABEL_SE_DEATE1);
-	//	CResult::SetName(m_acFilename[m_eType]);
-	//}
-	////‚‘¬Œ^‚¾‚Á‚½‚ç
-	//else if (m_eType == TYPE::TYPE_ENEMY_HIGHSPEED)
-	//{
-	//	//‰¹‚ð–Â‚ç‚·
-	//	CManager::GetSound()->SetSE(1.2f, CSound::LABEL::LABEL_SE_DEATE2);
-	//	CManager::GetSound()->PlaySound(CSound::LABEL::LABEL_SE_DEATE2);
-	//	CResult::SetName(m_acFilename[m_eType]);
-	//}
+	//‰¹‚ð–Â‚ç‚·
+	CManager::GetSound()->SetSE(1.2f, CSound::LABEL::LABEL_SE_DEATE1);
+	CManager::GetSound()->PlaySound(CSound::LABEL::LABEL_SE_DEATE1);
+
 }
 //<==========================================================================================================
 //ˆø”‚ ‚è‚Ì–Ú“I’nÝ’è

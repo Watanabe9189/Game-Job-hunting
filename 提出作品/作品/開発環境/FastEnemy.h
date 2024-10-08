@@ -42,7 +42,6 @@ private:
 
 	void HighSpeedMove(void);
 
-
 	FAST_STATE m_sFastState;		//高速型のステート
 	D3DXVECTOR3 m_rTelportPos;		//テレポートする位置
 

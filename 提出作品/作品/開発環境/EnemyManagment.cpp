@@ -5,6 +5,15 @@
 //<======================================
 #include "EnemyManagment.h"
 #include "Item.h"
+#include "game.h"
+
+//<*************************************
+//
+//<*************************************
+namespace
+{
+	const int MAX_ENEMY = 20;			//敵の最大数
+}
 
 //<=====================================
 //コンストラクタ
@@ -68,24 +77,56 @@ void CEnemyManagement::Appear(void)
 {
 	const int SPAWN_TIME_MAX = 150;
 
-	//一個目をゲットしていたら
-	if (CItem::GetNumCollect() == 1
-		&& !m_bFastFlag)
+	//死亡していなければ
+	if (CScene::GetGame()->Get3DPlayer()->GetState() != C3DPlayer::STATE_DEATH)
 	{
-		//フラグをオンにして高速型を登場させる
-		m_bFastFlag = true;
-		m_pFastEnemy = CFastEnemy::Create();
-	}
+		//合計する
+		m_SumEnemy = CNorEnemy::GetNum() + CInvEnemy::GetNum();
 
-	//時間に達していたら
-	if (m_nSpawnTime >= SPAWN_TIME_MAX)
+		//一個目をゲットしていたら
+		if (CItem::GetNumCollect() == 1
+			&& !m_bFastFlag)
+		{
+			//フラグをオンにして高速型を登場させる
+			m_bFastFlag = true;
+			m_pFastEnemy = CFastEnemy::Create();
+		}
+
+		//時間に達していたら
+		if (m_nSpawnTime >= SPAWN_TIME_MAX)
+		{
+			//初期化+通常型or透明型敵を召喚
+			m_nSpawnTime = 0;
+			Spawn();
+		}
+		//時間に行ってなかったら加算する
+		else { m_nSpawnTime++; }
+	}
+}
+//<=====================================
+//敵スポーン処理
+//<=====================================
+void CEnemyManagement::Spawn(void)
+{
+	//もし最大数まで行っていなければ
+	if (!(m_SumEnemy >= MAX_ENEMY))
 	{
-		//初期化+通常型or透明型敵を召喚
-		m_nSpawnTime = 0;
-		m_pNorEnemy.insert(m_pNorEnemy.begin()+ CNorEnemy::GetNum(), CNorEnemy::Create());
-		m_pInvEnemy.insert(m_pInvEnemy.begin() + CInvEnemy::GetNum(), CInvEnemy::Create());
-	}
-	//時間に行ってなかったら加算する
-	else { m_nSpawnTime++; }
+		//ランダム決定
+		int nRand = Calculate::CalculeteRandInt(0, 1);
 
+		//通常型だったら
+		if (nRand = 0)
+		{
+			//サウンドセット
+			CManager::GetSound()->PlaySoundWithVolume(CSound::LABEL::LABEL_SE_NOTICED1,1.0f); 
+			m_pNorEnemy.insert(m_pNorEnemy.begin() + CNorEnemy::GetNum(), CNorEnemy::Create());
+		}
+		//透明型だったら
+		else
+		{
+			//サウンドセット
+			CManager::GetSound()->PlaySoundWithVolume(CSound::LABEL::LABEL_SE_NOTICED2, 1.0f);
+			m_pInvEnemy.insert(m_pInvEnemy.begin() + CInvEnemy::GetNum(), CInvEnemy::Create());
+		}
+	}
 }

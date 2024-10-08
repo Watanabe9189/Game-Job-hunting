@@ -107,7 +107,7 @@ CObject::CObject(int nPriority)
 	m_2DTYpe = TYPE_2D::TYPE_MAX;
 	m_bUpdate = true;
 	m_bDraw = true;
-	m_pStencil = CStencil::Create(true, STENCIL_VALUE::STENCIL_FAIL);
+	m_pStencil = CStencil::Create(false, STENCIL_VALUE::STENCIL_FAIL);
 
 	m_nNumAll++;
 

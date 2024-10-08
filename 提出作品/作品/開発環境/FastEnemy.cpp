@@ -5,16 +5,19 @@
 //<======================================
 #include "FastEnemy.h"
 #include "Item.h"
+#include "Result.h"
+#include "game.h"
 
 //<**************************************************************
 //名前宣言
 //<**************************************************************
 namespace
 {
-	const float ALPHA_VALUE_HIGH = 0.005f;	//高速型の透明度の値
-	const float ROTATE_VALUE = 0.1f;		//回転値
+	const float ALPHA_VALUE_HIGH = 0.005f;					//高速型の透明度の値
+	const float ROTATE_VALUE = 0.1f;						//回転値
 
-	const int	MAX_INTERVAL = 500;		//間隔の最大値
+	const int	MAX_INTERVAL = 100;							//間隔の最大値
+	const char* ENEMY_NAME = "data/MODEL/Monster001.x";		//敵ファイルの名前
 }
 
 //<================================
@@ -52,7 +55,7 @@ HRESULT CFastEnemy::Init(void)
 {
 	//初期化とモデルチェック
 	C3DEnemy::Init();
-	m_sModel = BindModel("data/MODEL/Monster001.x", true);
+	m_sModel = BindModel(ENEMY_NAME, true);
 
 	//モードがゲームの時のみ
 	if (CManager::GetMode() == CScene::MODE_GAME)
@@ -76,18 +79,20 @@ HRESULT CFastEnemy::Init(void)
 //<================================
 void CFastEnemy::Update(void)
 {
-	C3DEnemy::Update();
-
-	m_pos = GetPosition();
-	m_rot = GetRotation();
-	m_move = GetMove();
-	if (m_pPlayer)
+	//ゲームが終わっていなければ
+	if (CScene::GetGame()->GetState() != CGame::STATE_END)
 	{
-		HighSpeedMove();
-	}
+		C3DEnemy::Update();
 
-	//ベクトルの三要素の設定
-	SetVector3(m_pos, m_rot, m_move);
+		m_pos = GetPosition();
+		m_rot = GetRotation();
+		m_move = GetMove();
+
+		HighSpeedMove();
+
+		//ベクトルの三要素の設定
+		SetVector3(m_pos, m_rot, m_move);
+	}
 }
 //<=======================================
 //動き
