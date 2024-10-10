@@ -56,8 +56,6 @@ public:
 	void Update(void);
 	void Draw(void) { m_pCamera->SetCamera(); }
 
-	static void SetName(const char* cName) { m_EnemyName = cName; }
-
 private:
 
 	D3DXVECTOR3 m_pos;
@@ -67,7 +65,6 @@ private:
 
 	static LPDIRECT3DTEXTURE9	m_apTexture[CScene::TYPE_RESULT_MAX];		//テクスチャへのポインタ
 	static const char*			m_acFilename[CScene::TYPE_RESULT_MAX];				//ファイル名
-	static const char*			m_EnemyName;
 
 	static CLight *m_pLight;					//
 	static CField *m_pField;
