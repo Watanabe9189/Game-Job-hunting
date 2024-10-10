@@ -14,7 +14,7 @@ namespace
 	const float ALPHA_VALUE_HIGH = 0.005f;	//高速型の透明度の値
 	const float ROTATE_VALUE = 0.1f;		//回転値
 
-	const int	MAX_INTERVAL = 500;		//間隔の最大値
+	const int	MAX_INTERVAL = 1200;		//間隔の最大値
 }
 
 //<================================
