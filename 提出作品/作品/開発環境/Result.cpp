@@ -90,7 +90,7 @@ HRESULT CResult::Init(void)
 		//フォグ生成
 		m_pFog = CFog::Create(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f), D3DFOGMODE::D3DFOG_LINEAR, CFog::TYPE::TYPE_PIXEL, 0.001f);
 
-		m_apXObject[0] = CXObject::Create(INIT_VECTOR, D3DXVECTOR3(1.56f, 0.0f, 0.0f), "data\\MODEL\\Enemy001.x");
+		m_apXObject[XTYPE_PLAYER] = CXObject::Create(INIT_VECTOR, D3DXVECTOR3(1.56f, 0.0f, 0.0f), "data\\MODEL\\Enemy001.x");
 
 		CManager::GetTex()->Regist("data\\TEXTURE\\Blood000.png", pTexture);
 
@@ -106,11 +106,11 @@ HRESULT CResult::Init(void)
 		//ゲームクリア音楽を流す
 		CManager::GetSound()->PlaySound(CSound::LABEL_BGM_CLEAR);
 
-		m_apXObject[0] = CXObject::Create(INIT_VECTOR, D3DXVECTOR3(0.0f, 1.56f, 0.0f), "data\\MODEL\\Enemy001.x");
+		m_apXObject[XTYPE_PLAYER] = CXObject::Create(INIT_VECTOR, D3DXVECTOR3(0.0f, 1.56f, 0.0f), "data\\MODEL\\Enemy001.x");
 
-		m_apXObject[1] = CXObject::Create(D3DXVECTOR3(m_apXObject[0]->GetPosition().x, 
-			m_apXObject[0]->GetPosition().y,
-			m_apXObject[0]->GetPosition().z + 250.0f), 
+		m_apXObject[XTYPE_HOUSE] = CXObject::Create(D3DXVECTOR3(m_apXObject[0]->GetPosition().x,
+			m_apXObject[XTYPE_PLAYER]->GetPosition().y,
+			m_apXObject[XTYPE_PLAYER]->GetPosition().z + 250.0f),
 			D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\House.x");
 	}
 
