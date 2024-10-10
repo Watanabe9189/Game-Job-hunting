@@ -14,10 +14,9 @@
 //<**************************************
 class CEnemyManagement
 {
-//公に公開
+
+	//公に公開
 public:
-
-
 
 	//コンスト・デストラ
 	CEnemyManagement();
@@ -30,8 +29,6 @@ public:
 	//ここだけしか使わない
 private:
 
-	void Spawn(void);
-
 	CFastEnemy* m_pFastEnemy;						//一体だけの高速型敵
 	std::vector<CNorEnemy*>m_pNorEnemy;				//複数対用意する用の通常型敵
 	std::vector<CInvEnemy*>m_pInvEnemy;				//複数対用意する用の透明型敵
@@ -39,8 +36,6 @@ private:
 	bool m_bFastFlag;								//高速型敵のフラグ
 
 	int m_nSpawnTime;								//通常型・透明型が出てくるまでの時間
-
-	int m_SumEnemy;									//敵の合計数
 };
 
 #endif

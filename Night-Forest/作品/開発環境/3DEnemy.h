@@ -32,10 +32,8 @@ protected:
 
 	//ƒƒ“ƒoŠÖ”
 	void CollidPlayer(void);
-
 	void DeathSound(void);
 	void SetDest(void);
-
 	void SetDest(const D3DXVECTOR3 rDestPos);
 
 	//ƒƒ“ƒo•Ï”
@@ -48,6 +46,7 @@ protected:
 	D3DXVECTOR3 m_rDis;
 
 	float m_fMoveValue;
+
 
 	D3DXVECTOR3 m_rRandDest;
 	D3DXVECTOR3 m_fFrontDest;

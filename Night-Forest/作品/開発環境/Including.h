@@ -16,7 +16,6 @@
 #include <cstdlib>
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
-#define new(s)          _new_dbg(s, _NORMAL_BLOCK, __FILE__, __LINE__)
 
 #include <stdlib.h>
 #include "Renderer.h"
@@ -25,6 +24,7 @@
 #include <vector>
 #include <algorithm>
 #include <list>
+#include <new>
 
 //サウンドに必要なインクルードファイル
 #include "xaudio2.h"					//サウンド処理に必要

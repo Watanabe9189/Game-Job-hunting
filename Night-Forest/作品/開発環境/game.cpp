@@ -413,6 +413,7 @@ void CGame::Creating(void)
 	m_pDestArrow = CDestArrow::Create();
 
 	pEnemyManagment = new CEnemyManagement;
+	pEnemyManagment->Init();
 }
 //<====================================
 //フェード関連の更新処理

@@ -4,19 +4,15 @@
 //Author:Kazuki Watanabe
 //<======================================
 #include "NormalEnemy.h"
-#include "Result.h"
-#include "game.h"
 
 //<**************************************************************
 //名前宣言
 //<**************************************************************
 namespace
 {
-	const float ALPHA_VALUE = 0.08f;							//透明度の値
-	const float ALPHA_VALUE_HIGH = 0.005f;						//高速型の透明度の値
-	const float ROTATE_VALUE = 0.1f;							//回転値
-	const char* ENEMY_NAME_NOR = "data/MODEL/Monster000.x";		//敵ファイルの名前
-	const char* ENEMY_NAME_INV = "data/MODEL/Monster002.x";		//敵ファイルの名前
+	const float ALPHA_VALUE = 0.08f;		//透明度の値
+	const float ALPHA_VALUE_HIGH = 0.005f;	//高速型の透明度の値
+	const float ROTATE_VALUE = 0.1f;		//回転値
 }
 //<**************************************************************
 //静的メンバ変数
@@ -71,11 +67,13 @@ HRESULT CNorEnemy::Init(void)
 {
 	const float RADIUSE_VALUE = 650.0f;	//半径の値
 
-	//値の設定
-	m_fSearchRad = RADIUSE_VALUE;
-	m_nSoundMax = Calculate::CalculeteRandInt(200, 100);
-	m_sModel = BindModel(ENEMY_NAME_NOR, true);
 	SetDest();
+
+	m_fSearchRad = RADIUSE_VALUE;
+
+	m_nSoundMax = Calculate::CalculeteRandInt(200, 100);
+
+	m_sModel = BindModel("data/MODEL/Monster000.x", true);
 
 	C3DEnemy::Init();
 
@@ -94,25 +92,56 @@ void CNorEnemy::Uninit(void)
 //<================================
 void CNorEnemy::Update(void)
 {
-	//ゲームが終わっていなければ
-	if (CScene::GetGame()->GetState() != CGame::STATE_END)
+	C3DEnemy::Update();
+
+	m_pos = GetPosition();
+	m_rot = GetRotation();
+	m_move = GetMove();
+
+	if (m_pPlayer)
 	{
-		C3DEnemy::Update();
+		CollidPlayer();
+		Movement();
 
 		m_pos = GetPosition();
 		m_rot = GetRotation();
 		m_move = GetMove();
 
+		//プレイヤーの中身チェック
 		if (m_pPlayer)
 		{
 			CollidPlayer();
 			Movement();
+
+			//サウンドセット
+			SetSound(CSound::LABEL_SE_MOAN0, m_nSoundMax, m_pPlayer->GetPosition());
+
+			//探索モードだったら
+			if (m_sState == STATE_SEARCH)
+			{
+				//プレイヤーが隠れていなければ
+				if (m_pPlayer->GetState() != C3DPlayer::STATE_HIDE)
+				{
+					//プレイヤーとの距離が近かったら
+					if (m_rDis.x <= m_fSearchRad
+						&& !(-m_rDis.x >= m_fSearchRad)
+						&& m_rDis.z <= m_fSearchRad
+						&& !(-m_rDis.z >= m_fSearchRad))
+					{
+						//サウンドセット
+						m_pSound->PlaySoundWithVolume(CSound::LABEL_SE_NOTICED1, 2.0f);
+					}
+				}
+			}
 
 		}
 
 		//ベクトルの三要素の設定
 		SetVector3(m_pos, m_rot, m_move);
 	}
+	
+	//ベクトルの三要素の設定
+	SetVector3(m_pos, m_rot, m_move);
 }
 //<================================
 //通常型敵の描画処理
@@ -146,9 +175,6 @@ void CNorEnemy::Movement(void)
 
 	//2000まで生成し、1000を引く
 	D3DXVECTOR3 rRandDest = Calculate::CalculteRandVec3(D3DXVECTOR3(4000.0f, 0.0f, 4000.0f), D3DXVECTOR3(-4000.0f, 0.0f, -4000.0f), false);
-
-	//サウンドセット
-	SetSound(CSound::LABEL_SE_MOAN0, m_nSoundMax, m_pPlayer->GetPosition());
 
 	//追跡状態だったら
 	if (m_sState == STATE::STATE_CHASE)
@@ -292,7 +318,7 @@ HRESULT CInvEnemy::Init(void)
 {
 	//初期化とモデルセット
 	CNorEnemy::Init();
-	m_sModel = BindModel(ENEMY_NAME_INV, true);
+	m_sModel = BindModel("data/MODEL/Monster002.x", true);
 
 	//モードがゲームの時のみ
 	if (CManager::GetMode() == CScene::MODE_GAME)
@@ -322,10 +348,11 @@ void CInvEnemy::Uninit(void)
 //<=======================================
 void CInvEnemy::Update(void)
 {
-	//ゲームが終わっていなければ
-	if (CScene::GetGame()->GetState() != CGame::STATE_END)
+	C3DEnemy::Update();
+
+	if (m_pPlayer)
 	{
-		CNorEnemy::Update();
+		Movement();
 
 		//サウンドセット
 		SetSound(CSound::LABEL_SE_MOAN1, m_nSoundMax, m_pPlayer->GetPosition());

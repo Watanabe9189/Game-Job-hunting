@@ -88,7 +88,7 @@ public:
 	void StopSound(LABEL label);
 	void StopSound(void);
 
-	HRESULT CheckChunkSound(const LABEL Label);
+	HRESULT CheckChunkSound(const int Label);
 	HRESULT CheckChunk(HANDLE hFile, DWORD format, DWORD *pChunkSize, DWORD *pChunkDataPosition);
 	HRESULT ReadChunkData(HANDLE hFile, void *pBuffer, DWORD dwBuffersize, DWORD dwBufferoffset);
 

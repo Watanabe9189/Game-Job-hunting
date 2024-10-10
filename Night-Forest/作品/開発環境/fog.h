@@ -62,11 +62,11 @@ private:
 	TYPE m_Type;
 	D3DFOGMODE m_dMode;
 
-	float m_fStart;
-	float m_fEnd;
-	float m_fDensity;
+	float m_fStart;					//開始値
+	float m_fEnd;					//終了値
+	float m_fDensity;				//霧密度
 
-	bool m_bUse;
+	bool m_bUse;					//使うかどうか
 
 };
 

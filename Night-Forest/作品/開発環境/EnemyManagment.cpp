@@ -8,11 +8,14 @@
 #include "game.h"
 
 //<*************************************
-//
+//名前宣言
 //<*************************************
 namespace
 {
-	const int MAX_ENEMY = 20;			//敵の最大数
+	const int MAX_ENEMY = 15;			//敵の最大数
+	const int SPAWN_TIME_MAX = 3000;	//スポーンまでにかかる時間の最大値
+
+	const int MAX_SPAWN_ENE = 4;		//最初からランダムで生成する敵の数
 }
 
 //<=====================================
@@ -40,7 +43,21 @@ CEnemyManagement::~CEnemyManagement()
 //<=====================================
 void CEnemyManagement::Init()
 {
+	//ランダム決定
+	int nNum = Calculate::CalculeteRandInt(1, MAX_SPAWN_ENE);
 
+	//生成する敵の数を設定
+	for (int nCnt = 0; nCnt > nNum; nCnt++)
+	{
+		//ランダム種類
+		int nRand = Calculate::CalculeteRandInt(0, 1);
+
+		//通常型敵を生成する
+		if (nRand = 0){m_pNorEnemy.insert(m_pNorEnemy.begin() + CNorEnemy::GetNum(), CNorEnemy::Create());}
+
+		//透明型敵を生成する
+		else { m_pInvEnemy.insert(m_pInvEnemy.begin() + CInvEnemy::GetNum(), CInvEnemy::Create()); }
+	}
 }
 //<=====================================
 //終了処理
@@ -53,7 +70,7 @@ void CEnemyManagement::Uninit()
 	//通常型敵の破棄
 	for (unsigned int nCnt = 0; nCnt < m_pNorEnemy.size(); nCnt++)
 	{
-		if (m_pInvEnemy.at(nCnt))
+		if (m_pNorEnemy.at(nCnt))
 		{
 			m_pNorEnemy.at(nCnt)->Uninit();
 			m_pNorEnemy.at(nCnt) = nullptr;
@@ -75,58 +92,26 @@ void CEnemyManagement::Uninit()
 //<=====================================
 void CEnemyManagement::Appear(void)
 {
-	const int SPAWN_TIME_MAX = 150;
+	CManager::GetDebugProc()->Print("現在のスポーン時間->%d",m_nSpawnTime);
 
-	//死亡していなければ
-	if (CScene::GetGame()->Get3DPlayer()->GetState() != C3DPlayer::STATE_DEATH)
+	//一個目をゲットしていたら
+	if (CItem::GetNumCollect() == 1
+		&& !m_bFastFlag)
 	{
-		//合計する
-		m_SumEnemy = CNorEnemy::GetNum() + CInvEnemy::GetNum();
-
-		//一個目をゲットしていたら
-		if (CItem::GetNumCollect() == 1
-			&& !m_bFastFlag)
-		{
-			//フラグをオンにして高速型を登場させる
-			m_bFastFlag = true;
-			m_pFastEnemy = CFastEnemy::Create();
-		}
-
-		//時間に達していたら
-		if (m_nSpawnTime >= SPAWN_TIME_MAX)
-		{
-			//初期化+通常型or透明型敵を召喚
-			m_nSpawnTime = 0;
-			Spawn();
-		}
-		//時間に行ってなかったら加算する
-		else { m_nSpawnTime++; }
+		//フラグをオンにして高速型を登場させる
+		m_bFastFlag = true;
+		m_pFastEnemy = CFastEnemy::Create();
 	}
-}
-//<=====================================
-//敵スポーン処理
-//<=====================================
-void CEnemyManagement::Spawn(void)
-{
-	//もし最大数まで行っていなければ
-	if (!(m_SumEnemy >= MAX_ENEMY))
+
+	//時間に達していたら
+	if (m_nSpawnTime >= SPAWN_TIME_MAX)
 	{
-		//ランダム決定
-		int nRand = Calculate::CalculeteRandInt(0, 1);
-
-		//通常型だったら
-		if (nRand = 0)
-		{
-			//サウンドセット
-			CManager::GetSound()->PlaySoundWithVolume(CSound::LABEL::LABEL_SE_NOTICED1,1.0f); 
-			m_pNorEnemy.insert(m_pNorEnemy.begin() + CNorEnemy::GetNum(), CNorEnemy::Create());
-		}
-		//透明型だったら
-		else
-		{
-			//サウンドセット
-			CManager::GetSound()->PlaySoundWithVolume(CSound::LABEL::LABEL_SE_NOTICED2, 1.0f);
-			m_pInvEnemy.insert(m_pInvEnemy.begin() + CInvEnemy::GetNum(), CInvEnemy::Create());
-		}
+		//初期化+通常型or透明型敵を召喚
+		m_nSpawnTime = 0;
+		m_pNorEnemy.insert(m_pNorEnemy.begin()+ CNorEnemy::GetNum(), CNorEnemy::Create());
+		m_pInvEnemy.insert(m_pInvEnemy.begin() + CInvEnemy::GetNum(), CInvEnemy::Create());
 	}
+	//時間に行ってなかったら加算する
+	else { m_nSpawnTime++; }
+
 }
