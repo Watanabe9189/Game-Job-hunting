@@ -31,8 +31,8 @@ public:
 protected:
 
 	//ƒƒ“ƒoŠÖ”
-	void CollidPlayer(void);
-	void DeathSound(void);
+	void CollidPlayer(const CSound::LABEL label);
+	void DeathSound(const CSound::LABEL label);
 	void SetDest(void);
 	void SetDest(const D3DXVECTOR3 rDestPos);
 

@@ -29,6 +29,8 @@ public:
 	//‚±‚±‚¾‚¯‚µ‚©g‚í‚È‚¢
 private:
 
+	void Spawn(void);								//“oêˆ—
+
 	CFastEnemy* m_pFastEnemy;						//ˆê‘Ì‚¾‚¯‚Ì‚‘¬Œ^“G
 	std::vector<CNorEnemy*>m_pNorEnemy;				//•¡”‘Î—pˆÓ‚·‚é—p‚Ì’ÊíŒ^“G
 	std::vector<CInvEnemy*>m_pInvEnemy;				//•¡”‘Î—pˆÓ‚·‚é—p‚Ì“§–¾Œ^“G
@@ -36,6 +38,7 @@ private:
 	bool m_bFastFlag;								//‚‘¬Œ^“G‚Ìƒtƒ‰ƒO
 
 	int m_nSpawnTime;								//’ÊíŒ^E“§–¾Œ^‚ªo‚Ä‚­‚é‚Ü‚Å‚ÌŠÔ
+	int m_nNumEnemy;								//“G‚Ì”
 };
 
 #endif

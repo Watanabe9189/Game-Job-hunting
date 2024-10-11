@@ -4,6 +4,7 @@
 //Author:Kazuki Watanabe
 //<======================================
 #include "NormalEnemy.h"
+#include "game.h"
 
 //<**************************************************************
 //名前宣言
@@ -37,7 +38,7 @@ CNorEnemy::CNorEnemy()
 //<================================
 CNorEnemy::~CNorEnemy()
 {
-	
+	m_nNumAll = 0;
 }
 //<================================
 //通常型敵の生成処理
@@ -85,7 +86,6 @@ HRESULT CNorEnemy::Init(void)
 void CNorEnemy::Uninit(void)
 {
 	C3DEnemy::Uninit();
-	m_nNumAll--;
 }
 //<================================
 //通常型敵の更新処理
@@ -94,54 +94,19 @@ void CNorEnemy::Update(void)
 {
 	C3DEnemy::Update();
 
-	m_pos = GetPosition();
-	m_rot = GetRotation();
-	m_move = GetMove();
-
-	if (m_pPlayer)
+	//まだゲームが終わっていなければ
+	if (CManager::GetScene()->GetGame()->GetGame()->GetState() != CGame::STATE_END)
 	{
-		CollidPlayer();
-		Movement();
-
 		m_pos = GetPosition();
 		m_rot = GetRotation();
 		m_move = GetMove();
 
-		//プレイヤーの中身チェック
-		if (m_pPlayer)
-		{
-			CollidPlayer();
-			Movement();
-
-			//サウンドセット
-			SetSound(CSound::LABEL_SE_MOAN0, m_nSoundMax, m_pPlayer->GetPosition());
-
-			//探索モードだったら
-			if (m_sState == STATE_SEARCH)
-			{
-				//プレイヤーが隠れていなければ
-				if (m_pPlayer->GetState() != C3DPlayer::STATE_HIDE)
-				{
-					//プレイヤーとの距離が近かったら
-					if (m_rDis.x <= m_fSearchRad
-						&& !(-m_rDis.x >= m_fSearchRad)
-						&& m_rDis.z <= m_fSearchRad
-						&& !(-m_rDis.z >= m_fSearchRad))
-					{
-						//サウンドセット
-						m_pSound->PlaySoundWithVolume(CSound::LABEL_SE_NOTICED1, 2.0f);
-					}
-				}
-			}
-
-		}
+		CollidPlayer(CSound::LABEL::LABEL_SE_DEATH0);
+		Movement(CSound::LABEL::LABEL_SE_MOAN0, CSound::LABEL::LABEL_SE_NOTICED1);
 
 		//ベクトルの三要素の設定
 		SetVector3(m_pos, m_rot, m_move);
 	}
-	
-	//ベクトルの三要素の設定
-	SetVector3(m_pos, m_rot, m_move);
 }
 //<================================
 //通常型敵の描画処理
@@ -151,9 +116,9 @@ void CNorEnemy::Draw(void)
 	//モードがゲームの時のみ
 	if (CManager::GetMode() == CScene::MODE_GAME)
 	{
-		//プレイヤー中身チェック&&近づいていたらまたは高速型だったら
-		if (m_pPlayer != nullptr
-			&&BoolDis(m_pos, m_pPlayer->GetPosition()))
+		//ステートが終了状態じゃなければ
+		if (CManager::GetScene()->GetGame()->GetGame()->GetState() != CGame::STATE_END&&
+			BoolDis(m_pos, m_pPlayer->GetPosition()))
 		{
 			CXObject::Draw();
 		}
@@ -162,7 +127,7 @@ void CNorEnemy::Draw(void)
 //<================================
 //行動処理
 //<================================
-void CNorEnemy::Movement(void)
+void CNorEnemy::Movement(const CSound::LABEL MOANLabel, const CSound::LABEL FoundLabel)
 {
 	const float SEARCH_MOVE = 0.0045f;	//探索している時の移動量
 	const float CHASE_VALUE = 0.012f;	//追跡している時の移動値
@@ -175,6 +140,9 @@ void CNorEnemy::Movement(void)
 
 	//2000まで生成し、1000を引く
 	D3DXVECTOR3 rRandDest = Calculate::CalculteRandVec3(D3DXVECTOR3(4000.0f, 0.0f, 4000.0f), D3DXVECTOR3(-4000.0f, 0.0f, -4000.0f), false);
+
+	//サウンドセット
+	SetSound(MOANLabel, m_nSoundMax, m_pPlayer->GetPosition());
 
 	//追跡状態だったら
 	if (m_sState == STATE::STATE_CHASE)
@@ -230,7 +198,7 @@ void CNorEnemy::Movement(void)
 				&& !(-m_rDis.z >= m_fSearchRad))
 			{
 				//サウンドセット
-				m_pSound->PlaySoundWithVolume(CSound::LABEL_SE_NOTICED1, 2.0f);
+				m_pSound->PlaySoundWithVolume(FoundLabel, 2.0f);
 
 				//追跡モードにする
 				m_sState = STATE_CHASE;
@@ -340,7 +308,6 @@ HRESULT CInvEnemy::Init(void)
 void CInvEnemy::Uninit(void)
 {
 	//終了する
-	m_nNumAll--;
 	C3DEnemy::Uninit();
 }
 //<=======================================
@@ -350,12 +317,15 @@ void CInvEnemy::Update(void)
 {
 	C3DEnemy::Update();
 
-	if (m_pPlayer)
+	//まだゲームが終わっていなければ
+	if (CManager::GetScene()->GetGame()->GetGame()->GetState() != CGame::STATE_END)
 	{
-		Movement();
+		m_pos = GetPosition();
+		m_rot = GetRotation();
+		m_move = GetMove();
 
-		//サウンドセット
-		SetSound(CSound::LABEL_SE_MOAN1, m_nSoundMax, m_pPlayer->GetPosition());
+		CollidPlayer(CSound::LABEL::LABEL_SE_DEATE1);
+		Movement(CSound::LABEL::LABEL_SE_MOAN1, CSound::LABEL::LABEL_SE_NOTICED2);
 
 		//追跡状態だったら
 		if (m_sState == STATE::STATE_CHASE)
@@ -363,26 +333,14 @@ void CInvEnemy::Update(void)
 			//姿を現す
 			m_sModel.pMat = Color::AlphaChangeMaterial(m_sModel.pMat, ALPHA_VALUE, m_sModel.dwNumMat);
 		}
-		//探索モードだったら
-		else if (m_sState == STATE_SEARCH)
+		//捜索状態
+		else if (m_sState == STATE::STATE_SEARCH)
 		{
-			//プレイヤーが隠れていなければ
-			if (m_pPlayer->GetState() != C3DPlayer::STATE_HIDE)
-			{
-				//プレイヤーとの距離が近かったら
-				if (m_rDis.x <= m_fSearchRad
-					&& !(-m_rDis.x >= m_fSearchRad)
-					&& m_rDis.z <= m_fSearchRad
-					&& !(-m_rDis.z >= m_fSearchRad))
-				{
-					//サウンドを流す
-					m_pSound->PlaySoundWithVolume(CSound::LABEL_SE_NOTICED2, 2.0f);
-				}
-			}
-
 			//透明化する
 			m_sModel.pMat = Color::AlphaChangeMaterial(m_sModel.pMat, -ALPHA_VALUE_HIGH, m_sModel.dwNumMat);
 		}
-
+		//ベクトルの三要素の設定
+		SetVector3(m_pos, m_rot, m_move);
 	}
+
 }

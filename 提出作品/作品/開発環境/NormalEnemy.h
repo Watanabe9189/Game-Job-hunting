@@ -44,11 +44,9 @@ public:
 
 protected:
 
-	void Movement(void);
+	void Movement(const CSound::LABEL MOANLabel,const CSound::LABEL FoundLabel);
 	void SetSound(const CSound::LABEL Label, const int nMaxCount, const D3DXVECTOR3 rTargetPos);
 	void SerachRot(const D3DXVECTOR3 rRandPos);
-
-	static int m_nNumAll;	//‘”
 
 	STATE m_sState;			//ƒXƒe[ƒg
 
@@ -57,6 +55,9 @@ protected:
 	int m_nInterval;		//U‚èŒü‚­‚Ü‚Å‚ÌŠÔ
 	float m_fSearchRad;		//’Tõ‰~
 
+private:
+
+	static int m_nNumAll;	//‘”
 };
 
 //<***************************************
@@ -69,7 +70,7 @@ public:
 	static CInvEnemy *Create(void);
 
 	CInvEnemy() {}
-	~CInvEnemy() {}
+	~CInvEnemy() { m_nNumAll=0; }
 
 	HRESULT Init(void);
 	void Uninit(void);
@@ -81,5 +82,6 @@ public:
 private:
 
 	static int m_nNumAll;	//‘”
+	
 };
 #endif

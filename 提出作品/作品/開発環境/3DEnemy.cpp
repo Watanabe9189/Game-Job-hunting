@@ -101,6 +101,7 @@ void C3DEnemy::Update(void)
 			//ベクトルの三要素の設定
 			SetVector3(m_pos, m_rot, m_move);
 		}
+		else { m_pSound->StopSound(); }
 	}
 	else
 	{
@@ -128,7 +129,7 @@ void C3DEnemy::Draw(void)
 //<================================================
 //プレイヤーとの当たり判定
 //<================================================
-void C3DEnemy::CollidPlayer(void)
+void C3DEnemy::CollidPlayer(const CSound::LABEL label)
 {
 	//隠れ状態では無ければ
 	if (m_pPlayer&&m_pPlayer->GetState() != C3DPlayer::STATE_HIDE)
@@ -137,14 +138,14 @@ void C3DEnemy::CollidPlayer(void)
 		if (Collision::CollidAll(m_pPlayer->GetPosition(), m_pPlayer->GetModel().vtxMax,
 			m_pos, m_sModel.vtxMax, m_sModel.vtxMin))
 		{
-			DeathSound();
+			DeathSound(label);
 		}
 	}
 }
 //<================================================
 //プレイヤーが死んだ際の音処理
 //<================================================
-void C3DEnemy::DeathSound(void)
+void C3DEnemy::DeathSound(const CSound::LABEL label)
 {
 	//死亡ステートにする
 	m_pPlayer->SetState(C3DPlayer::STATE_DEATH);
@@ -153,30 +154,7 @@ void C3DEnemy::DeathSound(void)
 	CManager::GetSound()->StopSound();
 	m_pSound->StopSound();
 
-	////通常型だったら
-	//if (m_eType == TYPE::TYPE_ENEMY_NORMAL)
-	//{
-	//	//音を鳴らす
-	//	CManager::GetSound()->SetSE(1.2f, CSound::LABEL::LABEL_SE_DEATH0);
-	//	CManager::GetSound()->PlaySound(CSound::LABEL::LABEL_SE_DEATH0);
-	//	CResult::SetName(m_acFilename[m_eType]);
-	//}
-	////透明型だったら
-	//else if (m_eType == TYPE::TYPE_ENEMY_INVISIBLE)
-	//{
-	//	//音を鳴らす
-	//	CManager::GetSound()->SetSE(1.2f, CSound::LABEL::LABEL_SE_DEATE1);
-	//	CManager::GetSound()->PlaySound(CSound::LABEL::LABEL_SE_DEATE1);
-	//	CResult::SetName(m_acFilename[m_eType]);
-	//}
-	////高速型だったら
-	//else if (m_eType == TYPE::TYPE_ENEMY_HIGHSPEED)
-	//{
-	//	//音を鳴らす
-	//	CManager::GetSound()->SetSE(1.2f, CSound::LABEL::LABEL_SE_DEATE2);
-	//	CManager::GetSound()->PlaySound(CSound::LABEL::LABEL_SE_DEATE2);
-	//	CResult::SetName(m_acFilename[m_eType]);
-	//}
+	CManager::GetSound()->PlaySoundWithVolume(label,1.2f);
 }
 //<==========================================================================================================
 //引数ありの目的地設定

@@ -57,7 +57,7 @@ CSound *CSound::Create(void)
 
 	assert(pSound );
 
-	pSound->InitAll(CManager::GetRenderer()->GetHwnd());
+	pSound->Init(CManager::GetRenderer()->GetHwnd());
 
 	return pSound;
 }
@@ -291,7 +291,7 @@ HRESULT CSound::PlaySound(LABEL label)
 //=============================================================================
 HRESULT CSound::PlaySoundWithVolume(const LABEL label, const float fVolume)
 {
-	//CheckChunkSound(label);
+	CheckChunkSound(label);
 
 	XAUDIO2_BUFFER buffer;
 	DSBUFFERDESC VolumeBuff;
@@ -305,12 +305,13 @@ HRESULT CSound::PlaySoundWithVolume(const LABEL label, const float fVolume)
 	VolumeBuff.dwFlags = DSBCAPS_CTRLVOLUME;//音量調整フラグ
 
 											// 状態取得
+
 	m_apSourceVoice[label]->GetState(&m_XVoiceState);
 
 	if (m_XVoiceState.BuffersQueued != 0)
 	{// 再生中
 
-	 //もし種類が効果音だった場合
+		 //もし種類が効果音だった場合
 		if (buffer.LoopCount == TYPE_SE)
 		{
 			// 一時停止
@@ -352,9 +353,7 @@ HRESULT CSound::PlaySoundWithVolume(const LABEL label, const float fVolume)
 //=============================================================================
 HRESULT CSound::PlaySoundWithDis(const LABEL label,const D3DXVECTOR3 rPos, const D3DXVECTOR3 rTargetPos)
 {
-	//CheckChunkSound(label);
-
-	m_nNumSound++;
+	CheckChunkSound(label);
 
 	//距離を出す
 	m_rDistance = D3DXVECTOR3(rPos.x - rTargetPos.x, rPos.y - rTargetPos.y, rPos.z - rTargetPos.z);
@@ -701,12 +700,6 @@ HRESULT CSound::CheckChunkSound(const int Label)
 
 		pData = new(std::nothrow) BYTE[pSize];
 
-		if (!pData)
-		{
-			MessageBox(NULL, "pDataの確保に失敗しました", "失敗", MB_ICONWARNING);
-			return S_FALSE;
-		}
-
 		if (FAILED(hr = ReadChunkData(hFile, pData, pSize, dwChunkPosition)))
 		{
 			MessageBox(NULL, "オーディオデータ読み込みに失敗！(2)", "警告！", MB_ICONWARNING);
@@ -723,6 +716,16 @@ HRESULT CSound::CheckChunkSound(const int Label)
 			MessageBox(NULL, "ソースボイスの生成に失敗！", "警告！", MB_ICONWARNING);
 			return S_FALSE;
 		}
+
+		// バッファの値設定
+		memset(&buffer, 0, sizeof(XAUDIO2_BUFFER));
+		buffer.AudioBytes = m_aSizeAudio[Label];
+		buffer.pAudioData = m_apDataAudio[Label];
+		buffer.Flags = XAUDIO2_END_OF_STREAM;
+		buffer.LoopCount = m_aSoundInfo[Label].Label;
+
+		// オーディオバッファの登録
+		m_apSourceVoice[Label]->SubmitSourceBuffer(&buffer);
 
 		// ファイルをクローズ
 		CloseHandle(hFile);
