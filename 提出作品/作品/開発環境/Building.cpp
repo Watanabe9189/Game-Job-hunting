@@ -19,7 +19,7 @@ int CBuilding::m_nNumAll = NULL;									//”
 const char		*CBuilding::m_acFilename[TYPE::TYPE_MAX] =
 {
 	"data/MODEL/House.x",		//“G‚Q
-	"data/MODEL/Tent000.x",		//“G‚R
+	"data/MODEL/House.x",		//“G‚R
 
 };
 //<==========================================
