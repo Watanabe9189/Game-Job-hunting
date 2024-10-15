@@ -51,7 +51,7 @@ CEnemyManagement::~CEnemyManagement()
 void CEnemyManagement::Init()
 {
 	//ランダム決定
-	int nNum = Calculate::CalculeteRandInt(1, MAX_SPAWN_ENE);
+	int nNum = Calculate::CalculeteRandInt(MAX_SPAWN_ENE, 1);
 
 	//生成する敵の数を設定
 	for (int nCnt = 0; nCnt < nNum; nCnt++)
@@ -101,8 +101,8 @@ void CEnemyManagement::Uninit()
 //<=====================================
 void CEnemyManagement::Appear(void)
 {
+	//設定項目
 	CManager::GetDebugProc()->Print("現在のスポーン時間->%d",m_nSpawnTime);
-
 	m_nNumEnemy = CNorEnemy::GetNum() + CInvEnemy::GetNum();
 
 	//一個目をゲットしていたら
