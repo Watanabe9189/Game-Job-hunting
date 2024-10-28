@@ -18,6 +18,7 @@
 #include <crtdbg.h>
 
 #include <stdlib.h>
+#include <iostream>
 #include "Renderer.h"
 #include "Object.h"
 #include <string>   
