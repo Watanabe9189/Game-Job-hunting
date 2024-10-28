@@ -36,12 +36,12 @@ namespace
 //<======================================================================
 C2DContinue::C2DContinue(int nPriority)
 {
-	for (int nCnt = 0; nCnt < TYPE::TYPE_MAX; ++nCnt)
+	for (int nCnt = 0; nCnt != TYPE::TYPE_MAX; ++nCnt)
 	{
 		m_apObject2D[nCnt] = {nullptr};
 	}
 
-	for (int nCnt = 0; nCnt < SELECT::SELECT_MAX; ++nCnt)
+	for (int nCnt = 0; nCnt != SELECT::SELECT_MAX; ++nCnt)
 	{
 		m_apSelect[nCnt] = { nullptr };
 	}
@@ -85,8 +85,8 @@ HRESULT C2DContinue::Init(void)
 
 	assert(m_pChangeCol );
 
-	//テクスチャの初期化
-	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); ++nCnt)
+	//テクスチャの初期化F
+	for (int nCnt = 0; nCnt != (sizeof m_acFilename) / sizeof(*m_acFilename); ++nCnt)
 	{
 		//最初だけ読み込む
 		if (!m_apTexture[nCnt])
@@ -102,7 +102,7 @@ HRESULT C2DContinue::Init(void)
 	m_rPos = FRAME_POS;
 
 	//セレクトの数分繰り返す
-	for (int nCnt = 0; nCnt < TYPE::TYPE_SELECT_YES; ++nCnt)
+	for (int nCnt = 0; nCnt != TYPE::TYPE_SELECT_YES; ++nCnt)
 	{
 		//フレーム
 		if (nCnt == TYPE::TYPE_FRAME)
@@ -124,7 +124,7 @@ HRESULT C2DContinue::Init(void)
 		assert(m_apObject2D[nCnt] );
 	}
 	//セレクトの数分繰り返す
-	for (int nCnt = 0; nCnt < SELECT::SELECT_MAX; ++nCnt)
+	for (int nCnt = 0; nCnt != SELECT::SELECT_MAX; ++nCnt)
 	{
 		m_rSize = YESNO_SIZE;
 		m_rPos = YESNO_POS;
@@ -176,7 +176,7 @@ void C2DContinue::Update(void)
 		SelectUpdate();
 
 		//セレクトの数分繰り返す
-		for (int nCnt = 0; nCnt < SELECT::SELECT_MAX; ++nCnt)
+		for (int nCnt = 0; nCnt != SELECT::SELECT_MAX; ++nCnt)
 		{
 			if (m_apSelect[nCnt] )
 			{
@@ -194,7 +194,7 @@ void C2DContinue::Update(void)
 		}
 
 		//セレクトの数分繰り返す
-		for (int nCnt = 0; nCnt < TYPE::TYPE_MAX; ++nCnt)
+		for (int nCnt = 0; nCnt != TYPE::TYPE_MAX; ++nCnt)
 		{
 			if (m_apObject2D[nCnt] )
 			{

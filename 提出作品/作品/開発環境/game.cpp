@@ -51,6 +51,7 @@ namespace
 	const int	MAX_TIME = 4500;											//アイテムテレポートまでの時間の最大値
 	const float MAX_DESTTiME = 7500;										//敵が目的地をプレイヤーの位置の周辺にするまでの時間の最大値
 	const int	MAX_SPAWNTIME = 10000;										//スポーンまでの時間の最大値
+	const int MAX_WAIT = 100;												//待機時間の最大値
 }
 //<====================================
 //ゲーム画面のコンストラクタ
@@ -164,7 +165,7 @@ void CGame::Uninit(void)
 	//<******************************************
 	//地面の破棄
 	//<******************************************
-	for (int nCnt = 0; nCnt < CField::GetNum(); ++nCnt)
+	for (int nCnt = 0; nCnt != CField::GetNum(); ++nCnt)
 	{
 		//もしメモリ確保がされていたら
 		if (m_apField[nCnt] )
@@ -177,7 +178,7 @@ void CGame::Uninit(void)
 	//<******************************************
 	//建物の破棄
 	//<******************************************
-	for (int nCnt = 0; nCnt < CBuilding::GetNum(); ++nCnt)
+	for (int nCnt = 0; nCnt != CBuilding::GetNum(); ++nCnt)
 	{
 		//もしメモリ確保がされていたら
 		if (m_apBuilding[nCnt] )
@@ -190,7 +191,7 @@ void CGame::Uninit(void)
 	//<******************************************
 	//アイテムの破棄
 	//<******************************************
-	for (int nCnt = 0; nCnt < CItem::GetNum(); ++nCnt)
+	for (int nCnt = 0; nCnt != CItem::GetNum(); ++nCnt)
 	{
 		//もしメモリ確保がされていたら
 		if (m_apItem[nCnt] )
@@ -203,7 +204,7 @@ void CGame::Uninit(void)
 	//<******************************************
 	//2D文字の破棄
 	//<******************************************
-	for (int nCnt = 0; nCnt < C2DChar::GetNum(); ++nCnt)
+	for (int nCnt = 0; nCnt != C2DChar::GetNum(); ++nCnt)
 	{
 		//もしメモリ確保がされていたら
 		if (m_ap2DChar[nCnt] )
@@ -216,7 +217,7 @@ void CGame::Uninit(void)
 	//<******************************************
 	//植物の破棄
 	//<******************************************
-	for (int nCnt = 0; nCnt < CPlant::GetNum(); ++nCnt)
+	for (int nCnt = 0; nCnt != CPlant::GetNum(); ++nCnt)
 	{
 		//もしメモリ確保がされていたら
 		if (m_apPlant[nCnt] )
@@ -229,7 +230,7 @@ void CGame::Uninit(void)
 	//<******************************************
 	//目印モデルの破棄
 	//<******************************************
-	for (int nCnt = 0; nCnt < CLandMark::GetNum(); ++nCnt)
+	for (int nCnt = 0; nCnt != CLandMark::GetNum(); ++nCnt)
 	{
 		//もしメモリ確保がされていたら
 		if (m_apLandMark[nCnt] )
@@ -255,7 +256,6 @@ void CGame::Uninit(void)
 //<====================================
 void CGame::Update(void)
 {
-#define MAX_WAIT	(100)	//待機時間の最大値
 
 	m_pLight->Update();
 	m_pCamera->Update();

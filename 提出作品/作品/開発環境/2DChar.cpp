@@ -35,7 +35,7 @@ C2DChar::C2DChar(int nPriority)
 	m_pos = INIT_VECTOR2;
 
 	//”•ªŒJ‚è•Ô‚·
-	for (int nCnt = 0; nCnt < MAX_DEST; ++nCnt)
+	for (int nCnt = 0; nCnt != MAX_DEST; ++nCnt)
 	{
 		m_posDest[nCnt] = INIT_VECTOR2;
 	}

@@ -75,7 +75,7 @@ void CEnemyManagement::Uninit()
 	if (m_pFastEnemy) { m_pFastEnemy->Uninit(); m_pFastEnemy = nullptr; }
 
 	//’ÊíŒ^“G‚Ì”jŠü
-	for (unsigned int nCnt = 0, size = m_pNorEnemy.size(); nCnt <size; ++nCnt)
+	for (unsigned int nCnt = 0, size = m_pNorEnemy.size(); nCnt != size; ++nCnt)
 	{
 		if (m_pNorEnemy.at(nCnt))
 		{
@@ -86,7 +86,7 @@ void CEnemyManagement::Uninit()
 	m_pNorEnemy.clear();
 
 	//“§–¾Œ^“G‚Ì”jŠü
-	for (unsigned int nCnt = 0,size = m_pInvEnemy.size(); nCnt <size; ++nCnt)
+	for (unsigned int nCnt = 0,size = m_pInvEnemy.size(); nCnt != size; ++nCnt)
 	{
 		if (m_pInvEnemy.at(nCnt))
 		{

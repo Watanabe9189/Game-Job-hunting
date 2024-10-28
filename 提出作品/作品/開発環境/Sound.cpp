@@ -70,7 +70,7 @@ CSound::CSound()
 	m_rDistance = INIT_VECTOR;
 
 	//ラベル数分繰り返す
-	for (int nCnt = 0; nCnt < LABEL_MAX; ++nCnt)
+	for (int nCnt = 0; nCnt != LABEL_MAX; ++nCnt)
 	{
 		//音量の初期化をする
 		m_VolumeType[nCnt] = { START_VOL_SE,START_VOL_BGM };
@@ -178,7 +178,7 @@ HRESULT CSound::InitAll(HWND hWnd)
 	}
 
 	// サウンドデータの初期化
-	for (int nCntSound = 0; nCntSound < LABEL_MAX; nCntSound++)
+	for (int nCntSound = 0; nCntSound != LABEL_MAX; nCntSound++)
 	{
 		CheckChunkSound(nCntSound);
 	}
@@ -191,7 +191,7 @@ HRESULT CSound::InitAll(HWND hWnd)
 void CSound::Uninit(void)
 {
 	// 一時停止
-	for (int nCntSound = 0; nCntSound < LABEL_MAX; nCntSound++)
+	for (int nCntSound = 0; nCntSound != LABEL_MAX; nCntSound++)
 	{
 		//
 		if (m_apDataAudio[nCntSound] )
@@ -439,7 +439,7 @@ void CSound::StopSound(LABEL label)
 void CSound::StopSound(void)
 {
 	// 一時停止
-	for (int nCntSound = 0; nCntSound < LABEL_MAX; nCntSound++)
+	for (int nCntSound = 0; nCntSound != LABEL_MAX; nCntSound++)
 	{
 		if (m_apSourceVoice[nCntSound] != NULL)
 		{

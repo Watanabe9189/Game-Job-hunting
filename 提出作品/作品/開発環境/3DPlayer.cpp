@@ -346,45 +346,12 @@ void C3DPlayer::MoveAction(void)
 //<************************
 //この関数限定のマクロ定義
 //<************************
-
-#define GRAVITY			(3.14f)		//重力値
-#define JUMP_VALUE		(55.0f)		//ジャンプの値	
-
-	//<*****************************************************
-	//ジャンプアクション関連
-	//<*****************************************************
-	if (CManager::GetKeyboard()->bGetTrigger(DIK_SPACE))//もしAキーが押されていたら下の処理を実行
-	{
-		//もしジャンプしていなければ
-		if (!m_bJump)
-		{
-			//ジャンプする
-			m_move.y += JUMP_VALUE;
-
-			//ジャンプした判定にする
-			m_bJump = true;
-		}
-	}
-
 #if 1
 	//もし地面の下に落ちそうだったら
 	if (m_pos.y <= GROUND)
 	{
 		//地面の位置に補正
 		m_pos.y = GROUND;
-	
-		//ジャンプ可能にする
-		m_bJump = false;
-
-	}
-	//それ以外
-	else
-	{
-		//重力を付加
-		m_move.y -= GRAVITY;
-
-		//ジャンプしている判定にする
-		m_bJump = true;
 	}
 #else
 

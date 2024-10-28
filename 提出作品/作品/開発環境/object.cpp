@@ -147,7 +147,7 @@ void CObject::ReleaseAll(void)
 	//<******************************************************
 	//
 	//<******************************************************5
-	for (int nCntPri = 0; nCntPri < NEED_PRIORITY; nCntPri++)
+	for (int nCntPri = 0; nCntPri != NEED_PRIORITY; nCntPri++)
 	{
 		//whileでも可能
 		for (CObject *pObj = m_apTop[nCntPri]; pObj ; pObj = m_pObjNext)
@@ -168,7 +168,7 @@ void CObject::ReleaseAll(void)
 	//<******************************************************
 	//
 	//<******************************************************5
-	for (int nCntPri = 0; nCntPri < NEED_PRIORITY; nCntPri++)
+	for (int nCntPri = 0; nCntPri != NEED_PRIORITY; nCntPri++)
 	{
 		//whileでも可能
 		for (CObject *pObj = m_apTop[nCntPri]; pObj ; pObj = m_pObjNext)
@@ -224,7 +224,7 @@ void CObject::UpdateAll(void)
 	//<******************************************************
 	//
 	//<******************************************************
-	for (int nCntPri = 0; nCntPri < NEED_PRIORITY; nCntPri++)
+	for (int nCntPri = 0; nCntPri != NEED_PRIORITY; nCntPri++)
 	{
 		//whileでも可能
 		for (CObject *pObj = m_apTop[nCntPri]; pObj ; pObj = m_pObjNext)
@@ -258,7 +258,7 @@ void CObject::UpdateAll(void)
 	//<******************************************************
 	//破棄処理(Uninitではない方(先頭以外))
 	//<******************************************************
-	for (int nCntPri = 0; nCntPri < NEED_PRIORITY; nCntPri++)
+	for (int nCntPri = 0; nCntPri != NEED_PRIORITY; nCntPri++)
 	{
 		//前のオブジェクト保存用
 		CObject *pPrev = nullptr;
@@ -361,7 +361,7 @@ void CObject::DrawAll(void)
 	//<******************************************************
 	//while文を使い、
 	//<******************************************************
-	for (int nCntPri = 0; nCntPri < NEED_PRIORITY; nCntPri++)
+	for (int nCntPri = 0; nCntPri != NEED_PRIORITY; nCntPri++)
 	{
 		//whileでも可能
 		for (CObject *pObj = m_apTop[nCntPri]; pObj ; pObj = m_pObjNext)

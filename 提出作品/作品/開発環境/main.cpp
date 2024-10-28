@@ -6,13 +6,18 @@
 #include "main.h"
 #include "Manager.h"
 
-//マクロ定義
-#define SLOW_SPEED			(0.5f)					//鈍足の値
-#define NORMAL_SPEED		(1)						//等速の値
-#define SPEED_UP_VALUE		(2)						//スピードアップの値
+//<************************************
+//名前宣言
+//<************************************
+namespace
+{
+	const float SLOW_SPEED = 0.5f;					//鈍足の値
+	const int NORMAL_SPEED	=1;						//等速の値
+	const int SPEED_UP_VALUE = 2;					//スピードアップの値
 
-#define CLASS_NAME			"WindowsClass"			//ウインドウクラスの名前
-#define WINDOW_NAME			"Night-Forest"	//ウインドウの名前(キャプション)
+	const char*	CLASS_NAME ="WindowsClass";			//ウインドウクラスの名前
+	const char*	WINDOW_NAME ="Night-Forest";		//ウインドウの名前(キャプション)
+}
 
 //プロトタイプ宣言
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);

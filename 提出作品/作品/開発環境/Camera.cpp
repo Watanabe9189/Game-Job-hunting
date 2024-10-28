@@ -31,6 +31,11 @@ namespace
 
 	const float MAX_DISTANCE = 5000.0f;
 	const float MIN_DISTANCE = 1.0f;
+
+	const float MAX_Z = 5000.0f;	//プロジェクションマトリックス作成時のZ軸の最大値
+	const float MIN_Z = 10.0f;		//プロジェクションマトリックス作成時のZ軸の最小値
+
+	const float ASPECT = (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT;
 }
 
 //<=================================
@@ -604,14 +609,6 @@ void Ccamera::SetFollow(const D3DXVECTOR3 rTargetPos, const D3DXVECTOR3 rTargetR
 //<=================================
 void Ccamera::SetCamera(void)
 {
-//<************************
-//この関数限定のマクロ定義
-//<************************
-#define MAX_Z	(5000.0f)	//プロジェクションマトリックス作成時のZ軸の最大値
-#define MIN_Z	(10.0f)		//プロジェクションマトリックス作成時のZ軸の最小値
-
-	float fAspect = (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT;
-
 	//プロジェクションマトリックスの初期化
 	D3DXMatrixIdentity(&m_mtxProjection);
 
@@ -622,7 +619,7 @@ void Ccamera::SetCamera(void)
 		//※オブジェクトの距離の影響を受ける
 		D3DXMatrixPerspectiveFovLH(&m_mtxProjection,
 			D3DXToRadian(45.0f),						//視野
-			fAspect,	//縦横比
+			ASPECT,	//縦横比
 			MIN_Z,										//Z軸の最小値
 			MAX_Z);										//Z軸の最大値
 	}

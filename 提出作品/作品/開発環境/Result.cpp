@@ -60,7 +60,7 @@ HRESULT CResult::Init(void)
 	m_eState = STATE::STATE_NONE;
 
 	//テクスチャの初期化
-	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); ++nCnt)
+	for (int nCnt = 0; nCnt != (sizeof m_acFilename) / sizeof(*m_acFilename); ++nCnt)
 	{
 		//最初だけ読み込む
 		if (!m_apTexture[nCnt])
@@ -163,7 +163,7 @@ void CResult::Uninit(void)
 		m_pField->Uninit();
 		m_pField = nullptr;
 	}
-	for (int nCnt = 0; nCnt < XTYPE_MAX; ++nCnt)
+	for (int nCnt = 0; nCnt != XTYPE_MAX; ++nCnt)
 	{
 		//もしメモリ確保がされていたら
 		if (m_apXObject[nCnt] )

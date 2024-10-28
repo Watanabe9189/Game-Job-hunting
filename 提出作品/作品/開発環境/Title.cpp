@@ -88,7 +88,7 @@ HRESULT CTitle::Init(void)
 	m_pSelect->SetUpdatefalse();
 
 	//テクスチャの初期化
-	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); ++nCnt)
+	for (int nCnt = 0; nCnt != (sizeof m_acFilename) / sizeof(*m_acFilename); ++nCnt)
 	{
 		//テクスチャネームを設定する
 		m_pSelect->SetTexName(m_acFilename[nCnt], nCnt);
@@ -102,7 +102,7 @@ HRESULT CTitle::Init(void)
 void CTitle::Uninit(void)
 {
 	//フォントの数分繰り返す
-	for (int nCnt = 0; nCnt < C2DChar::GetNum(); ++nCnt)
+	for (int nCnt = 0; nCnt != C2DChar::GetNum(); ++nCnt)
 	{
 		if (m_ap2DChar[nCnt] )
 		{
