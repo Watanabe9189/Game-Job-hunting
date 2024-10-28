@@ -635,7 +635,6 @@ HRESULT CSound::CheckChunkSound(const int Label)
 	BYTE *pData = nullptr;
 	DWORD pSize = NULL;
 
-
 	//‚Ç‚¿‚ç‚Ì’†g‚à‚È‚¯‚ê‚Î
 	if (!m_apDataAudio[Label]
 		&&m_aSizeAudio[Label] == NULL)
@@ -699,7 +698,6 @@ HRESULT CSound::CheckChunkSound(const int Label)
 			return S_FALSE;
 		}
 
-		//ƒƒ‚ƒŠ‰ğ•ú
 		pData = new(std::nothrow) BYTE[pSize];
 
 		if (FAILED(hr = ReadChunkData(hFile, pData, pSize, dwChunkPosition)))
