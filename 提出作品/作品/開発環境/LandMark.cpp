@@ -53,7 +53,7 @@ CLandMark *CLandMark::FixedCreate(CLandMark *apLandMark[MAX_OBJECT])
 	const float MAX_AREA = 4000.0f;
 
 	//タイプマックス分繰り返す
-	for (int nCnt = 0; nCnt < TYPE::TYPE_MAX; nCnt++)
+	for (int nCnt = 0; nCnt < TYPE::TYPE_MAX; ++nCnt)
 	{
 		apLandMark[nCnt] = new CLandMark;
 

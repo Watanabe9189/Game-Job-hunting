@@ -16,7 +16,6 @@ int C2DChar::m_nNumAll = INITIAL_INT;
 LPDIRECT3DTEXTURE9 C2DChar::m_apTexture[INT_VALUE::MAX_TEX] = {};
 const char			*C2DChar::m_acFilename[CHAR_TYPE_MAX] =
 {
-
 	"data/TEXTURE/HORROR_TITLE.png",			//目的
 	"data/TEXTURE/HORROR_INFO000.png",			//「隠れる」文字
 	"data/TEXTURE/HORROR_INFO002.png",			//「取る」文字
@@ -33,17 +32,17 @@ C2DChar::C2DChar(int nPriority)
 {
 	//値の初期化
 	m_nNumAll++;
-	m_pos = D3DXVECTOR2(0.0f,0.0f);
+	m_pos = INIT_VECTOR2;
 
-	//
-	for (int nCnt = 0; nCnt < MAX_DEST; nCnt++)
+	//数分繰り返す
+	for (int nCnt = 0; nCnt < MAX_DEST; ++nCnt)
 	{
-		m_posDest[nCnt] = {};
+		m_posDest[nCnt] = INIT_VECTOR2;
 	}
 
 	m_bArrived = false;
 
-	m_Size = D3DXVECTOR2(0.0f, 0.0f);
+	m_Size = INIT_VECTOR2;
 
 	m_eCType = CHAR_TYPE_MAX;
 	m_bDisp = true;
@@ -150,7 +149,7 @@ C2DChar *C2DChar::Create(const D3DXVECTOR2 pos, const D3DXVECTOR2 Size, const in
 HRESULT C2DChar::Init(void)
 {
 	//テクスチャの初期化
-	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); nCnt++)
+	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); ++nCnt)
 	{
 		//最初だけ読み込む
 		if (!m_apTexture[nCnt])

@@ -65,7 +65,7 @@ void CInput::Uninit(void)
 CKeyboard::CKeyboard()
 {
 	//中身をなくす
-	for (int nCnt = 0; nCnt < NUM_KEY; nCnt++)
+	for (int nCnt = 0; nCnt < NUM_KEY; ++nCnt)
 	{
 		m_aState[nCnt] = NULL;
 	}
@@ -199,7 +199,7 @@ HRESULT CJoyPad::Init(HINSTANCE hInstance, HWND hWnd)
 	m_nLeftStickCount = 0;
 
 	//メモリクリア
-	for (int nCnt = 0; nCnt < NUM_KEY; nCnt++)
+	for (int nCnt = 0; nCnt < NUM_KEY; ++nCnt)
 	{
 		memset(&m_aState[nCnt], 0, sizeof(XINPUT_STATE));
 		memset(&m_aStateTrigger[nCnt], 0, sizeof(XINPUT_STATE));
@@ -228,7 +228,7 @@ void CJoyPad::Update(void)
 	const int REPEAT_TIME = 10;
 
 	//入力デバイスからデータを取得
-	for (int nCnt = 0; nCnt < NUM_KEY; nCnt++)
+	for (int nCnt = 0; nCnt < NUM_KEY; ++nCnt)
 	{
 		if (XInputGetState(nCnt, &aGamepadState[nCnt]) == ERROR_SUCCESS)
 		{

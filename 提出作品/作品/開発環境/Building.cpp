@@ -221,7 +221,7 @@ CBuilding *CBuilding::RandCreate(CBuilding *apBuilding[MAX_OBJECT], const int nN
 	float nCollidRange = INITIAL_FLOAT;	
 
 	//Œš•¨‚Ì”•ª‰ñ‚·
-	for (int nCnt = 0; nCnt < nNum; nCnt++)
+	for (int nCnt = 0; nCnt < nNum; ++nCnt)
 	{
 		apBuilding[nCnt] = new CBuilding;
 

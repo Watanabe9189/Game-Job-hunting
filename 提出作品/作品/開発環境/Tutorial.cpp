@@ -13,7 +13,7 @@
 //<*****************************************
 #include "Light.h"
 
-LPDIRECT3DTEXTURE9	CTutorial::m_apTexture[INT_VALUE::MAX_TEX] = {};	//テクスチャへのポインタ
+LPDIRECT3DTEXTURE9	CTutorial::m_apTexture[INT_VALUE::MAX_TEX] = {NULL};	//テクスチャへのポインタ
 
 															//ファイル名
 const char*			CTutorial::m_acFilename[TUTORIAL_STEP_MAX] =
@@ -52,7 +52,7 @@ CTutorial::~CTutorial()
 HRESULT CTutorial::Init(void)
 {
 
-	for (int nCnt = 0; nCnt < sizeof(m_acFilename) / sizeof(*m_acFilename); nCnt++)
+	for (int nCnt = 0; nCnt < sizeof(m_acFilename) / sizeof(*m_acFilename); ++nCnt)
 	{
 		if (!m_apTexture[nCnt])
 		{

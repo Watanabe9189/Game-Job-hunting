@@ -68,7 +68,7 @@ HRESULT CBilBIcon::Init(void)
 	m_Size = D3DXVECTOR3(25.0f, 25.0f, 25.0f);
 
 	//テクスチャの初期化
-	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); nCnt++)
+	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); ++nCnt)
 	{
 		//最初だけ読み込む
 		if (!m_apTexture[nCnt])

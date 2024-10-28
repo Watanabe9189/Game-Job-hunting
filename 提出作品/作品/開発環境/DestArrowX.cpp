@@ -102,7 +102,7 @@ void CDestArrowX::Update(void)
 void CDestArrowX::RotateToDest(void)
 {
 	//ƒAƒCƒeƒ€‚Ì”•ªŒJ‚è•Ô‚·
-	for (int nCnt = 0; nCnt < CItem::GetNum(); nCnt++)
+	for (int nCnt = 0; nCnt < CItem::GetNum(); ++nCnt)
 	{
 		if (!CManager::GetScene()->GetGame()->GetItem(nCnt)->bGetSealed())
 		{

@@ -11,7 +11,7 @@
 //<*****************************************
 //Ã“Iƒƒ“ƒo•Ï”éŒ¾
 //<*****************************************
-int CObject::m_nNumAll = 0;						//‘”
+int CObject::m_nNumAll = INITIAL_INT;						//‘”
 CObject *CObject::m_apTop[NEED_PRIORITY] = { nullptr };
 CObject *CObject::m_apCur[NEED_PRIORITY] = { nullptr };
 CObject *CObject::m_pObject = nullptr;

@@ -263,7 +263,7 @@ void C3DPlayer::Dash(void)
 void C3DPlayer::Hide(void)
 {
 	//Œš•¨‚Ì”•ª‰ñ‚·
-	for (int nCnt = 0; nCnt < CBuilding::GetNum(); nCnt++)
+	for (int nCnt = 0; nCnt < CBuilding::GetNum(); ++nCnt)
 	{
 		Collision::CollidXZ
 		(CManager::GetScene()->GetGame()->GetBuil(nCnt)->GetPosition(),

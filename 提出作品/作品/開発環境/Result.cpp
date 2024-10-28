@@ -10,7 +10,7 @@
 #include "fade.h"
 #include "Sound.h"
 
-LPDIRECT3DTEXTURE9	CResult::m_apTexture[CScene::TYPE_RESULT_MAX] = {};
+LPDIRECT3DTEXTURE9	CResult::m_apTexture[CScene::TYPE_RESULT_MAX] = {NULL};
 const char*			CResult::m_acFilename[CScene::TYPE_RESULT_MAX]= 
 {
 	"data\\TEXTURE\\GameClear000.png",		//ゲームクリア文字
@@ -29,7 +29,7 @@ CLight *CResult::m_pLight = nullptr;
 CField *CResult::m_pField = nullptr;
 
 Ccamera *CResult::m_pCamera = nullptr;
-CXObject *CResult::m_apXObject[XTYPE_MAX] = {};
+CXObject *CResult::m_apXObject[XTYPE_MAX] = {nullptr};
 CObject3D *CResult::m_pObject3D = nullptr;
 C2DContinue *CResult::m_pContinue = nullptr;
 CFog *CResult::m_pFog = nullptr;
@@ -60,7 +60,7 @@ HRESULT CResult::Init(void)
 	m_eState = STATE::STATE_NONE;
 
 	//テクスチャの初期化
-	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); nCnt++)
+	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); ++nCnt)
 	{
 		//最初だけ読み込む
 		if (!m_apTexture[nCnt])
@@ -163,7 +163,7 @@ void CResult::Uninit(void)
 		m_pField->Uninit();
 		m_pField = nullptr;
 	}
-	for (int nCnt = 0; nCnt < XTYPE_MAX; nCnt++)
+	for (int nCnt = 0; nCnt < XTYPE_MAX; ++nCnt)
 	{
 		//もしメモリ確保がされていたら
 		if (m_apXObject[nCnt] )

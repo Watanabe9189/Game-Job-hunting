@@ -70,7 +70,7 @@ CSound::CSound()
 	m_rDistance = INIT_VECTOR;
 
 	//ƒ‰ƒxƒ‹”•ªŒJ‚è•Ô‚·
-	for (int nCnt = 0; nCnt < LABEL_MAX; nCnt++)
+	for (int nCnt = 0; nCnt < LABEL_MAX; ++nCnt)
 	{
 		//‰¹—Ê‚Ì‰Šú‰»‚ğ‚·‚é
 		m_VolumeType[nCnt] = { START_VOL_SE,START_VOL_BGM };

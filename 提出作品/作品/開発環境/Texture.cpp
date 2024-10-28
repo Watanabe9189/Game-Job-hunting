@@ -9,7 +9,7 @@
 //<************************************************
 //静的メンバ変数の宣言
 //<************************************************
-int CTexture::m_nNumAll = 0;	//テクスチャの総数
+int CTexture::m_nNumAll = INITIAL_INT;	//テクスチャの総数
 
 //<===============================
 //テクスチャのコンストラクタ
@@ -41,7 +41,7 @@ HRESULT CTexture::Load(void)
 //<===============================
 void CTexture::UnloadAll(void)
 {
-	for (unsigned int nCnt = 0; nCnt < m_pTexture.size(); nCnt++)
+	for (unsigned int nCnt = 0; nCnt < m_pTexture.size(); ++nCnt)
 	{
 		//全てのテクスチャの破棄
 		if (!m_pTexture.empty())
@@ -93,7 +93,7 @@ int CTexture::Regist(const char *pTexName, LPDIRECT3DTEXTURE9 &pTex)
 		//テクスチャ要素のチェック
 		//<*********************************************
 		//数分繰り返す
-		for (int nCnt = 0; nCnt < nNum; nCnt++)
+		for (int nCnt = 0; nCnt < nNum; ++nCnt)
 		{
 			if (!(m_pFileName.empty()))
 			{

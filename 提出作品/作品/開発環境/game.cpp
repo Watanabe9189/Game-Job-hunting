@@ -22,16 +22,16 @@
 //<*****************************************
 CLight *CGame::m_pLight = nullptr;					//
 C3DPlayer *CGame::m_p3DPlayer = nullptr;
-CField *CGame::m_apField[INT_VALUE::MAX_SIZE] = {};
+CField *CGame::m_apField[INT_VALUE::MAX_SIZE] = {nullptr};
 CFog *CGame::m_pFog = nullptr;
-CBuilding *CGame::m_apBuilding[INT_VALUE::MAX_SIZE] = {};
+CBuilding *CGame::m_apBuilding[INT_VALUE::MAX_SIZE] = { nullptr };
 C2DGauge *CGame::m_p2DGauge = nullptr;
-CItem *CGame::m_apItem[INT_VALUE::MAX_SIZE] = {};
+CItem *CGame::m_apItem[INT_VALUE::MAX_SIZE] = { nullptr };
 C2DInfo *CGame::m_pInfo = nullptr;
 Ccover *CGame::m_pCover = nullptr;
-C2DChar *CGame::m_ap2DChar[CGame::CHAR2D::CHAR2D_MAX] = {};
-CPlant *CGame::m_apPlant[INT_VALUE::MAX_SIZE] = {};
-CLandMark *CGame::m_apLandMark[INT_VALUE::MAX_SIZE] = {};
+C2DChar *CGame::m_ap2DChar[CGame::CHAR2D::CHAR2D_MAX] = { nullptr };
+CPlant *CGame::m_apPlant[INT_VALUE::MAX_SIZE] = { nullptr };
+CLandMark *CGame::m_apLandMark[INT_VALUE::MAX_SIZE] = { nullptr };
 CDestArrowX *CGame::m_pDestArrowX = nullptr;
 CDestArrow *CGame::m_pDestArrow = nullptr;
 Ccamera *CGame::m_pCamera = nullptr;
@@ -164,7 +164,7 @@ void CGame::Uninit(void)
 	//<******************************************
 	//地面の破棄
 	//<******************************************
-	for (int nCnt = 0; nCnt < CField::GetNum(); nCnt++)
+	for (int nCnt = 0; nCnt < CField::GetNum(); ++nCnt)
 	{
 		//もしメモリ確保がされていたら
 		if (m_apField[nCnt] )
@@ -177,7 +177,7 @@ void CGame::Uninit(void)
 	//<******************************************
 	//建物の破棄
 	//<******************************************
-	for (int nCnt = 0; nCnt < CBuilding::GetNum(); nCnt++)
+	for (int nCnt = 0; nCnt < CBuilding::GetNum(); ++nCnt)
 	{
 		//もしメモリ確保がされていたら
 		if (m_apBuilding[nCnt] )
@@ -190,7 +190,7 @@ void CGame::Uninit(void)
 	//<******************************************
 	//アイテムの破棄
 	//<******************************************
-	for (int nCnt = 0; nCnt < CItem::GetNum(); nCnt++)
+	for (int nCnt = 0; nCnt < CItem::GetNum(); ++nCnt)
 	{
 		//もしメモリ確保がされていたら
 		if (m_apItem[nCnt] )
@@ -203,7 +203,7 @@ void CGame::Uninit(void)
 	//<******************************************
 	//2D文字の破棄
 	//<******************************************
-	for (int nCnt = 0; nCnt < C2DChar::GetNum(); nCnt++)
+	for (int nCnt = 0; nCnt < C2DChar::GetNum(); ++nCnt)
 	{
 		//もしメモリ確保がされていたら
 		if (m_ap2DChar[nCnt] )
@@ -216,7 +216,7 @@ void CGame::Uninit(void)
 	//<******************************************
 	//植物の破棄
 	//<******************************************
-	for (int nCnt = 0; nCnt < CPlant::GetNum(); nCnt++)
+	for (int nCnt = 0; nCnt < CPlant::GetNum(); ++nCnt)
 	{
 		//もしメモリ確保がされていたら
 		if (m_apPlant[nCnt] )
@@ -229,7 +229,7 @@ void CGame::Uninit(void)
 	//<******************************************
 	//目印モデルの破棄
 	//<******************************************
-	for (int nCnt = 0; nCnt < CLandMark::GetNum(); nCnt++)
+	for (int nCnt = 0; nCnt < CLandMark::GetNum(); ++nCnt)
 	{
 		//もしメモリ確保がされていたら
 		if (m_apLandMark[nCnt] )
@@ -494,7 +494,7 @@ void CGame::Fading(void)
 void CGame::ItemUpdate(void)
 {
 	//アイテムの数分回す
-	for (int nCnt = 0; nCnt < CItem::GetNum(); nCnt++)
+	for (int nCnt = 0; nCnt < CItem::GetNum(); ++nCnt)
 	{
 		//アイテムを取得していなければ
 		if (!m_apItem[nCnt]->bGet())

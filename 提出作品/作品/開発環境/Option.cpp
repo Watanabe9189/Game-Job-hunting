@@ -13,7 +13,7 @@ CNumber  *COption::m_pNumber = nullptr;
 Ccamera *COption::m_pCamera = nullptr;
 CLight *COption::m_pLight = nullptr;
 
-LPDIRECT3DTEXTURE9	COption::m_apTexture[INT_VALUE::MAX_TEX] = {};
+LPDIRECT3DTEXTURE9	COption::m_apTexture[INT_VALUE::MAX_TEX] = {NULL};
 
 //テクスチャへのポインタ
 const char*			COption::m_acFilename[] =
@@ -49,7 +49,7 @@ namespace
 COption::COption()
 {
 	//値のクリア
-	for (int nCnt = 0; nCnt < SELECT::SELECT_MAX; nCnt++)
+	for (int nCnt = 0; nCnt < SELECT::SELECT_MAX; ++nCnt)
 	{
 		m_apObject2D[nCnt] = nullptr;
 	}
@@ -83,7 +83,7 @@ HRESULT COption::Init(void)
 	CManager::GetSound()->PlaySound(CSound::LABEL_BGM_OPTION);
 
 	//テクスチャの初期化
-	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); nCnt++)
+	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); ++nCnt)
 	{
 		//最初だけ読み込む
 		if (!m_apTexture[nCnt])
@@ -94,7 +94,7 @@ HRESULT COption::Init(void)
 	}
 
 	//選択肢の数分繰り返す
-	for (int nCnt = 0; nCnt < SELECT::SELECT_MAX; nCnt++)
+	for (int nCnt = 0; nCnt < SELECT::SELECT_MAX; ++nCnt)
 	{
 		//生成する
 		m_apObject2D[nCnt] = CObject2D::Create(D3DXVECTOR2(OPTION_POS.x, OPTION_POS.y + DISTANCE_Y * nCnt), OPTION_SIZE, m_pChangeCol->GetColor());
@@ -123,7 +123,7 @@ HRESULT COption::Init(void)
 void COption::Uninit(void)
 {
 	//選択肢の数分繰り返す
-	for (int nCnt = 0; nCnt < SELECT::SELECT_MAX; nCnt++)
+	for (int nCnt = 0; nCnt < SELECT::SELECT_MAX; ++nCnt)
 	{
 		//中身があれば
 		if (m_apObject2D[nCnt] )
@@ -160,7 +160,7 @@ void COption::Uninit(void)
 void COption::Update(void)
 {
 	//選択肢の数分繰り返す
-	for (int nCnt = 0; nCnt < SELECT::SELECT_MAX; nCnt++)
+	for (int nCnt = 0; nCnt < SELECT::SELECT_MAX; ++nCnt)
 	{
 		m_apObject2D[nCnt]->SetVtx();
 	}
@@ -216,7 +216,7 @@ void COption::Update(void)
 void COption::Draw(void)
 {
 	//選択肢の数分繰り返す
-	for (int nCnt = 0; nCnt < SELECT::SELECT_MAX; nCnt++)
+	for (int nCnt = 0; nCnt < SELECT::SELECT_MAX; ++nCnt)
 	{
 		m_apObject2D[nCnt]->Draw();
 	}

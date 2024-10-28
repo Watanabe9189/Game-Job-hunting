@@ -52,9 +52,9 @@ C2DGauge::C2DGauge(int nPriority)
 	m_nMax = INITIAL_INT;
 	m_eVer = VERTEX_MAX;
 
-	for (int nCnt = 0; nCnt < TYPE::TYPE_MAX; nCnt++)
+	for (int nCnt = 0; nCnt < TYPE::TYPE_MAX; ++nCnt)
 	{
-		m_apObject2D[nCnt] = {};
+		m_apObject2D[nCnt] = {nullptr};
 	}
 }
 //<===============================================================
@@ -95,7 +95,7 @@ C2DGauge *C2DGauge::Create(const D3DXVECTOR2 pos,const int nMaxNum, const VERTEX
 HRESULT C2DGauge::Init(void)
 {
 	//テクスチャの初期化
-	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); nCnt++)
+	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); ++nCnt)
 	{
 		//最初だけ読み込む
 		if (!m_apTexture[nCnt])
@@ -121,7 +121,7 @@ HRESULT C2DGauge::Init(void)
 		m_rSize = D3DXVECTOR2(SIZEMAX_Y.x, SIZEMAX_Y.y);
 	}
 
-	for (int nCnt = 0; nCnt < TYPE::TYPE_MAX; nCnt++)
+	for (int nCnt = 0; nCnt < TYPE::TYPE_MAX; ++nCnt)
 	{
 		m_apObject2D[nCnt] = CObject2D::Create(m_rPos, m_rSize, m_rCol, m_apTexture[nCnt]);
 	}
@@ -136,7 +136,7 @@ HRESULT C2DGauge::Init(void)
 void C2DGauge::Uninit(void)
 {
 	//
-	for (int nCnt = 0; nCnt < TYPE::TYPE_MAX; nCnt++)
+	for (int nCnt = 0; nCnt < TYPE::TYPE_MAX; ++nCnt)
 	{
 		if (m_apObject2D[nCnt] )
 		{
@@ -162,7 +162,7 @@ void C2DGauge::Update(void)
 	else if (m_eMode == MODE::MODE_ONLY_USE)
 	{
 		//タイプ分回す
-		for (int nCnt = 0; nCnt < TYPE::TYPE_MAX; nCnt++)
+		for (int nCnt = 0; nCnt < TYPE::TYPE_MAX; ++nCnt)
 		{
 			//中身チェック
 			if (m_apObject2D[nCnt] )
@@ -237,7 +237,7 @@ void C2DGauge::SetVtx(void)
 	VERTEX_2D *pVtx = nullptr;
 
 	//
-	for (int nCnt = 0; nCnt < TYPE::TYPE_MAX; nCnt++)
+	for (int nCnt = 0; nCnt < TYPE::TYPE_MAX; ++nCnt)
 	{
 		if (m_apObject2D[nCnt] )
 		{

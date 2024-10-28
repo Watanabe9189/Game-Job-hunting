@@ -35,7 +35,7 @@ CDestArrow::CDestArrow(int nPriority)
 
 	m_bFind = false;
 
-	for (int nCnt = 0; nCnt < INT_VALUE::MAX_SIZE; nCnt++)
+	for (int nCnt = 0; nCnt < INT_VALUE::MAX_SIZE; ++nCnt)
 	{
 		m_apItem[nCnt] = {};
 	}
@@ -124,7 +124,7 @@ void CDestArrow::RotateToDest(void)
 	if (CItem::bGetFlag())
 	{
 		//Œš•¨‚Ì”•ª‰ñ‚·
-		for (int nCnt = 0; nCnt < CBuilding::GetNum(); nCnt++)
+		for (int nCnt = 0; nCnt < CBuilding::GetNum(); ++nCnt)
 		{
 			//‚»‚ÌŒš•¨‚¾‚Á‚½‚ç
 			if (CScene::GetGame()->GetBuil(nCnt)->GetImportance()

@@ -5,7 +5,7 @@
 //<======================================================================================
 #include "Plant.h"
 
-LPDIRECT3DTEXTURE9	CPlant::m_apTexture[TYPE::TYPE_MAX] = {};		//テクスチャへのポインタ
+LPDIRECT3DTEXTURE9	CPlant::m_apTexture[TYPE::TYPE_MAX] = {NULL};		//テクスチャへのポインタ
 const char*			CPlant::m_acFilename[TYPE::TYPE_MAX] =
 {
 	"data\\TEXTURE\\Grass.png",				//草
@@ -59,7 +59,7 @@ CPlant *CPlant::RandCreate(CPlant *apPlant[MAX_OBJECT], const int nNum)
 	int nRandType = INITIAL_INT;
 
 	//数分回す
-	for (int nCnt = 0; nCnt < nNum; nCnt++)
+	for (int nCnt = 0; nCnt < nNum; ++nCnt)
 	{
 		apPlant[nCnt] = new CPlant;
 
@@ -90,7 +90,7 @@ CPlant *CPlant::RandCreate(CPlant *apPlant[MAX_OBJECT], const int nNum)
 HRESULT CPlant::Init(void)
 {
 	//テクスチャの初期化
-	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); nCnt++)
+	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); ++nCnt)
 	{
 		//最初だけ読み込む
 		if (!m_apTexture[nCnt])
@@ -108,7 +108,7 @@ HRESULT CPlant::Init(void)
 		m_rSize = GRASS_SIZE;
 
 		//草の最大数分繰り返し
-		for (int nCnt = 0; nCnt < MAX_GRASS; nCnt++)
+		for (int nCnt = 0; nCnt < MAX_GRASS; ++nCnt)
 		{
 			switch (nCnt)
 			{
@@ -144,7 +144,7 @@ HRESULT CPlant::Init(void)
 //<============================================
 void CPlant::Uninit(void)
 {
-	for (int nCnt = 0; nCnt < MAX_GRASS; nCnt++)
+	for (int nCnt = 0; nCnt < MAX_GRASS; ++nCnt)
 	{
 		if (m_apGrass[nCnt] )
 		{
@@ -159,7 +159,7 @@ void CPlant::Uninit(void)
 void CPlant::Update(void)	
 {
 	//数ぶん回す
-	for (int nCnt = 0; nCnt < MAX_GRASS; nCnt++)
+	for (int nCnt = 0; nCnt < MAX_GRASS; ++nCnt)
 	{
 		//中身チェック
 		if (m_apGrass[nCnt] )

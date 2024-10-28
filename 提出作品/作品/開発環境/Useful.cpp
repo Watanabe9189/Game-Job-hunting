@@ -375,7 +375,7 @@ D3DXMATERIAL *Color::AlphaChangeMaterial(D3DXMATERIAL *pMat, const float fAlphaV
 	D3DXMATERIAL *Material = pMat;
 
 	//マテリアルの数分繰り返す
-	for (DWORD nCnt = 0; nCnt < dwNumMat; nCnt++)
+	for (DWORD nCnt = 0; nCnt < dwNumMat; ++nCnt)
 	{
 		//赤色に変える
 		Material[nCnt].MatD3D.Diffuse.a += fAlphaValue;

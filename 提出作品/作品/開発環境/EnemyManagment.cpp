@@ -54,7 +54,7 @@ void CEnemyManagement::Init()
 	int nNum = Calculate::CalculeteRandInt(MAX_SPAWN_ENE,1);
 
 	//¶¬‚·‚é“G‚Ì”‚ğİ’è
-	for (int nCnt = 0; nCnt < nNum; nCnt++)
+	for (int nCnt = 0; nCnt < nNum; ++nCnt)
 	{
 		//ƒ‰ƒ“ƒ_ƒ€í—Ş
 		int nRand = Calculate::CalculeteRandInt(1, 0);
@@ -75,7 +75,7 @@ void CEnemyManagement::Uninit()
 	if (m_pFastEnemy) { m_pFastEnemy->Uninit(); m_pFastEnemy = nullptr; }
 
 	//’ÊíŒ^“G‚Ì”jŠü
-	for (unsigned int nCnt = 0, size = m_pNorEnemy.size(); nCnt <size; nCnt++)
+	for (unsigned int nCnt = 0, size = m_pNorEnemy.size(); nCnt <size; ++nCnt)
 	{
 		if (m_pNorEnemy.at(nCnt))
 		{
@@ -86,7 +86,7 @@ void CEnemyManagement::Uninit()
 	m_pNorEnemy.clear();
 
 	//“§–¾Œ^“G‚Ì”jŠü
-	for (unsigned int nCnt = 0,size = m_pInvEnemy.size(); nCnt <size; nCnt++)
+	for (unsigned int nCnt = 0,size = m_pInvEnemy.size(); nCnt <size; ++nCnt)
 	{
 		if (m_pInvEnemy.at(nCnt))
 		{

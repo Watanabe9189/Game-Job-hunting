@@ -14,9 +14,9 @@
 //<******************************************************************************
 //静的メンバ変数
 //<******************************************************************************
-C2DChar *CTitle::m_ap2DChar[INT_VALUE::MAX_SIZE] = {};								//2D文字
+C2DChar *CTitle::m_ap2DChar[INT_VALUE::MAX_SIZE] = {nullptr};								//2D文字
 
-LPDIRECT3DTEXTURE9	CTitle::m_apTexture[INT_VALUE::MAX_TEX] = {};	//テクスチャポインタ
+LPDIRECT3DTEXTURE9	CTitle::m_apTexture[INT_VALUE::MAX_TEX] = {NULL};	//テクスチャポインタ
 const char*			CTitle::m_acFilename[SELECT_MAX] =				//ファイルの名前
 {
 		"data\\TEXTURE\\HORROR-SELECT000.png",
@@ -88,7 +88,7 @@ HRESULT CTitle::Init(void)
 	m_pSelect->SetUpdatefalse();
 
 	//テクスチャの初期化
-	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); nCnt++)
+	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); ++nCnt)
 	{
 		//テクスチャネームを設定する
 		m_pSelect->SetTexName(m_acFilename[nCnt], nCnt);
@@ -102,7 +102,7 @@ HRESULT CTitle::Init(void)
 void CTitle::Uninit(void)
 {
 	//フォントの数分繰り返す
-	for (int nCnt = 0; nCnt < C2DChar::GetNum(); nCnt++)
+	for (int nCnt = 0; nCnt < C2DChar::GetNum(); ++nCnt)
 	{
 		if (m_ap2DChar[nCnt] )
 		{

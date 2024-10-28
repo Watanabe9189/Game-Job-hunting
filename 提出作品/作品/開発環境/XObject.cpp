@@ -8,8 +8,8 @@
 #include "Texture.h"
 
 int CXObject::m_nNumAll = INITIAL_INT;
-const char *CXObject::m_apFileName[INT_VALUE::MAX_SIZE] = {};
-CXObject::DataModel CXObject::m_asaveModel[INT_VALUE::MAX_SIZE] = {};
+const char *CXObject::m_apFileName[INT_VALUE::MAX_SIZE] = {""};
+CXObject::DataModel CXObject::m_asaveModel[INT_VALUE::MAX_SIZE] = {nullptr};
 
 //<***************************************************
 //名前宣言
@@ -25,8 +25,6 @@ namespace
 CXObject::CXObject(int nPriority) : CObject(nPriority)
 {
 	//値のクリア
-	m_mtxWorld = {};
-
 	//位置情報関連
 	m_pos		=	INIT_VECTOR;
 	m_rot		=	INIT_VECTOR;
@@ -115,7 +113,7 @@ CXObject::DataModel CXObject::BindModel(const char *pFileName, const bool bMatCh
 	int nNum = m_nNumAll;
 
 	//数分繰り返す
-	for (int nCnt = 0; nCnt < nNum; nCnt++)
+	for (int nCnt = 0; nCnt < nNum; ++nCnt)
 	{
 		if (m_apFileName[nCnt] )
 		{

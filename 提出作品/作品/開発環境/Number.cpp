@@ -90,7 +90,7 @@ void CNumber::SetVtx(void)
 
 		m_pObject2D->GetVtxBuff()->Lock(0, 0, (void**)&pVtx, 0);
 
-		for (int nCnt = 0; nCnt < m_nNum; nCnt++)
+		for (int nCnt = 0; nCnt < m_nNum; ++nCnt)
 		{
 			//テクスチャ座標の設定
 			pVtx[0].tex = D3DXVECTOR2(m_nNum*0.1f + 0.0f, 0.0f);

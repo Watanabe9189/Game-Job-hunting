@@ -90,7 +90,7 @@ C2DInfo *C2DInfo::Create(const Class eClass)
 HRESULT C2DInfo::Init(void)
 {
 	//テクスチャの初期化
-	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); nCnt++)
+	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); ++nCnt)
 	{
 		//最初だけ読み込む
 		if (!m_apTexture[nCnt])
@@ -200,7 +200,7 @@ CInfoFigure::CInfoFigure(int nPriority)
 	//値のクリア
 	m_nNum = INITIAL_INT;
 
-	for (int nCnt = 0; nCnt < INT_VALUE::MAX_SIZE; nCnt++)
+	for (int nCnt = 0; nCnt < INT_VALUE::MAX_SIZE; ++nCnt)
 	{
 		m_apObject2D[nCnt] = {};
 	}
@@ -220,7 +220,7 @@ HRESULT CInfoFigure::Init(void)
 	C2DInfo::Init();
 
 	//
-	for (int nCnt = 0; nCnt < CItem::GetNum(); nCnt++)
+	for (int nCnt = 0; nCnt < CItem::GetNum(); ++nCnt)
 	{
 		m_apObject2D[nCnt] = CObject2D::Create(
 			D3DXVECTOR2(Figure::FIGURE_POS.x + Figure::DISTANCE *nCnt, Figure::FIGURE_POS.y),
@@ -238,7 +238,7 @@ HRESULT CInfoFigure::Init(void)
 void CInfoFigure::Uninit(void)
 {
 	//
-	for (int nCnt = 0; nCnt < INT_VALUE::MAX_SIZE; nCnt++)
+	for (int nCnt = 0; nCnt < INT_VALUE::MAX_SIZE; ++nCnt)
 	{
 		if (m_apObject2D[nCnt] )
 		{
@@ -259,7 +259,7 @@ void CInfoFigure::Uninit(void)
 void CInfoFigure::Update(void)
 {
 	//番号ごとに
-	for (int nCnt = 0; nCnt < CItem::GetNum(); nCnt++)
+	for (int nCnt = 0; nCnt < CItem::GetNum(); ++nCnt)
 	{
 		//アイテムをゲットしていなければ
 		if (!CScene::GetGame()->GetItem(nCnt)->bGet())

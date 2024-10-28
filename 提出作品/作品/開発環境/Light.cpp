@@ -12,7 +12,7 @@
 //<=================================
 CLight::CLight()
 {
-	for (int nCnt = 0; nCnt < MAX_LIGHT; nCnt++)
+	for (int nCnt = 0; nCnt < MAX_LIGHT; ++nCnt)
 	{
 		m_aLight[nCnt] = {};
 
@@ -50,7 +50,7 @@ CLight *CLight::Create(const MODE mode)
 //<=================================
 HRESULT CLight::Init(void)
 {
-	for (int nCnt = 0; nCnt < MAX_LIGHT; nCnt++)
+	for (int nCnt = 0; nCnt < MAX_LIGHT; ++nCnt)
 	{
 		//ライトの情報をクリアする
 		if (FAILED(ZeroMemory(&m_aLight[nCnt], sizeof(D3DLIGHT9))))

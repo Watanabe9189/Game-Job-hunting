@@ -8,7 +8,7 @@
 //<****************************************************
 //
 //<****************************************************
-LPDIRECT3DTEXTURE9	Ccover::m_apTexture[TYPE_MAX] = {};
+LPDIRECT3DTEXTURE9	Ccover::m_apTexture[TYPE_MAX] = {NULL};
 const char*			Ccover::m_acFilename[TYPE_MAX] =
 {
 	NULL,								//何もなし
@@ -20,7 +20,7 @@ const char*			Ccover::m_acFilename[TYPE_MAX] =
 //<====================================================
 Ccover::Ccover(int nPriority)
 {
-	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++)
+	for (int nCnt = 0; nCnt < TYPE_MAX; ++nCnt)
 	{
 		m_apObject2D[nCnt] = {};
 	}
@@ -59,7 +59,7 @@ Ccover *Ccover::Create(const TYPE eType)
 HRESULT Ccover::Init(void)	
 {
 	//テクスチャの初期化
-	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); nCnt++)
+	for (int nCnt = 0; nCnt < (sizeof m_acFilename) / sizeof(*m_acFilename); ++nCnt)
 	{
 		//最初だけ読み込む
 		if (!m_apTexture[nCnt])
@@ -73,7 +73,7 @@ HRESULT Ccover::Init(void)
 	}
 
 	//タイプ最大値まで繰り返す
-	for (int nCnt = 0; nCnt < TYPE_MAX-1; nCnt++)
+	for (int nCnt = 0; nCnt < TYPE_MAX-1; ++nCnt)
 	{
 		switch (nCnt)
 		{
@@ -115,7 +115,7 @@ HRESULT Ccover::Init(void)
 void Ccover::Uninit(void)	
 {
 	//タイプ最大値まで繰り返す
-	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++)
+	for (int nCnt = 0; nCnt < TYPE_MAX; ++nCnt)
 	{
 		//終了処理
 		if (m_apObject2D[nCnt] )
@@ -132,7 +132,7 @@ void Ccover::Uninit(void)
 void Ccover::Update(void)	
 {
 	//タイプ最大値まで繰り返す
-	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++)
+	for (int nCnt = 0; nCnt < TYPE_MAX; ++nCnt)
 	{
 		//中身があれば
 		if (m_apObject2D[nCnt] )

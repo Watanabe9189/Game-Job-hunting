@@ -8,6 +8,14 @@
 
 #include "object2D.h"
 
+//<************************************************
+//名前宣言
+//<************************************************
+namespace
+{
+	const int MAX_DEST = 2;				//目的地の最大値
+}
+
 //<**********************************************
 //
 //<**********************************************
@@ -21,12 +29,12 @@ public:
 	enum CHAR_TYPE
 	{
 		CHAR_TYPE_TITLE = 0,			//目的
-		CHAR_TYPE_HIDEINFO,				//
-		CHAR_TYPE_PICKUP_INFO,
-		CHAR_TYPE_COMEOUT_INFO,
-		CHAR_TYPE_SEALED_INFO,
-		CHAR_TYPE_FOUND_INFO,
-		CHAR_TYPE_UNSEALED_INFO,
+		CHAR_TYPE_HIDEINFO,				//隠れる
+		CHAR_TYPE_PICKUP_INFO,			//取る
+		CHAR_TYPE_COMEOUT_INFO,			//出る
+		CHAR_TYPE_SEALED_INFO,			//封印されている
+		CHAR_TYPE_FOUND_INFO,			//発見した
+		CHAR_TYPE_UNSEALED_INFO,		//封印解除
 		CHAR_TYPE_MAX
 	};
 	//<*****************************************
@@ -62,15 +70,11 @@ public:
 
 private:
 
-#define MAX_DEST	(2)
-
 	void MoveSide(void);
 	void MoveVer(void);
 
 	static LPDIRECT3DTEXTURE9 m_apTexture[INT_VALUE::MAX_TEX];
-
-	static const char*			m_acFilename[CHAR_TYPE::CHAR_TYPE_MAX];				//ファイル名
-
+	static const char*		m_acFilename[CHAR_TYPE::CHAR_TYPE_MAX];				//ファイル名
 	static int m_nNumAll;
 
 	D3DXVECTOR2 m_pos;

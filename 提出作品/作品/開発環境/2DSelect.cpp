@@ -11,10 +11,10 @@
 //<======================================================================
 C2DSelect::C2DSelect(int nPriority)
 {
-	for (int nCnt = 0; nCnt < INT_VALUE::MAX_TEX; nCnt++)
+	for (int nCnt = 0; nCnt < INT_VALUE::MAX_TEX; ++nCnt)
 	{
-		m_acFilename[nCnt] = {};
-		m_apTexture[nCnt] = {};
+		m_acFilename[nCnt] = {""};
+		m_apTexture[nCnt] = {NULL};
 	}
 	m_apObject2D.clear();
 	m_nNumSelect = INITIAL_INT;
@@ -61,7 +61,7 @@ HRESULT C2DSelect::Init(void)
 	assert(m_pChangeCol);
 
 	//セレクトの数分繰り返す
-	for (int nCnt = 0; nCnt < m_nNumSelect; nCnt++)
+	for (int nCnt = 0; nCnt < m_nNumSelect; ++nCnt)
 	{
 		//要素の挿入を開始
 		m_apObject2D.insert(m_apObject2D.begin()+nCnt, 
@@ -79,7 +79,7 @@ HRESULT C2DSelect::Init(void)
 void C2DSelect::Uninit(void)
 {
 	//セレクトの数分繰り返す
-	for (int nCnt = 0; nCnt < m_nNumSelect; nCnt++)
+	for (int nCnt = 0; nCnt < m_nNumSelect; ++nCnt)
 	{
 		//
 		if (!(m_apObject2D.empty()))
@@ -108,7 +108,7 @@ void C2DSelect::Update(void)
 	SelectUpdate();
 
 	//セレクトの数分繰り返す
-	for (int nCnt = 0; nCnt < m_nNumSelect; nCnt++)
+	for (int nCnt = 0; nCnt < m_nNumSelect; ++nCnt)
 	{
 		if (!(m_apObject2D.empty()))
 		{
