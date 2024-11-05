@@ -93,7 +93,7 @@ void CXObject::Draw(void)
 void CXObject::DrawModel(void)
 {
 	//頂点数分繰り返し
-	for (int nCntMat = 0; nCntMat < (int)m_asModel.dwNumMat; nCntMat++)
+	for (DWORD nCntMat = 0,size = m_asModel.dwNumMat; nCntMat < size; ++nCntMat)
 	{
 		//マテリアルの設定
 		CManager::GetRenderer()->GetDevice()->SetMaterial(&m_asModel.pMat[nCntMat].MatD3D);

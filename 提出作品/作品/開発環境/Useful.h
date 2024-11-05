@@ -89,27 +89,79 @@ namespace Change
 //<============================================================================================================
 namespace Calculate
 {
-	D3DXVECTOR3 CalculateDest(const D3DXVECTOR3 rOwnerPos,const D3DXVECTOR3 rTargetPos);
+	//<インライン関数>
+	//目的地計算関数
+	inline D3DXVECTOR3 CalculateDest(const D3DXVECTOR3 rOwnerPos, const D3DXVECTOR3 rTargetPos)
+	{
+		D3DXVECTOR3 rCalPos = INIT_VECTOR;	//計算用位置
+
+		rCalPos.x = rOwnerPos.x - rTargetPos.x;	//X座標
+		rCalPos.y = rOwnerPos.y - rTargetPos.y;	//Y座標
+		rCalPos.z = rOwnerPos.z - rTargetPos.z;	//Z座標
+
+		return rCalPos;
+	}
+
 	//<********************************************************************************************
 	//ランダム関連の関数
 	//<********************************************************************************************
 	//fMax = 最大値
 	//fMin = 最小値
 	//<********************************************************************************************
-	float CalculateRandfloat(const float fMax, const float fMin);
+	inline float CalculateRandfloat(const float fMax, const float fMin)
+	{
+		return fMin + (int)(rand() * (fMax - fMin + 1.0) / (1.0 + RAND_MAX));
+	}
 	//<********************************************************************************************
 	//nMax = 最大値
 	//nMin = 最小値
 	//<********************************************************************************************
-	int CalculeteRandInt(const int nMax, const int nMin);
+	inline int CalculeteRandInt(const int nMax, const int nMin)
+	{
+		return nMin + (int)(rand() * (nMax - nMin + 1.0) / (1.0 + RAND_MAX));
+	}
 	//<********************************************************************************************
 	//rMax = 最大値
 	//rMin = 最小値
 	//bUseY= Y座標を使用するか
 	//<********************************************************************************************
-	D3DXVECTOR3 CalculteRandVec3(const D3DXVECTOR3 rMax, const D3DXVECTOR3 rMin, const bool bUseY);
+	inline D3DXVECTOR3 CalculteRandVec3(const D3DXVECTOR3 rMax, const D3DXVECTOR3 rMin, const bool bUseY)
+	{
+		D3DXVECTOR3 rVec3 = INIT_VECTOR;
 
-	float RotateToDest(const float rOwnerRot,const D3DXVECTOR3 fDestRot, const float fRotateValue);
+		//Y座標を使うなら
+		if (bUseY)
+		{
+			//それぞれの位置を設定する
+			rVec3.x = rMin.x + (int)(rand() * (rMax.x - rMin.x + 1.0) / (1.0 + RAND_MAX));
+			rVec3.y = rMin.y + (int)(rand() * (rMax.y - rMin.y + 1.0) / (1.0 + RAND_MAX));
+			rVec3.z = rMin.x + (int)(rand() * (rMax.z - rMin.z + 1.0) / (1.0 + RAND_MAX));
+		}
+		//使わないなら
+		else
+		{
+			//それぞれの位置を設定する
+			rVec3.x = rMin.x + (int)(rand() * (rMax.x - rMin.x + 1.0) / (1.0 + RAND_MAX));
+			rVec3.z = rMin.x + (int)(rand() * (rMax.z - rMin.z + 1.0) / (1.0 + RAND_MAX));
+		}
+
+		return rVec3;
+	}
+
+	//その方向へ向く関数
+	inline float RotateToDest(const float rOwnerRot, const D3DXVECTOR3 fDestRot, const float fRotateValue)
+	{
+		float fRot = rOwnerRot;		//向き
+		float fRotDest = INITIAL_FLOAT;	//目的向き
+		float fRotDiff = INITIAL_FLOAT;	//向き
+
+										//角度設定
+		fRotDest = atan2f((fDestRot.x), (fDestRot.z));
+		fRotDiff = fRotDest - fRot;
+
+		//プレイヤーのいる位置に向く
+		return fRot += fRotDiff * fRotateValue;
+	}
 }
 //<============================================================================================================
 //bool型判定関連の名前宣言
@@ -145,11 +197,11 @@ public:
 
 	void ChangeColAdd(void);
 
-	D3DXCOLOR GetColor(void) { return m_rCol; }
-	float GetMaxAlpha(void) { return m_fMaxAlpha; }
-	float GetMinAlpha(void) { return m_fMinAlpha; }
+	inline D3DXCOLOR GetColor(void) { return m_rCol; }
+	inline float GetMaxAlpha(void) { return m_fMaxAlpha; }
+	inline float GetMinAlpha(void) { return m_fMinAlpha; }
 
-	void SetColor(const D3DXCOLOR rCol) 
+	inline void SetColor(const D3DXCOLOR rCol) 
 	{ 
 		//その色の値にする
 		m_rCol = rCol; 
@@ -182,4 +234,9 @@ private:
 	bool m_bEnd;				//色変えが終了しているかどうか
 
 };
+
+//<********************************************
+//メモとして(About:Inline)
+//あまり長い関数に使うのは控えたほうがいい
+//<********************************************
 #endif

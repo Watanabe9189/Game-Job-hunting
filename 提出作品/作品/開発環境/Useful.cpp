@@ -25,6 +25,7 @@ float Correction::NormalizeRotation(const float fRotY)
 	{
 		fRot = D3DX_PI;
 	}
+
 	return fRot;
 }
 //<================================================
@@ -106,84 +107,6 @@ bool Change::Changebool(bool bBool, const BOOL nBool)
 	}
 
 	return bUse;
-}
-//<==========================================
-//bool型の変更処理
-//<==========================================
-D3DXVECTOR3 Calculate::CalculateDest(const D3DXVECTOR3 rOwnerPos, const D3DXVECTOR3 rTargetPos)
-{
-	D3DXVECTOR3 rCalPos = INIT_VECTOR;	//計算用位置
-
-	rCalPos.x = rOwnerPos.x - rTargetPos.x;	//X座標
-	rCalPos.y = rOwnerPos.y - rTargetPos.y;	//Y座標
-	rCalPos.z = rOwnerPos.z - rTargetPos.z;	//Z座標
-
-	return rCalPos;
-}
-//<==========================================
-//bool型の変更処理
-//<==========================================
-float Calculate::CalculateRandfloat(const float fMax, const float fMin)
-{
-	//計算用の変数
-	float fRand = INITIAL_FLOAT;
-
-	fRand = fMin + (int)(rand() * (fMax - fMin + 1.0) / (1.0 + RAND_MAX));
-	
-	return fRand;
-}
-//<==========================================
-//bool型の変更処理
-//<==========================================
-int Calculate::CalculeteRandInt(const int nMax, const int nMin)
-{
-	//計算用の変数
-	int nRand = INITIAL_INT;
-
-	nRand = nMin + (int)(rand() * (nMax - nMin + 1.0) / (1.0 + RAND_MAX));
-
-	return nRand;
-}
-//<==========================================
-//bool型の変更処理
-//<==========================================
-D3DXVECTOR3 Calculate::CalculteRandVec3(const D3DXVECTOR3 rMax, const D3DXVECTOR3 rMin, const bool bUseY)
-{
-	D3DXVECTOR3 rVec3 = INIT_VECTOR;
-
-	//Y座標を使うなら
-	if (bUseY)
-	{
-		//それぞれの位置を設定する
-		rVec3.x = rMin.x + (int)(rand() * (rMax.x - rMin.x + 1.0) / (1.0 + RAND_MAX));
-		rVec3.y = rMin.y + (int)(rand() * (rMax.y - rMin.y + 1.0) / (1.0 + RAND_MAX));
-		rVec3.z = rMin.x + (int)(rand() * (rMax.z - rMin.z + 1.0) / (1.0 + RAND_MAX));
-	}
-	//使わないなら
-	else
-	{
-		//それぞれの位置を設定する
-		rVec3.x = rMin.x + (int)(rand() * (rMax.x - rMin.x + 1.0) / (1.0 + RAND_MAX));
-		rVec3.z = rMin.x + (int)(rand() * (rMax.z - rMin.z + 1.0) / (1.0 + RAND_MAX));
-	}
-
-	return rVec3;
-}
-//<==========================================
-//bool型の変更処理
-//<==========================================
-float Calculate::RotateToDest(const float rOwnerRot, const D3DXVECTOR3 fDestRot, const float fRotateValue)
-{
-	float fRot = rOwnerRot;		//向き
-	float fRotDest = INITIAL_FLOAT;	//目的向き
-	float fRotDiff = INITIAL_FLOAT;	//向き
-
-	//角度設定
-	fRotDest = atan2f((fDestRot.x), (fDestRot.z));
-	fRotDiff = fRotDest - fRot;
-
-	//プレイヤーのいる位置に向く
-	return fRot += fRotDiff * fRotateValue;
 }
 //<==========================================
 //bool型の変更処理

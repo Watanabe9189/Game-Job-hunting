@@ -169,16 +169,14 @@ void CFade::SetFadeIn(void)
 //<====================================================
 void CFade::SetFade(CScene::MODE modeNext)
 {
-	//フェード何もなし状態だったら
-	if (m_eType == TYPE_FADE_NONE)
-	{
-		//画面全体を覆う
-		m_pObject2D->SetSize(D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	
+	//画面全体を覆う
+	m_pObject2D->SetSize(D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT));
 
-		m_nWaitTime = Fade::MAX_WAIT;	//待機時間を最大値にする
-		m_ModeNext = modeNext;			//次のモードを設定する
-		m_eType = TYPE_FADE_OUT;		//フェードアウト状態にする
+	m_nWaitTime = Fade::MAX_WAIT;	//待機時間を最大値にする
+	m_ModeNext = modeNext;			//次のモードを設定する
+	m_eType = TYPE_FADE_OUT;		//フェードアウト状態にする
 
-		m_pObject2D->SetDrawtrue();
-	}
+	m_pObject2D->SetDrawtrue();
+	
 }

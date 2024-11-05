@@ -78,7 +78,7 @@ public:
 	//<====================================================================================
 	//
 	//<====================================================================================
-	void SetVector3(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const D3DXVECTOR3 move)
+	inline void SetVector3(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const D3DXVECTOR3 move)
 	{
 		//もしどちらかがnullptrでなければ
 		if (pos )
@@ -98,10 +98,10 @@ public:
 	//<==========================================
 	//設定系のメンバ関数
 	//<==========================================
-	void SetPosition(const D3DXVECTOR3& pos) { m_pos = pos; }					//位置設定
-	void SetRotation(const D3DXVECTOR3& rot) { m_rot = rot; }					//向き設定
-	void SetMove(const D3DXVECTOR3& move) { m_move = move; }						//移動量設定
-	void SetMaterial(D3DXMATERIAL *pMat) { m_asModel.pMat = pMat; }
+	inline void SetPosition(const D3DXVECTOR3& pos) { m_pos = pos; }					//位置設定
+	inline void SetRotation(const D3DXVECTOR3& rot) { m_rot = rot; }					//向き設定
+	inline void SetMove(const D3DXVECTOR3& move) { m_move = move; }						//移動量設定
+	inline void SetMaterial(D3DXMATERIAL *pMat) { m_asModel.pMat = pMat; }
 
 	DataModel BindModel(const char *pFileName, const bool bMatChange = false);
 	void LoadModel(void);
@@ -109,11 +109,11 @@ public:
 	//Get系のメンバ関数
 	//<==========================================
 	int GetModelId(void) { return m_nModelId; }
-	D3DXVECTOR3		GetPosition(void)	const	{ return m_pos; }				//位置取得
-	D3DXVECTOR3		GetMove(void)		const	{ return m_move; }				//移動量取得
-	D3DXVECTOR3		GetRotation(void)	const	{ return m_rot; }				//向き取得
+	inline D3DXVECTOR3		GetPosition(void)	const	{ return m_pos; }				//位置取得
+	inline D3DXVECTOR3		GetMove(void)		const	{ return m_move; }				//移動量取得
+	inline D3DXVECTOR3		GetRotation(void)	const	{ return m_rot; }				//向き取得
 
-	D3DXMATERIAL*	GetMaterial(void)	const	{ return m_pMat; }				//マテリアル情報の取得
+	inline D3DXMATERIAL*	GetMaterial(void)	const	{ return m_pMat; }				//マテリアル情報の取得
 
 	void SetModel(const DataModel sModel) {m_asModel = sModel;};
 	DataModel GetModel(void) { return m_asModel; }

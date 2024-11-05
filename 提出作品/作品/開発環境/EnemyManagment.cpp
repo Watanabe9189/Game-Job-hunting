@@ -12,11 +12,11 @@
 //<*************************************
 namespace
 {
-	const int MAX_ENEMY = 20;			//敵の最大数
+	const int MAX_ENEMY = 60;			//敵の最大数
 
 //デバッグ
 #if _DEBUG
-	const int SPAWN_TIME_MAX = 5;	//スポーンまでにかかる時間の最大値
+	const int SPAWN_TIME_MAX = 5;		//スポーンまでにかかる時間の最大値
 //リリース
 #else
 	const int SPAWN_TIME_MAX = 3000;	//スポーンまでにかかる時間の最大値
